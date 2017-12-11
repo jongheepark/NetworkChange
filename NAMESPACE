@@ -3,6 +3,7 @@
 export(MakeBlockNetworkChange)
 export(MarginalCompare)
 export(NetworkChange)
+export(NetworkChangeRobust)
 export(NetworkStatic)
 export(ULUstateSample)
 export(WaicCompare)
