@@ -17,7 +17,11 @@ startUV <- function(Z, R, K){
     U <- matrix(U0[, 1:R], nrow=nrow(U0), ncol=R)
     V0 <- rep(1,K[3])%*%t(eig.temp$val)
     V1 <- V0[, order(d2m,decreasing=TRUE) ]
-    V <- matrix(V1[, 1:R], K[3], R)
+    if(K[3] == 1){
+        V <- matrix(V1[1:R], K[3], R)
+    }else{
+        V <- matrix(V1[, 1:R], K[3], R)
+    }
     if(is.complex(V)){
         stop("Principal eigenvalues have a complex number. Computation is halted.")
     }

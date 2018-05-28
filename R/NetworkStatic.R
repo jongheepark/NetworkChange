@@ -128,7 +128,10 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     totiter <- mcmc + burnin
     nstore <- mcmc/thin    
     reduce.mcmc <- nstore
-    K <- dim(Y)  
+    if(is.na(dim(Y)[3])){
+        Y <- array(Y, dim=c(dim(Y)[1], dim(Y)[2], 1))
+    }
+    K <- dim(Y)
     n <- dim(Y)[1] 
     Z <- Y
     MU.record <- Y*0
@@ -235,12 +238,12 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     }
     UTAsingle <-  upper.tri(Z[,,1])          
 
-    cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+    cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
     cat("\t NetworkStatic MCMC Sampler Starts! \n")
     ## cat("\t function called: ")
     ## print(call)
     cat("\t degree normalization: ", degree.normal, "\n")
-    cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+    cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
 
     ## ----------------------------------------------
     ## MCMC loop starts!  

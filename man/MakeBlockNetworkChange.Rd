@@ -4,9 +4,9 @@
 \alias{MakeBlockNetworkChange}
 \title{Build a synthetic block-structured temporal data with breaks}
 \usage{
-MakeBlockNetworkChange(n = 10, break.point = 0.5, block.number = 3,
-  base.prob = 0.05, block.prob = 0.5, shape = 10, T = 40,
-  type = "merge")
+MakeBlockNetworkChange(n = 10, break.point = 0.5, base.prob = 0.05,
+  block.prob = 0.5, shape = 1, T = 40, break.point1 = 0.25,
+  break.point2 = 0.75, type = "merge")
 }
 \arguments{
 \item{n}{The number of nodes within a block. The total number of nodes is n*block.number.}
@@ -14,16 +14,20 @@ MakeBlockNetworkChange(n = 10, break.point = 0.5, block.number = 3,
 \item{break.point}{The point of break. 0 indicates the beginning, 0.5 indicates the middle,
 and 1 indicates the end.}
 
-\item{block.number}{The number of blocks.}
-
 \item{base.prob}{The probability of link among non-block members.}
 
 \item{block.prob}{The probability of link among within-block members.}
 
 \item{shape}{The speed of breaks.
-The larger shape is, the faster the transition is. 0 is the minimum.}
+The larger shape is, the faster the transition is. shape > 0 and shape < 8.}
 
 \item{T}{The length of time.}
+
+\item{break.point1}{The point of the first break in "merge-split" or "split-merge". Any number between 0 and 0.5 can be chosen.
+For example, 0 indicates #' the beginning, 0.25 indicates the 1/4th point, and 0.5 indicates the half point.}
+
+\item{break.point2}{The point of the second breakin "merge-split" or "split-merge". Any number between 0.5 and 1 can be chosen.
+For example, 0.5 indicates the beginning, 0.75 indicates the 3/4th point, and 1 indicates the end point.}
 
 \item{type}{The type of network changes. Options are "constant", "merge", "split",
 "merge-split", "split-merge." If "constant" is chosen, the number of breaks is zero.
@@ -34,5 +38,5 @@ If either "merge-split" or "split-merge" is chosen, the number of breaks is two.
 output  An output of \code{MakeBlockNetworkChange} contains a symmetric block-structured temporal network data set with breaks.
 }
 \description{
-MakeBlockNetworkChange generates a block-structured temporal data with breaks
+MakeBlockNetworkChange generates a block-structured temporal data with breaks.
 }
