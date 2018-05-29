@@ -106,7 +106,7 @@
 #'    plotV(out0)
 #'    }
 #'
-NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1, 
+NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1, constant=TRUE, 
                           degree.normal="eigen", UL.Normal = "Orthonormal",
                           plotUU = FALSE, plotZ = FALSE,
                           b0 = 0, B0 = 1, c0 = NULL, d0 = NULL,
@@ -156,7 +156,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         }
     }
     ## if Modul
-    gamma.par = 0.5
+    gamma.par = 1
     if(degree.normal == "Modul"){
         for(k in 1:K[3]){
           Yk <- as.matrix(Y[,,k])
@@ -238,7 +238,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     }
     UTAsingle <-  upper.tri(Z[,,1])          
 
-    cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+    cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
     cat("\t NetworkStatic MCMC Sampler Starts! \n")
     ## cat("\t function called: ")
     ## print(call)
@@ -251,8 +251,13 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     for(iter in 1:totiter) {   
 
         ## Step 1: update bhat
-        bhat <- updateb(Z, MU, s2, XtX, b0, B0)
-        Zb <- Z - bhat
+        if(constant){
+            bhat <- updateb(Z, MU, s2, XtX, b0, B0)
+            Zb <- Z - bhat
+        }else{
+            bhat = 0
+            Zb = Z
+        }
         
         ## Step 2: update U
         U <- updateU(K, U, V, R, Zb, s2, eU, iVU)
@@ -414,7 +419,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     
     output <- MU.record/nss
     names(output) <- "MU"
-    rm(MU.record) 
+    ## rm(MU.record) 
 
 ##########################################################################
     ## Marginal Likelihood computation
@@ -810,6 +815,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     attr(output, "iVV") <- iVVmat
     attr(output, "U") <- U
     attr(output, "V") <- V
+    attr(output, "MU") <- MU.record/nss
     attr(output, "Umat") <- Umat
     attr(output, "Vmat") <- Vmat
     attr(output, "bmat") <- bmat

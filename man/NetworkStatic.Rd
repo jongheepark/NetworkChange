@@ -5,10 +5,10 @@
 \title{Degree-corrected multilinear tensor model}
 \usage{
 NetworkStatic(Y, R = 2, mcmc = 100, burnin = 100, verbose = 0,
-  thin = 1, degree.normal = "eigen", UL.Normal = "Orthonormal",
-  plotUU = FALSE, plotZ = FALSE, b0 = 0, B0 = 1, c0 = NULL,
-  d0 = NULL, u0 = NULL, u1 = NULL, v0 = NULL, v1 = NULL,
-  marginal = FALSE, DIC = FALSE, Waic = FALSE)
+  thin = 1, constant = TRUE, degree.normal = "eigen",
+  UL.Normal = "Orthonormal", plotUU = FALSE, plotZ = FALSE, b0 = 0,
+  B0 = 1, c0 = NULL, d0 = NULL, u0 = NULL, u1 = NULL, v0 = NULL,
+  v1 = NULL, marginal = FALSE, DIC = FALSE, Waic = FALSE)
 }
 \arguments{
 \item{Y}{Reponse tensor}
