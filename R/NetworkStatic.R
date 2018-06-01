@@ -36,6 +36,9 @@
 #' printed to the screen with the sampled mean values at every \code{verbose}th iteration.
 #' The default is \code{plotUU = FALSE}.
 #'
+#' @param constant If \code{constant = TRUE}, constant parameter is sampled
+#' and saved in the output as attribute \code{bmat}. Default is \code{constant = FALSE}.
+#'
 #' 
 #' @param b0 The prior mean of \eqn{\beta}. This must be a scalar. The default value is 0.
 #' @param B0 The prior variance of \eqn{\beta}. This must be a scalar.  The default value is 1.
@@ -91,11 +94,14 @@
 #'    \dontrun{
 #'    set.seed(1973)
 #'
-#'    ## generate an array with two constant blocks
-#'    Y <- MakeBlockNetworkChange(n=10, shape=10, T=40, type ="constant")
-#'    out0 <- NetworkStatic(Y, R=2, mcmc=10, burnin=10,
-#'    verbose=10, UL.Normal = "Orthonormal")
+#'    ## generate an array with three constant blocks
+#'    Y <- MakeBlockNetworkChange(n=10, shape=10, T=10, type ="constant")
+#'    G <- 100 ## Small mcmc scans to save time
+#'    out0 <- NetworkStatic(Y, R=2, mcmc=G, burnin=G, verbose=G)
 #'
+#'    ## recovered latent blocks
+#'    Kmeans(out0, n.cluster=3, main="Recovered Blocks")
+#' 
 #'    ## contour plot of latent node positions
 #'    plotContour(out0)
 #'
@@ -106,9 +112,9 @@
 #'    plotV(out0)
 #'    }
 #'
-NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1, constant=TRUE, 
+NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1, 
                           degree.normal="eigen", UL.Normal = "Orthonormal",
-                          plotUU = FALSE, plotZ = FALSE,
+                          plotUU = FALSE, plotZ = FALSE, constant=FALSE, 
                           b0 = 0, B0 = 1, c0 = NULL, d0 = NULL,
                           u0 = NULL, u1 = NULL, v0 = NULL, v1 = NULL,
                           marginal = FALSE, DIC = FALSE,  Waic=FALSE){
@@ -218,15 +224,19 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     }
     
     ## initialize parameters
-    bhat <- mean(c(Z))
+    if(constant){
+        bhat <- mean(c(Z))
+        Zb <- Z - bhat
+    }else{
+        bhat = 0
+        Zb <- Z
+    }
     X <- array(1, dim=c(K, 1))
     p <- dim(X)[4]
     XtX <- prod(K) 
     rm(X)
-    Zb <- Z - bhat
     s2 <- d0
     iVV <- iVU <- diag(R) ; eV <- eU <- rep(0,R) ; 
-    
     
     ##
     ## Model diagnositics
@@ -254,9 +264,6 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         if(constant){
             bhat <- updateb(Z, MU, s2, XtX, b0, B0)
             Zb <- Z - bhat
-        }else{
-            bhat = 0
-            Zb = Z
         }
         
         ## Step 2: update U
@@ -298,7 +305,9 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         if (verbose!= 0 &iter %% verbose == 0){
             cat("\n----------------------------------------------",'\n')
             cat("    iteration = ", iter, '\n')
-            cat("    beta = ", bhat,'\n')
+            if(constant){
+                cat("    beta = ", bhat,'\n')
+            }
             cat("    sigma2 = ", s2 ,'\n')
             if(plotZ == TRUE & plotUU == TRUE){
                 par(mfrow=c(1, 2))
@@ -321,7 +330,9 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         if (iter > burnin & (iter-burnin)%%thin == 0){
             nss <- nss+1
             MU.record <- MU.record + MU
-            bmat[(iter-burnin)/thin] <- bhat
+            if(constant){
+                bmat[(iter-burnin)/thin] <- bhat
+            }
             Umat[(iter-burnin)/thin, ] <- as.vector(U)
             Vmat[(iter-burnin)/thin, ] <- as.vector(V)
             eUmat[(iter-burnin)/thin, ] <- eU
@@ -347,7 +358,12 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     logmarglike.upper <- loglike.upper <- NA
     
     ## Prepare Stars
-    bhat.st <- mean(bmat)
+    if(constant){
+        bhat.st <- mean(bmat)
+        Zb.st <- Z - bhat.st
+    }else{
+        Zb.st <- Z
+    }
     Sigma.st <- mean(s2mat)
     eU.st <-apply(eUmat, 2, mean)
     eV.st <- apply(eVmat, 2, mean)
@@ -360,7 +376,6 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     ## }else if(UL.Normal == "Orthonormal"){
     ##     U.st <- GramSchmidt(U.st)
     ## }
-    Zb.st <- Z - bhat.st
     MU.st <- M.U(list(U.st, U.st, L.st))
     EE.st <- c(Zb.st - MU.st) 
     
@@ -439,7 +454,9 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         ##
         density.eU.holder <- matrix(NA, reduce.mcmc)
         for (g in 1:reduce.mcmc){
-            Zbg <- Z - bmat[g]         
+            ## if(constant){
+            ##     Zbg <- Z - bmat[g]
+            ## }
             Vg <- matrix(Vmat[g, ], K[3], R)
             Ug <- matrix(Umat[g,], K[1], R)
 
@@ -477,8 +494,10 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         density.iVU.holder <- matrix(NA, reduce.mcmc)
         for (g in 1:reduce.mcmc){
             ## Step 1: update bhat
-            bhat <- updateb(Z, MU, s2, XtX, b0, B0)
-            Zb <- Z - bhat
+            if(constant){
+                bhat <- updateb(Z, MU, s2, XtX, b0, B0)
+                Zb <- Z - bhat
+            }
             
             ## Step 2: update U
             U <- updateU(K, U, V, R, Zb, s2, eU.st, iVU)
@@ -546,8 +565,10 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         for (g in 1:reduce.mcmc){
             
             ## Step 1: update bhat
-            bhat <- updateb(Z, MU, s2, XtX, b0, B0)
-            Zb <- Z - bhat
+            if(constant){
+                bhat <- updateb(Z, MU, s2, XtX, b0, B0)
+                Zb <- Z - bhat
+            }
             
             ## Step 2: update U
             U <- updateU(K, U, V, R, Zb, s2, eU.st, iVU.st)
@@ -607,8 +628,10 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         for (g in 1:reduce.mcmc){
             
             ## Step 1: update bhat
-            bhat <- updateb(Z, MU, s2, XtX, b0, B0)
-            Zb <- Z - bhat
+            if(constant){
+                bhat <- updateb(Z, MU, s2, XtX, b0, B0)
+                Zb <- Z - bhat
+            }
             
             ## Step 2: update U
             U <- updateU(K, U, V, R, Zb, s2, eU.st, iVU.st)
@@ -661,62 +684,63 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         cat("    density.iVV: ", as.numeric(density.iVV), "\n")
         cat("---------------------------------------------- \n ")
 
-        ##
-        ## Marginal Step 5: p(bhat.st|Z, eU.st, iVU.st, eV.st, iVV.st)
-        ##
-        density.bhat.holder <- matrix(NA, reduce.mcmc)
-        for (g in 1:reduce.mcmc){
-            
-            ## Step 1: update bhat
-            ZU <- Z - MU
-            Xtz <- sum(ZU) ## t(apply(X, 4, c))%*%c(ZU)
-            cV <- 1/(XtX/s2 +  1/B0) ## solve( XtX/s2 +  diag(1/B0, p))
-            cE <- cV*(Xtz/s2 + (1/B0)*b0) ## cV%*%(Xtz/s2 + diag(1/B0, p)*b0)
-            bhat <- rnorm(1, cE, sqrt(cV)) ## rMVNorm(1,cE,cV)[1:p]
-            Zb <- Z - bhat
-            density.bhat.holder[g] <- dnorm(bhat.st, cE, sqrt(cV), log=TRUE)            
-            ## bhat <- updateb(Z, MU, s2, XtX, b0, B0)
-            ## Zb <- Z - bhat
-            
-            ## Step 2: update U
-            U <- updateU(K, U, V, R, Zb, s2, eU.st, iVU.st)
-            if (UL.Normal == "Normal"){
-                U <- Unormal(U)
-            }else if(UL.Normal == "Orthonormal"){
-                U <- GramSchmidt(U)
+        if(constant){
+            ##
+            ## Marginal Step 5: p(bhat.st|Z, eU.st, iVU.st, eV.st, iVV.st)
+            ##
+            density.bhat.holder <- matrix(NA, reduce.mcmc)
+            for (g in 1:reduce.mcmc){
+                
+                ## Step 1: update bhat
+                ZU <- Z - MU
+                Xtz <- sum(ZU) ## t(apply(X, 4, c))%*%c(ZU)
+                cV <- 1/(XtX/s2 +  1/B0) ## solve( XtX/s2 +  diag(1/B0, p))
+                cE <- cV*(Xtz/s2 + (1/B0)*b0) ## cV%*%(Xtz/s2 + diag(1/B0, p)*b0)
+                bhat <- rnorm(1, cE, sqrt(cV)) ## rMVNorm(1,cE,cV)[1:p]
+                Zb <- Z - bhat
+                density.bhat.holder[g] <- dnorm(bhat.st, cE, sqrt(cV), log=TRUE)            
+                ## bhat <- updateb(Z, MU, s2, XtX, b0, B0)
+                ## Zb <- Z - bhat
+                
+                ## Step 2: update U
+                U <- updateU(K, U, V, R, Zb, s2, eU.st, iVU.st)
+                if (UL.Normal == "Normal"){
+                    U <- Unormal(U)
+                }else if(UL.Normal == "Orthonormal"){
+                    U <- GramSchmidt(U)
+                }
+                
+                ## Step 3: update V
+                V <- updateV(Zb, U, R, K, s2, eV.st, iVV.st, UTA)         
+                ## update MU
+                MU <- M.U(list(U,U,V))
+                
+                ## Step 4: update eU and iVU
+                ## SS <-  diag(psi0, nrow=R) +  t(U)%*%U 
+                ## iVU <- rwish(solve(SS), Psi0+K[1])
+                ## eU <- c(rMVNorm(1, apply(U,2,sum)/(K[1]+1), solve(iVU)/(K[1]+1)))
+                
+                ## Step 5: update eV and iVV
+                ## SS <-  diag(psi0, nrow=R) +  t(V)%*%V ## (K[3]-1)*cov(V)   +K[3]*msi/(K[3]+1)
+                ## iVV <- rwish(solve(SS), Psi0+K[3])
+                ## eV <- c(rMVNorm(1,apply(V,2,sum)/(K[3]+1), solve(iVV)/(K[3]+1)))
+                
+                ## Step 6: update s2
+                ZE <- Zb - MU 
+                s2 <- rinvgamma(1, (c0 + XtX)/2, (d0+ sum(c(ZE)^2))/2  )        
             }
             
-            ## Step 3: update V
-            V <- updateV(Zb, U, R, K, s2, eV.st, iVV.st, UTA)         
-            ## update MU
-            MU <- M.U(list(U,U,V))
-            
-            ## Step 4: update eU and iVU
-            ## SS <-  diag(psi0, nrow=R) +  t(U)%*%U 
-            ## iVU <- rwish(solve(SS), Psi0+K[1])
-            ## eU <- c(rMVNorm(1, apply(U,2,sum)/(K[1]+1), solve(iVU)/(K[1]+1)))
-            
-            ## Step 5: update eV and iVV
-            ## SS <-  diag(psi0, nrow=R) +  t(V)%*%V ## (K[3]-1)*cov(V)   +K[3]*msi/(K[3]+1)
-            ## iVV <- rwish(solve(SS), Psi0+K[3])
-            ## eV <- c(rMVNorm(1,apply(V,2,sum)/(K[3]+1), solve(iVV)/(K[3]+1)))
-            
-            ## Step 6: update s2
-            ZE <- Zb - MU 
-            s2 <- rinvgamma(1, (c0 + XtX)/2, (d0+ sum(c(ZE)^2))/2  )        
+            density.bhat <- log(mean(exp(density.bhat.holder)))
+            if(abs(density.bhat) == Inf){
+                cat("    Precision reinforced! \n")
+                print(density.bhat.holder)
+                density.bhat <- as.numeric(log(mean(exp(mpfr(density.bhat.holder, precBits=53)))))
+            }
+            cat("\n---------------------------------------------- \n ")
+            cat("Marignal Likelihood Computation Step 5 \n")
+            cat("    density.bhat: ", as.numeric(density.bhat), "\n")
+            cat("---------------------------------------------- \n ")
         }
-        
-        density.bhat <- log(mean(exp(density.bhat.holder)))
-        if(abs(density.bhat) == Inf){
-            cat("    Precision reinforced! \n")
-            print(density.bhat.holder)
-            density.bhat <- as.numeric(log(mean(exp(mpfr(density.bhat.holder, precBits=53)))))
-        }
-        
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 5 \n")
-        cat("    density.bhat: ", as.numeric(density.bhat), "\n")
-        cat("---------------------------------------------- \n ")
 
         ##
         ## Marginal Step 6: p(sigma.st|Z, eU.st, iVU.st, eV.st, iVV.st, bhat.st)
@@ -786,14 +810,22 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         density.iVU.prior <- sum(dens.temp.iVU)
         density.iVV.prior <- sum(dens.temp.iVV)
 
-        density.beta.prior <- dnorm(bhat.st, b0, sqrt(B0), log=TRUE) ## p = 1
+        if(constant){
+            density.beta.prior <- dnorm(bhat.st, b0, sqrt(B0), log=TRUE) ## p = 1
+        }
         density.Sigma.prior <- log(dinvgamma(Sigma.st, c0/2, (d0)/2))
 
 
-        logprior <- density.eU.prior + density.eV.prior + density.iVU.prior + density.iVV.prior +
-            density.beta.prior + density.Sigma.prior
-        logdenom <- (density.eU + density.eV + density.iVU + density.iVV +
-                                                   density.bhat + density.Sigma)
+        if(constant){
+            logprior <- density.eU.prior + density.eV.prior + density.iVU.prior + density.iVV.prior +
+                density.beta.prior + density.Sigma.prior
+            logdenom <- (density.eU + density.eV + density.iVU + density.iVV +
+                         density.bhat + density.Sigma)
+        }else{
+            logprior <- density.eU.prior + density.eV.prior + density.iVU.prior + density.iVV.prior +
+                density.Sigma.prior
+            logdenom <- (density.eU + density.eV + density.iVU + density.iVV + density.Sigma)
+        }
         ## logmarglike <- (loglike + logprior) - logdenom;
         logmarglike.upper <- (loglike.upper + logprior) - logdenom
         
@@ -818,7 +850,9 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     attr(output, "MU") <- MU.record/nss
     attr(output, "Umat") <- Umat
     attr(output, "Vmat") <- Vmat
-    attr(output, "bmat") <- bmat
+    if(constant){
+        attr(output, "bmat") <- bmat
+    }
     attr(output, "s2mat") <- s2mat
     attr(output, "mcmc") <- nstore
     attr(output, "R") <- R

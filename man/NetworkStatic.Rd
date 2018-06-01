@@ -5,10 +5,10 @@
 \title{Degree-corrected multilinear tensor model}
 \usage{
 NetworkStatic(Y, R = 2, mcmc = 100, burnin = 100, verbose = 0,
-  thin = 1, constant = TRUE, degree.normal = "eigen",
-  UL.Normal = "Orthonormal", plotUU = FALSE, plotZ = FALSE, b0 = 0,
-  B0 = 1, c0 = NULL, d0 = NULL, u0 = NULL, u1 = NULL, v0 = NULL,
-  v1 = NULL, marginal = FALSE, DIC = FALSE, Waic = FALSE)
+  thin = 1, degree.normal = "eigen", UL.Normal = "Orthonormal",
+  plotUU = FALSE, plotZ = FALSE, constant = FALSE, b0 = 0, B0 = 1,
+  c0 = NULL, d0 = NULL, u0 = NULL, u1 = NULL, v0 = NULL, v1 = NULL,
+  marginal = FALSE, DIC = FALSE, Waic = FALSE)
 }
 \arguments{
 \item{Y}{Reponse tensor}
@@ -45,6 +45,9 @@ The default is \code{plotUU = FALSE}.}
 then the plot of the degree-corrected input matrix will be
 printed to the screen with the sampled mean values at every \code{verbose}th iteration.
 The default is \code{plotUU = FALSE}.}
+
+\item{constant}{If \code{constant = TRUE}, constant parameter is sampled
+and saved in the output as attribute \code{bmat}. Default is \code{constant = FALSE}.}
 
 \item{b0}{The prior mean of \eqn{\beta}. This must be a scalar. The default value is 0.}
 
@@ -89,10 +92,13 @@ NetworkStatic implements a degree-corrected Bayesian multilinear tensor decompos
    \dontrun{
    set.seed(1973)
 
-   ## generate an array with two constant blocks
-   Y <- MakeBlockNetworkChange(n=10, shape=10, T=40, type ="constant")
-   out0 <- NetworkStatic(Y, R=2, mcmc=10, burnin=10,
-   verbose=10, UL.Normal = "Orthonormal")
+   ## generate an array with three constant blocks
+   Y <- MakeBlockNetworkChange(n=10, shape=10, T=10, type ="constant")
+   G <- 100
+   out0 <- NetworkStatic(Y, R=2, mcmc=G, burnin=G, verbose=G)
+
+   ## recovered latent blocks
+   Kmeans(out0, n.cluster=3, main="Recovered Blocks")
 
    ## contour plot of latent node positions
    plotContour(out0)
