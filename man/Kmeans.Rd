@@ -43,7 +43,7 @@ diag(Y2) <- 0
 ## Combine them into a multilayer network array
 Y <- abind(Y1, Y2, along=3)
 
-G <- 100 ## G should be larger than this in real analysis
+G <- 100 ## Small mcmc scans to save time
 out0 <- NetworkStatic(Y, R=2,  mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="eigen")
 plot3 <- Kmeans(out0, n.cluster=3, main="(C) Recovered Three Blocks")
 

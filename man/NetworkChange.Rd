@@ -112,17 +112,21 @@ using a degree-corrected multilinear tensor decomposition method
    ## Generate an array (30 by 30 by 40) with block transitions
    from 2 blocks to 3 blocks
    Y <- MakeBlockNetworkChange(n=10, T=40, type ="split")
-   G <- 100 ## only 100 mcmc scans to save time
-   ## Fit models
+   G <- 100 ## Small mcmc scans to save time
+
+   ## Fit multiple models for break number detection using Bayesian model comparison
    out0 <- NetworkStatic(Y, R=2, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    out1 <- NetworkChange(Y, R=2, m=1, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    out2 <- NetworkChange(Y, R=2, m=2, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    out3 <- NetworkChange(Y, R=2, m=3, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    outlist <- list(out0, out1, out2, out3)
-   ## The true model is out1
+
+   ## The most probable model given break number 0 to 3 and data is out1 according to WAIC 
    WaicCompare(outlist)
+
    ## plot latent node positions
    plotU(out1)
+ 
    ## plot layer-specific network generation rules
    plotV(out1)
    }
