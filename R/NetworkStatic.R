@@ -248,13 +248,14 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     }
     UTAsingle <-  upper.tri(Z[,,1])          
 
-    cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
-    cat("\t NetworkStatic MCMC Sampler Starts! \n")
-    ## cat("\t function called: ")
-    ## print(call)
-    cat("\t degree normalization: ", degree.normal, "\n")
-    cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
-
+    if(verbose !=0){
+        cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+        cat("\t NetworkStatic MCMC Sampler Starts! \n")
+        ## cat("\t function called: ")
+        ## print(call)
+        cat("\t degree normalization: ", degree.normal, "\n")
+        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+    }
     ## ----------------------------------------------
     ## MCMC loop starts!  
     ## ----------------------------------------------
@@ -387,8 +388,9 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     ## loglike <- sum(sapply(1:K[3], function(t){dnorm(c(Zb.st[,,t]),
     ##                                                mean = c(MU.st[,,t]), sqrt(Sigma.st), log=TRUE)}))
     ## cat("    loglike: ", as.numeric(loglike), "\n")
-    cat("    loglike : ", as.numeric(loglike.upper), "\n")
-    
+    if(verbose !=0){
+        cat("    loglike : ", as.numeric(loglike.upper), "\n")
+    }
     
 ##########################################################################
     ## DIC and Waic

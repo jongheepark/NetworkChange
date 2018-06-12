@@ -272,7 +272,6 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         MU[[j]] <-  M.U(list(U[[j]],U[[j]], Vm[[j]]))
         MU.state[[j]] <-  M.U(list(U[[j]],U[[j]],V))
     }
-    
     ## initialize s2 and d0
     if (is.null(c0)){
         c0 <- 1
@@ -398,6 +397,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             MU.state[[j]] <- M.U(list(U[[j]],U[[j]],V))
             ZU[[j]] <- ZY[[j]] - MU[[j]]
         }
+        
         ## Step 4. update s2
         ## cat("\n---------------------------------------------- \n ")
         ## cat("Step 4. update s2 \n")
@@ -668,8 +668,9 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
     }
     
     ## cat("    loglike: ", as.numeric(loglike), "\n")
-    cat("    loglike: ", as.numeric(loglike.upper), "\n")
-    ## cat("    total SOS = ", SOS, '\n')
+    if(verbose !=0){
+        cat("    loglike : ", as.numeric(loglike.upper), "\n")
+    }
  
     
 ##########################################################################
@@ -1433,8 +1434,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
     ## so that the first principal axis comes at the first column of V and U
     ## In that way, the interpretation of cp results makes sense.
     #########################################################################
-    
-    output <- lapply(MU.record, function(x){x/nss}) ## MU.record/nss
+    output <- abind(MU.st) ## lapply(MU.record, function(x){x/nss}) ## MU.record/nss
     names(output) <- "MU"
     attr(output, "title") <- "NetworkChange Posterior Sample"
     attr(output, "Z") <- Z
