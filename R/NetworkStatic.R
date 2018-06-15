@@ -142,7 +142,11 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
     Z <- Y
     MU.record <- Y*0
     nss <- 0
-    
+
+
+    if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){
+        stop("If R=1, please set UL.Normal=FALSE.")
+    }
     ##
     ## Degree normalization
     ##

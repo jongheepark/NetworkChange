@@ -161,6 +161,11 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
     totiter <- mcmc + burnin
     nstore <- mcmc/thin    
     reduce.mcmc <- nstore
+
+    if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){
+        stop("If R=1, please set UL.Normal=FALSE.")
+    }
+
     
     ## changepoint priors and inputs
     ns <- m + 1 # number of states

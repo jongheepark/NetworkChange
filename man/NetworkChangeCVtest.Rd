@@ -5,7 +5,8 @@
 \title{k-fold Cross-Validation for Network Change point models}
 \usage{
 NetworkChangeCVtest(Y, R = 2, k.fold = 2, mcmc = 100, burnin = 100,
-  thin = 1, verbose = 0, LOO = FALSE, LOO.bound = 2, break.upper = 3)
+  thin = 1, verbose = 0, LOO = FALSE, LOO.bound = 2, break.upper = 3,
+  Waic = FALSE)
 }
 \arguments{
 \item{Y}{Reponse tensor}

@@ -330,8 +330,13 @@ UV.lsq <-function(Y,R, U, V, tol=1e-5, iter.limit = 50)
           U[i,]<-solve(Q)%*%L
       }
       
-      Q<-((t(U)%*%U)^2-
-              matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R))/2
+      if(R == 1){
+          Q<-((t(U)%*%U)^2-
+                         matrix(sum(apply(U^2,1,function(x){x%*%t(x)})),R,R))/2
+      }else{
+          Q<-((t(U)%*%U)^2-
+                         matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R))/2
+      }
       
       UU<-aperm(array( apply(U,1,"*",t(U)) ,dim=c(R,m,m) ),c(2,3,1))
       ZUU<-array(apply(UU,3,function(x){apply(Y0,1,"*",x)}),

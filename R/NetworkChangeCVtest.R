@@ -52,7 +52,7 @@
 #'
 
 NetworkChangeCVtest <- function(Y, R=2, k.fold = 2, mcmc = 100, burnin=100, thin=1, verbose=0,
-                                LOO=FALSE, LOO.bound=2, break.upper = 3){
+                                LOO=FALSE, LOO.bound=2, break.upper = 3, Waic=FALSE){
 
     K <- dim(Y)
     ntime <- K[3]
@@ -139,6 +139,21 @@ NetworkChangeCVtest <- function(Y, R=2, k.fold = 2, mcmc = 100, burnin=100, thin
             progress.bar$step()
         }
     }
-    
+    if(Waic){
+        WAIC.out <- WAIC.list <- as.list(rep(NA, break.upper))
+        ## fit a break specific model
+        WAIC0 <- NetworkStatic(Y, R=R,  mcmc=mcmc, burnin=burnin, verbose=verbose, Waic=TRUE)
+        for(m in 1:break.upper){
+            WAIC.out[[m]] <- NetworkChange(Y, m = m, R=R,  mcmc=mcmc, burnin=burnin, verbose=verbose,
+                                           initial.s = sort(rep(1:(m+1), length=Time)), Waic=TRUE)
+        }
+        
+        waic0 <- attr(WAIC0, "Waic.out")[1]
+        for(m in 1:break.upper){
+            WAIC.list[[m]] <- attr(WAIC.out[[m]], "Waic.out")[1]
+        }
+        
+        attr(MSE, "Waic") <- c(waic0, unlist(WAIC.list))
+    }
     return(MSE)
 }
