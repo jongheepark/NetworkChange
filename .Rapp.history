@@ -1,3 +1,257 @@
+ZE <- ZY[[j]] - MU[[j]]#
+                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)
+ZE
+Xtz
+Xm[[j]]
+t(apply(Xm[[j]],4,c))
+dim(Xm[[j]])
+dim(t(apply(Xm[[j]],4,c)))
+dim(t(apply(X0,4,c))%*%c(ZE))
+dim(t(apply(X0,4, c)))
+dim(X0)
+c(ZE)
+야ㅡ(c(ZE))
+dim(c(ZE))
+dim(Z - MUU)
+j
+dim(ZY[[j]] - MU[[j]])
+dim(Xm[[j]])
+ZE <- ZY[[j]] - MU[[j]]
+t(apply(Xm[[j]],4,c))%*%ZE
+ZE
+t(apply(Xm[[j]],4,c))
+## in case state j has only 1 unit, force it to be an array with 1 length#
+            if(is.na(Km[[j]][3])){#
+                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
+                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
+            } else{#
+                ZY[[j]] <- Z[,,ej[[j]]==1]#
+                Zm[[j]] <- Zb[,,ej[[j]]==1]#
+                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
+                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
+                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
+            }
+ZE <- ZY[[j]] - MU[[j]]#
+                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)
+Xtz
+t(apply(Xm[[j]],4,c))
+## X array making#
+K <- dim(Y)#
+X <- array(dim=c(K,4))#
+lgdp <- log(dat$GDP) ; lgdp <- lgdp-mean(lgdp)#
+for(k in 1:K[3]) #
+{#
+  X[,,k,1] <- lgdp[,k]%*%t(rep(1,K[1])) + #
+            t(lgdp[,k]%*%t(rep(1,K[1])))#
+  X[,,k,2] <- lgdp[,k]%*%t(rep(1,K[1])) *#
+            t(lgdp[,k]%*%t(rep(1,K[1])))#
+  X[,,k,3] <- 1*(  (dat$PTY[,k]%*%t(dat$PTY[,k])) >0 )#
+  X[,,k,4] <-  1*( outer(dat$PTY[,k]>0,dat$PTY[,k]>0 ) )#
+  ## X[,,k,5] <- 1## log(dat$DST) ; diag(X[,,k,5]) <- 0#
+}#
+## X <- X[,,,c(1:5)[-c(5)]]   # take out distance#
+p <- dim(X)[4]
+for (j in 1:ns){#
+            ej[[j]] <- as.numeric(s==j)#
+            Km[[j]] <- dim(Zb[,,ej[[j]]==1])#
+            ## in case state j has only 1 unit, force it to be an array with 1 length#
+            if(is.na(Km[[j]][3])){#
+                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
+                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
+            } else{#
+                ZY[[j]] <- Z[,,ej[[j]]==1]#
+                Zm[[j]] <- Zb[,,ej[[j]]==1]#
+                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
+                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
+                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
+            }#
+            ## return the right dimension info#
+            Km[[j]] <- dim(Zm[[j]])#
+#
+            ## UTA array: TRUE for upper triangle#
+            UTA[[j]] <- Zm[[j]]*NA#
+            for(k in 1:Km[[j]][3]) {#
+                UTA[[j]][,,k] <-  upper.tri(Zm[[j]][,,1])#
+            } #
+            UTA[[j]] <- (UTA[[j]]==1)#
+        }
+end <- c(which(diff(s) == 1), Time)#
+            start <- c(1, which(diff(s) == 1)+1)#
+            for (j in 1:ns){#
+                ZE <- ZY[[j]] - MU[[j]]#
+                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)#
+                XtX.middle <- apply(Xm[[j]],c(1,2,3), function(x){x%*%t(x) } ) ## 16 66 66  8 array#
+                XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
+                cV <- solve( XtX + diag(1/100,p))#
+                cE <- cV%*%Xtz#
+                ## vectorized regression#
+                bhat[j,] <- rmvnorm(1,cE,cV)#
+            }
+j
+dim(ZY[[j]])
+dim(MU[[j]])
+s
+## Step 0. Update Z#
+        ## update Z#
+        ## pooling#
+        if(pooling.mode == "time.pool"){#
+            EZ <-  X.b(X,bhat) + MUU#
+        }else if(pooling.mode == "time.specific"){#
+            EZ <- X.b.specific(X, bhat) + MUU#
+        }else{#
+            EZ <- X.b.shrink(X, bhat, state=s) + MUU #
+        }#
+        for(y in sample(uy))#
+        { #
+            lb <- suppressWarnings(max(Z[Y<y & UTAall])) #
+            ub <- suppressWarnings(min(Z[Y>y & UTAall]))#
+            z <- qnorm(runif(sum(Y==y), pnorm( lb-EZ[Y==y] ), pnorm(ub-EZ[Y==y])))#
+            Z[Y==y] <-  EZ[Y==y] + z#
+            ## print(y)#
+        }#
+        ## Step 1. update ej, Km, Zm#
+        ## cat("\n---------------------------------------------- \n ")#
+        ## cat("Step 1. update ej, Km, Zm \n")#
+        ## cat("\n---------------------------------------------- \n ")#
+        for (j in 1:ns){#
+            ej[[j]] <- as.numeric(s==j)#
+            Km[[j]] <- dim(Zb[,,ej[[j]]==1])#
+            ## in case state j has only 1 unit, force it to be an array with 1 length#
+            if(is.na(Km[[j]][3])){#
+                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
+                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
+                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
+            } else{#
+                ZY[[j]] <- Z[,,ej[[j]]==1]#
+                Zm[[j]] <- Zb[,,ej[[j]]==1]#
+                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
+                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
+                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
+            }#
+            ## return the right dimension info#
+            Km[[j]] <- dim(Zm[[j]])#
+#
+            ## UTA array: TRUE for upper triangle#
+            UTA[[j]] <- Zm[[j]]*NA#
+            for(k in 1:Km[[j]][3]) {#
+                UTA[[j]][,,k] <-  upper.tri(Zm[[j]][,,1])#
+            } #
+            UTA[[j]] <- (UTA[[j]]==1)#
+        }#
+        ## Step 2. update U#
+        ## cat("\n---------------------------------------------- \n ")#
+        ## cat("Step 2. update U \n")#
+        ## cat("\n---------------------------------------------- \n ")#
+        U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)#
+        ## Step 3. update V#
+        ## cat("\n---------------------------------------------- \n ")#
+        ## cat("Step 3. update V \n")#
+        ## cat("\n---------------------------------------------- \n ")#
+        Vm <- NetworkChange::updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)#
+        V <- Reduce(rbind, Vm)#
+#
+        ## update MU#
+        for(j in 1:ns){#
+            ## MU is shorter than MU.state. MU.state is a full length.#
+            MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))#
+            MU.state[[j]] <- M.U(list(U[[j]],U[[j]],V))#
+            ZU[[j]] <- ZY[[j]] - MU[[j]]#
+        }#
+        MUU <- abind(MU)#
+        ## Step 4. update s2#
+        ## cat("\n---------------------------------------------- \n ")#
+        ## cat("Step 4. update s2 \n")#
+        ## cat("\n---------------------------------------------- \n ")#
+        s2 <- NetworkChange::updates2m(ns, Zm, MU, c0, d0, Km)#
+        ## update bhat#
+        ## pooling#
+        if(pooling.mode == "time.pool"){#
+            ZE <- Z - MUU#
+            Xtz <- t(apply(X0,4,c))%*%c(ZE)#
+            cV <- solve( XtX + diag(1/100,p))#
+            cE <- cV%*%Xtz#
+            bhat <- rmvnorm(1,cE,cV)#
+            Zb <-  Z- X.b(X, bhat)            #
+        }else if(pooling.mode == "time.specific"){#
+            for (t in 1:Time){#
+                ZE <- Z[,,t] - MUU[,,t]#
+                Xtz <-  t(apply(X0[,,t,],3,c))%*%c(ZE)#
+                cV <- solve(XtX.specific[[t]] + diag(1/B0, p))#
+                cE <- cV%*%Xtz#
+                bhat[t, ] <- rmvnorm(1,cE,cV)#
+            }#
+            Zb <- Z - X.b.specific(X, bhat)            #
+        }else{#
+            end <- c(which(diff(s) == 1), Time)#
+            start <- c(1, which(diff(s) == 1)+1)#
+            for (j in 1:ns){#
+                ZE <- ZY[[j]] - MU[[j]]#
+                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)#
+                XtX.middle <- apply(Xm[[j]],c(1,2,3), function(x){x%*%t(x) } ) ## 16 66 66  8 array#
+                XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
+                cV <- solve( XtX + diag(1/100,p))#
+                cE <- cV%*%Xtz#
+                ## vectorized regression#
+                bhat[j,] <- rmvnorm(1,cE,cV)#
+            } #
+            Zb <- Z - X.b.shrink(X, bhat, state=s)#
+        }
+U
+U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)
+V
+Vm
+Zm
+ej
+Zb
+s
+Zb <- Z - X.b.shrink(X, bhat, state=s)
+Zb
+bhat
+tmp <- as.list(rep(NA, ns))#
+        bhat <- matrix(NA, ns, p)#
+        ## equi-distant state vector for initialization#
+        state <- sort(sample(1:ns, size=K[3], replace=TRUE, prob=(rep(1, ns))))#
+        ## median.s <- ceiling(apply(attr(mcmcout, "Smat"), 2, median))#
+        end <- c(which(diff(state) == 1), Time)#
+        start <- c(1, which(diff(state) == 1)+1)#
+        for (j in 1:ns){#
+            XM <- NULL;#
+            for(h in 1:p){#
+                XM <- cbind(XM, c(X[,,start[j]:end[j],h]))#
+            }#
+            ## vectorized regression#
+            tmp[[j]] <- lm(c(Z[,,start[j]:end[j]])~ -1 + XM )#
+            bhat[j,] <- tmp[[j]]$coef#
+        }
+bhat
+ns
+start
+j = 2
+XM <- NULL;#
+            for(h in 1:p){#
+                XM <- cbind(XM, c(X[,,start[j]:end[j],h]))#
+            }
+dim(XM)
+lm(c(Z[,,start[j]:end[j]])~ -1 + XM )
+XM
+Z[,,start[j]:end[j]]
+Z <-  array(qnorm( rank(Y, ties.method="random")/(length(Y)+1) ), dim=K)#
+    for(k in 1:K[3]) {#
+        Z[,,k] <-  (Z[,,k] + t(Z[,,k]))/sqrt(2)#
+    }
+Z
+Z <-  array(qnorm( rank(Y, ties.method="random")/(length(Y)+1) ), dim=K)#
+    for(k in 1:K[3]) {#
+        Z[,,k] <-  (Z[,,k] + t(Z[,,k]))/sqrt(2)#
+    }
 ## function call#
     ptm <- proc.time()#
     call <- match.call()#
@@ -1061,7 +1315,6 @@ reg = glm(PRONO~INSYS, data=myocarde,family=binomial)
 120/3125
 120/398.980
 120/1256.018
-getwd()
 devtools::document()
 set.seed(11173)#
 N <- 10#
@@ -1072,7 +1325,9 @@ Yarr <- MakeBlockNetworkChange(n=N, break.point = .5, #
 Y1 <- Yarr[,,16]#
 Y2 <- 1-Yarr[,,20]#
 diag(Y2) <- 0#
-Y <- abind(Y1, Y2, along=3)
+Y <- abind(Y1, Y2, along=3)#
+K <- dim(Y)#
+X <- array(1, dim=c(K,1))
 require(abind)
 set.seed(11173)#
 N <- 10#
@@ -1083,698 +1338,408 @@ Yarr <- MakeBlockNetworkChange(n=N, break.point = .5, #
 Y1 <- Yarr[,,16]#
 Y2 <- 1-Yarr[,,20]#
 diag(Y2) <- 0#
-Y <- abind(Y1, Y2, along=3)
-K <- dim(Y)
-Y <- Yarr#
+Y <- abind(Y1, Y2, along=3)#
 K <- dim(Y)#
+X <- array(1, dim=c(K,1))
+G <- 10#
+right <- NetworkStatic(Y, R=1,  mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="eigen")
+R=1
+mcmc=burnin=10
+thin=1
+verbose=10
+## function call#
+    ###
+    call <- match.call()#
+    mf <- match.call(expand.dots = FALSE)#
+    ###
+    ## MCMC controllers#
+    ###
+    totiter <- mcmc + burnin#
+    nstore <- mcmc/thin    #
+    reduce.mcmc <- nstore#
+    if(is.na(dim(Y)[3])){#
+        Y <- array(Y, dim=c(dim(Y)[1], dim(Y)[2], 1))#
+    }#
+    K <- dim(Y)#
+    n <- dim(Y)[1] #
+    Z <- Y#
+    MU.record <- Y*0#
+    nss <- 0#
+    ###
+    ## Degree normalization#
+    ###
+    if(degree.normal == "eigen"){#
+        for(k in 1:K[3]){#
+            ee <- eigen(Y[,,k])#
+            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
+        }#
+    }#
+    ## if Lsym#
+    if(degree.normal == "Lsym"){#
+        for(k in 1:K[3]){#
+            Yk <-as.matrix(Y[,,k])#
+            V <- colSums(Yk)#
+            L <- diag(V) - Yk#
+            Z[,,k] <- diag(V^(-.5))%*% L %*%diag(V^(-.5))#
+        }#
+    }#
+    ## if Modul#
+    gamma.par = 1#
+    if(degree.normal == "Modul"){#
+        for(k in 1:K[3]){#
+          Yk <- as.matrix(Y[,,k])#
+          yk <- as.vector(apply(Yk, 2, sum))#
+          ym <- sum(yk)#
+          Z[,,k] <- Yk - gamma.par*(yk%o%yk)/ym#
+      }#
+    }#
+    ###
+    ## eigen decomposition for initial values of U, V, MU#
+    ###
+    out <- startUV(Z, R, K)#
+    U <- out[[1]]#
+    V <- out[[2]]#
+    MU <- M.U(list(U,U,V))#
 #
-## data split
-K
-train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))
-ntime <- K[3]#
-train.ratio=0.5#
+    ## unique values of Y#
+    uy <- sort(unique(c(Y)))#
+    ## UTA array: TRUE for upper triangle#
+    UTA <- Z*NA#
+    for(k in 1:K[3]) {#
+        UTA[,,k] <-  upper.tri(Z[,,1] )#
+    } #
+    UTA <- (UTA==1)#
+    ###
+    ## MCMC holders#
+    ###
+    Umat <- matrix(NA, nstore, dim(Y)[[1]]*R)#
+    Vmat <- matrix(NA, nstore, R*dim(Y)[[3]])#
+    s2mat <- bmat <- matrix(NA, nstore)#
+    eUmat <- matrix(NA, nstore, R)#
+    eVmat <- matrix(NA, nstore, R)#
+    iVUmat <- matrix(NA, nstore, R*R)#
+    iVVmat <- matrix(NA, nstore, R*R)
+degree.normal="eigen"
+## function call#
+    ###
+    call <- match.call()#
+    mf <- match.call(expand.dots = FALSE)#
+    ###
+    ## MCMC controllers#
+    ###
+    totiter <- mcmc + burnin#
+    nstore <- mcmc/thin    #
+    reduce.mcmc <- nstore#
+    if(is.na(dim(Y)[3])){#
+        Y <- array(Y, dim=c(dim(Y)[1], dim(Y)[2], 1))#
+    }#
+    K <- dim(Y)#
+    n <- dim(Y)[1] #
+    Z <- Y#
+    MU.record <- Y*0#
+    nss <- 0#
+    ###
+    ## Degree normalization#
+    ###
+    if(degree.normal == "eigen"){#
+        for(k in 1:K[3]){#
+            ee <- eigen(Y[,,k])#
+            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
+        }#
+    }#
+    ## if Lsym#
+    if(degree.normal == "Lsym"){#
+        for(k in 1:K[3]){#
+            Yk <-as.matrix(Y[,,k])#
+            V <- colSums(Yk)#
+            L <- diag(V) - Yk#
+            Z[,,k] <- diag(V^(-.5))%*% L %*%diag(V^(-.5))#
+        }#
+    }#
+    ## if Modul#
+    gamma.par = 1#
+    if(degree.normal == "Modul"){#
+        for(k in 1:K[3]){#
+          Yk <- as.matrix(Y[,,k])#
+          yk <- as.vector(apply(Yk, 2, sum))#
+          ym <- sum(yk)#
+          Z[,,k] <- Yk - gamma.par*(yk%o%yk)/ym#
+      }#
+    }#
+    ###
+    ## eigen decomposition for initial values of U, V, MU#
+    ###
+    out <- startUV(Z, R, K)#
+    U <- out[[1]]#
+    V <- out[[2]]#
+    MU <- M.U(list(U,U,V))#
 #
-train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))
-train_rows
-y.train <- Y[,,train_rows]#
-y.test <- Y[,,-train_rows]
-G <- 100#
-right <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, constant=FALSE, verbose= G)#
-wrong <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, constant=FALSE, verbose= G)
-m0 <- right
-m1 <- wrong
-Z.test <- y.test#
-for(k in 1:K[3]){#
-    ee <- eigen(y.test[,,k])#
-    Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-}
-Z.test <- y.test#
-K.test <- dim(y.test)#
-for(k in 1:K.test[3]){#
-    ee <- eigen(y.test[,,k])#
-    Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-}
-dim(m0)
-dim(m1)
-m1
-m1[[1]]
-dim(m0)
-dim(m1)
-dim(m1[[1]])
-dim(m1[[2]])
-dim(m1[[3]])
-devtools::document()
+    ## unique values of Y#
+    uy <- sort(unique(c(Y)))#
+    ## UTA array: TRUE for upper triangle#
+    UTA <- Z*NA#
+    for(k in 1:K[3]) {#
+        UTA[,,k] <-  upper.tri(Z[,,1] )#
+    } #
+    UTA <- (UTA==1)#
+    ###
+    ## MCMC holders#
+    ###
+    Umat <- matrix(NA, nstore, dim(Y)[[1]]*R)#
+    Vmat <- matrix(NA, nstore, R*dim(Y)[[3]])#
+    s2mat <- bmat <- matrix(NA, nstore)#
+    eUmat <- matrix(NA, nstore, R)#
+    eVmat <- matrix(NA, nstore, R)#
+    iVUmat <- matrix(NA, nstore, R*R)#
+    iVVmat <- matrix(NA, nstore, R*R)
+###
+    ## prior#
+    ###
+    if(is.null(c0)){#
+        c0 <- 1#
+    }#
+    if(is.null(d0)){#
+        d0 <- var(as.vector(Z - MU))#
+    }#
+    if(is.null(u0)){#
+        u0 <- 10#
+    }#
+    if(is.null(u1)){#
+        u1 <- 1 #
+    }#
+    if(is.null(v0)){#
+        v0 <- 4#
+    }#
+    if(is.null(v1)){#
+        v1 <- 2#
+    }#
+    ## initialize parameters#
+    if(constant){#
+        bhat <- mean(c(Z))#
+        Zb <- Z - bhat#
+    }else{#
+        bhat = 0#
+        Zb <- Z#
+    }#
+    X <- array(1, dim=c(K, 1))#
+    p <- dim(X)[4]#
+    XtX <- prod(K) #
+    rm(X)#
+    s2 <- d0#
+    iVV <- iVU <- diag(R) ; eV <- eU <- rep(0,R) ; #
+    ###
+    ## Model diagnositics#
+    ###
+    Z.loglike <- NA#
+    if(Waic == TRUE){#
+        N.upper.tri <- K[1]*(K[1]-1)/2#
+        Z.loglike <- matrix(NA, nstore, N.upper.tri*K[3])#
+    }#
+    UTAsingle <-  upper.tri(Z[,,1])          #
+#
+    if(verbose !=0){#
+        cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
+        cat("\t NetworkStatic MCMC Sampler Starts! \n")#
+        ## cat("\t function called: ")#
+        ## print(call)#
+        cat("\t degree normalization: ", degree.normal, "\n")#
+        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
+    }#
+    ## -------------------------------------
+constant
+constant=FALSE
+## Step 1: update bhat#
+        if(constant){#
+            bhat <- updateb(Z, MU, s2, XtX, b0, B0)#
+            Zb <- Z - bhat#
+        }#
+        ## Step 2: update U#
+        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)#
+        if (UL.Normal == "Normal"){#
+            U <- Unormal(U)#
+        }else if(UL.Normal == "Orthonormal"){#
+            U <- GramSchmidt(U)#
+        }
+call <- match.call()#
+    mf <- match.call(expand.dots = FALSE)#
+    ###
+    ## MCMC controllers#
+    ###
+    totiter <- mcmc + burnin#
+    nstore <- mcmc/thin    #
+    reduce.mcmc <- nstore#
+    if(is.na(dim(Y)[3])){#
+        Y <- array(Y, dim=c(dim(Y)[1], dim(Y)[2], 1))#
+    }#
+    K <- dim(Y)#
+    n <- dim(Y)[1] #
+    Z <- Y#
+    MU.record <- Y*0#
+    nss <- 0
+if(degree.normal == "eigen"){#
+        for(k in 1:K[3]){#
+            ee <- eigen(Y[,,k])#
+            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
+        }#
+    }
+###
+    ## eigen decomposition for initial values of U, V, MU#
+    ###
+    out <- startUV(Z, R, K)#
+    U <- out[[1]]#
+    V <- out[[2]]#
+    MU <- M.U(list(U,U,V))#
+#
+    ## unique values of Y#
+    uy <- sort(unique(c(Y)))#
+    ## UTA array: TRUE for upper triangle#
+    UTA <- Z*NA#
+    for(k in 1:K[3]) {#
+        UTA[,,k] <-  upper.tri(Z[,,1] )#
+    } #
+    UTA <- (UTA==1)#
+    ###
+    ## MCMC holders#
+    ###
+    Umat <- matrix(NA, nstore, dim(Y)[[1]]*R)#
+    Vmat <- matrix(NA, nstore, R*dim(Y)[[3]])#
+    s2mat <- bmat <- matrix(NA, nstore)#
+    eUmat <- matrix(NA, nstore, R)#
+    eVmat <- matrix(NA, nstore, R)#
+    iVUmat <- matrix(NA, nstore, R*R)#
+    iVVmat <- matrix(NA, nstore, R*R)
+## initialize parameters#
+    if(constant){#
+        bhat <- mean(c(Z))#
+        Zb <- Z - bhat#
+    }else{#
+        bhat = 0#
+        Zb <- Z#
+    }#
+    X <- array(1, dim=c(K, 1))#
+    p <- dim(X)[4]#
+    XtX <- prod(K) #
+    rm(X)#
+    s2 <- d0#
+    iVV <- iVU <- diag(R) ; eV <- eU <- rep(0,R) ;
+## Step 2: update U#
+        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)#
+        if (UL.Normal == "Normal"){#
+            U <- Unormal(U)#
+        }else if(UL.Normal == "Orthonormal"){#
+            U <- GramSchmidt(U)#
+        }
+r
+R
+K[1]
+i
+i=1
+Ui <- U ; Ui[i,] <- 0#
+        ## aperm(N*M*T, c(3,2,1)) generates a T*M*N array. #
+        VU <-  aperm(array(apply(Ui,1,"*",t(V)), dim=c(R,K[3],K[1])), c(3,2,1))#
+        zi <- Zb[i,,]#
+        ## element-wise multiplication of VU with array(rep(zi,R), dim=c(K[1],K[3],R)#
+        L <-  apply(VU*array(rep(zi,R), dim=c(K[1],K[3],R)), 3, sum) ## L equivalent to X'y#
+        Q <-  (t(Ui)%*%Ui ) * ( t(V)%*%V ) ## Q equivalent to X'X#
+        cV <- solve( Q/s2 + iVU ) #
+        cE <- cV%*%( L/s2 + iVU%*%eU) #
+        U[i,] <- rMVNorm( 1, cE, cV )
+Ui
+U
+R
+U
+U <- updateU(K, U, V, R, Zb, s2, eU, iVU)
+U
+out <- startUV(Z, R, K)#
+    U <- out[[1]]#
+    V <- out[[2]]#
+    MU <- M.U(list(U,U,V))
+U
+V
+MU
+## Step 2: update U#
+        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)#
+        if (UL.Normal == "Normal"){#
+            U <- Unormal(U)#
+        }else if(UL.Normal == "Orthonormal"){#
+            U <- GramSchmidt(U)#
+        }
+U
+V
+R
+Zb
+dim(Zb)
+for(i in sample(K[1])){#
+        Ui <- U ; Ui[i,] <- 0#
+        ## aperm(N*M*T, c(3,2,1)) generates a T*M*N array. #
+        VU <-  aperm(array(apply(Ui,1,"*",t(V)), dim=c(R,K[3],K[1])), c(3,2,1))#
+        zi <- Zb[i,,]#
+        ## element-wise multiplication of VU with array(rep(zi,R), dim=c(K[1],K[3],R)#
+        L <-  apply(VU*array(rep(zi,R), dim=c(K[1],K[3],R)), 3, sum) ## L equivalent to X'y#
+        Q <-  (t(Ui)%*%Ui ) * ( t(V)%*%V ) ## Q equivalent to X'X#
+        cV <- solve( Q/s2 + iVU ) #
+        cE <- cV%*%( L/s2 + iVU%*%eU) #
+        U[i,] <- rMVNorm( 1, cE, cV ) #
+    }
+I
+U
+## Step 2: update U#
+        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)
+U
+U <- GramSchmidt(U)
+GramSchmidt
+R
+dim(U)
+R <- dim(U)[2]#
+    N <- dim(U)[1]#
+    q <- list()#
+    A <- matrix(U[,1], N, 1)
+R
+N
+q
+A
+q[[1]] <- (1/sqrt(sum(A^2)))*A#
+    for(r in 2:R){#
+        B <- U[,r] - (q[[1]]%*%U[,r])%*%q[[1]]#
+        q[[r]] <- (1/sqrt(sum(B^2)))*B #
+    }
+right <- NetworkStatic(Y, R=1, UL.Normal=FALSE,  mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="eigen")
+R
+UL.Normal="Normal"
+if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){#
+        stop("If R=1, please set UL.Normal=FALSE.")#
+    }
 set.seed(11173)#
 N <- 10#
 n.block <- 3#
 Yarr <- MakeBlockNetworkChange(n=N, break.point = .5, #
                                base.prob=.2, block.prob=.5,#
                                shape=1, T=20, type ="split")#
-Y <- Yarr#
+Y1 <- Yarr[,,16]#
+Y2 <- 1-Yarr[,,20]#
+diag(Y2) <- 0#
+Y <- abind(Y1, Y2, along=3)#
 K <- dim(Y)#
-#
-## data split#
-ntime <- K[3]#
-train.ratio=0.5#
-#
-train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))#
-y.train <- Y[,,train_rows]#
-y.test <- Y[,,-train_rows]
-G <- 100#
-m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, constant=FALSE, verbose= G)
-m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))
-Time <- dim(Y)[[3]]
-m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))
-Time
-, initial.s = sort(rep(1:2, length=Time))
-initial.s = sort(rep(1:2, length=Time))
-initial.s
-Time <- dim(y.train)[[3]]
-m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))
-devtools::document()
-m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))
-Z.test <- y.test#
-K.test <- dim(y.test)#
-for(k in 1:K.test[3]){#
-    ee <- eigen(y.test[,,k])#
-    Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-}
-dim(m0)
-dim(m1)
-sum((Z.test - m0)^2)
-sum((Z.test - m1)^2)
-m2 <-  NetworkChange(y.train, m = 2, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:3, length=Time)))
-m3 <-  NetworkChange(y.train, m = 3, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:4, length=Time)))
-mse <- matrix(NA, 2, 4)
-mse0 <- sum((Z.test - m0)^2)#
-mse1 <- sum((Z.test - m1)^2)#
-mse2 <- sum((Z.test - m2)^2)#
-mse3 <- sum((Z.test - m3)^2)#
-#
-mse[1,] <- c(mse0, mse1, mse2, mse3)
-mse
-## test -> train#
-Z.train <- y.train#
-K.train <- dim(y.train)#
-for(k in 1:K.train[3]){#
-    ee <- eigen(y.train[,,k])#
-    Z.train[,,k] <- y.train[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-}#
-#
-m0 <- NetworkStatic(y.test, R=2,  mcmc = G, burnin = G, verbose= G)#
-m1 <-  NetworkChange(y.test, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))#
-m2 <-  NetworkChange(y.test, m = 2, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:3, length=Time)))#
-m3 <-  NetworkChange(y.test, m = 3, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:4, length=Time)))#
-#
-mse0 <- sum((Z.train - m0)^2)#
-mse1 <- sum((Z.train - m1)^2)#
-mse2 <- sum((Z.train - m2)^2)#
-mse3 <- sum((Z.train - m3)^2)#
-#
-mse[2,] <- c(mse0, mse1, mse2, mse3)
-mse
-install.packages("plyr")#
-install.packages("dplyr")#
-install.packages("randomForest")#
-출처: http://daryan.tistory.com/21 [Ryan의 데이터 과학 블로그]
-library(plyr)#
-library(dplyr)#
-library(randomForest)#
-출처: http://daryan.tistory.com/21 [Ryan의 데이터 과학 블로그]
-ata <- iris#
-#그 유명한 iris data set을 가지고 오기때문에 단순한 명령어가 가능합니다.#
-#
-glimpse(data)#
-#데이터 확인해보는 명령어#
-#
-#cross validation, using rf to predict sepal.length#
-k = 5#
-#
-data$id <- sample(1:k, nrow(data), replace = TRUE)#
-list <- 1:k#
-출처: http://daryan.tistory.com/21 [Ryan의 데이터 과학 블로그]
-data <- iris#
-#그 유명한 iris data set을 가지고 오기때문에 단순한 명령어가 가능합니다.#
-#
-glimpse(data)#
-#데이터 확인해보는 명령어#
-#
-#cross validation, using rf to predict sepal.length#
-k = 5#
-#
-data$id <- sample(1:k, nrow(data), replace = TRUE)#
-list <- 1:k#
-# prediction and test set data frames that we add to with each iteration over#
-# the folds#
-prediction <- data.frame()#
-testsetCopy <- data.frame()#
-출처: http://daryan.tistory.com/21 [Ryan의 데이터 과학 블로그]
-data
-prediction <- data.frame()#
-testsetCopy <- data.frame()#
-출처: http://daryan.tistory.com/21 [Ryan의 데이터 과학 블로그]
-progress.bar <- create_progress_bar("text")#
-progress.bar$init(k)#
-출처: http://daryan.tistory.com/21 [Ryan의 데이터 과학 블로그]
-for(i in 1:k){#
-  # remove rows with id i from dataframe to create training set#
-  # select rows with id i to create test set#
-  trainingset <- subset(data, id %in% list[-i])#
-  testset <- subset(data, id %in% c(i))#
-  #데이터를 5등분하고 한번 뽑은 test data가 다시 train 으로 가지 않도록 5등분 합니다.#
-#
-  #run a random forest model#
-  mymodel <- randomForest(trainingset$Sepal.Length ~ ., data = trainingset, ntree = 100)#
-  #랜덤 포레스트 알고리즘으로 꽃받침의 길이를 나머지 데이터로 예측하는 모델을 만듭니다.#
-#
-  #remove response column 1, Sepal.Length#
-  temp <- as.data.frame(predict(mymodel, testset[,-1]))#
-#
-  # append this iteration's predictions to the end of the prediction data frame#
-  prediction <- rbind(prediction, temp)#
-#
-  # append this iteration's test set to the test set copy data frame#
-  # keep only the Sepal Length Column#
-  testsetCopy <- rbind(testsetCopy, as.data.frame(testset[,1]))#
-#
-  progress.bar$step()#
-}#
-출처: http://daryan.tistory.com/21 [Ryan의 데이터 과학 블로그]
-k
-trainingset <- subset(data, id %in% list[-i])#
-  testset <- subset(data, id %in% c(i))
-trainingset
-dim(traininingset)
-dim(trainingset)
-dim(testset)
-i
-dim(data)
-i = 2
-trainingset <- subset(data, id %in% list[-i])#
-  testset <- subset(data, id %in% c(i))
-dim(trainingset)
-dim(testset)
-data$id
-table(data$id)
-progress.bar$step()
-k
-progress.bar <- create_progress_bar("text")#
-progress.bar$init(k)
-progress.bar <- create_progress_bar("text")#
-    progress.bar$init(k)#
-    K <- dim(Y)#
-    ntime <- K[3]#
-    train.ratio <- 1/k.fold#
-    G <- mcmc
-k.fold=2
-MSE <- matrix(NA, length(bound:(ntime-bound)), break.upper)#
-        count <- 1#
-        for(t in bound:(ntime-bound)){#
-            y.train <- Y[,,-t]#
-            y.test <- Y[,,t]#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= G)#
-            m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))#
-            m2 <-  NetworkChange(y.train, m = 2, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:3, length=Time)))#
-            m3 <-  NetworkChange(y.train, m = 3, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:4, length=Time)))#
-            mse0 <- sum((Z.test - m0)^2)#
-            mse1 <- sum((Z.test - m1)^2)#
-            mse2 <- sum((Z.test - m2)^2)#
-            mse3 <- sum((Z.test - m3)^2)#
-            MSE[count, ] <- c(mse0, mse1, mse2, mse3)#
-            count <- count + 1#
-            progress.bar$step()#
-        }
-bound=2
-MSE <- matrix(NA, length(bound:(ntime-bound)), break.upper)#
-        count <- 1#
-        for(t in bound:(ntime-bound)){#
-            y.train <- Y[,,-t]#
-            y.test <- Y[,,t]#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= G)#
-            m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))#
-            m2 <-  NetworkChange(y.train, m = 2, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:3, length=Time)))#
-            m3 <-  NetworkChange(y.train, m = 3, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:4, length=Time)))#
-            mse0 <- sum((Z.test - m0)^2)#
-            mse1 <- sum((Z.test - m1)^2)#
-            mse2 <- sum((Z.test - m2)^2)#
-            mse3 <- sum((Z.test - m3)^2)#
-            MSE[count, ] <- c(mse0, mse1, mse2, mse3)#
-            count <- count + 1#
-            progress.bar$step()#
-        }
-MSE <- matrix(NA, length(bound:(ntime-bound)), break.upper)#
-        count <- 1#
-        for(t in bound:(ntime-bound)){#
-            y.train <- Y[,,-t]#
-            y.test <- Y[,,t]#
-            Time <- dim(y.train)[3]#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= G)#
-            m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))#
-            m2 <-  NetworkChange(y.train, m = 2, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:3, length=Time)))#
-            m3 <-  NetworkChange(y.train, m = 3, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:4, length=Time)))#
-            mse0 <- sum((Z.test - m0)^2)#
-            mse1 <- sum((Z.test - m1)^2)#
-            mse2 <- sum((Z.test - m2)^2)#
-            mse3 <- sum((Z.test - m3)^2)#
-            MSE[count, ] <- c(mse0, mse1, mse2, mse3)#
-            count <- count + 1#
-            progress.bar$step()#
-        }
-Z.test <- y.test#
-            K.test <- dim(y.test)#
-            for(k in 1:K.test[3]){#
-                ee <- eigen(y.test[,,k])#
-                Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-            }
-K.test
-Z.test <- y.test#
-            ee <- eigen(y.test)#
-            Z.test <- y.test - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])
-mse0 <- sum((Z.test - m0)^2)#
-            mse1 <- sum((Z.test - m1)^2)#
-            mse2 <- sum((Z.test - m2)^2)#
-            mse3 <- sum((Z.test - m3)^2)#
-            MSE[count, ] <- c(mse0, mse1, mse2, mse3)
-Z.test
-dim(m0)
-apply(m0, 1:2, mean)
-mse0 <- sum((Z.test - apply(m0, 1:2, mean))^2)#
-            mse1 <- sum((Z.test - apply(m1, 1:2, mean))^2)#
-            mse2 <- sum((Z.test - apply(m2, 1:2, mean))^2)#
-            mse3 <- sum((Z.test - apply(m3, 1:2, mean))^2)#
-            MSE[count, ] <- c(mse0, mse1, mse2, mse3)
-MSE <- matrix(NA, length(bound:(ntime-bound)), break.upper)
-break.upper = 3
-MSE <- matrix(NA, length(bound:(ntime-bound)), break.upper)
-mse0 <- sum((Z.test - apply(m0, 1:2, mean))^2)#
-            mse1 <- sum((Z.test - apply(m1, 1:2, mean))^2)#
-            mse2 <- sum((Z.test - apply(m2, 1:2, mean))^2)#
-            mse3 <- sum((Z.test - apply(m3, 1:2, mean))^2)#
-            MSE[count, ] <- c(mse0, mse1, mse2, mse3)
-count
-c(mse0, mse1, mse2, mse3)
-MSE <- matrix(NA, length(bound:(ntime-bound)), break.upper+1)
-MSE[count, ] <- c(mse0, mse1, mse2, mse3)
-MSE
-MSE <- matrix(NA, length(bound:(ntime-bound)), break.upper+1)#
-        count <- 1#
-        for(t in bound:(ntime-bound)){#
-            y.train <- Y[,,-t]#
-            y.test <- Y[,,t]#
-            Time <- dim(y.train)[3]#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= G)#
-            m1 <-  NetworkChange(y.train, m = 1, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:2, length=Time)))#
-            m2 <-  NetworkChange(y.train, m = 2, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:3, length=Time)))#
-            m3 <-  NetworkChange(y.train, m = 3, R=2,  mcmc = G, burnin = G, verbose= G, initial.s = sort(rep(1:4, length=Time)))#
-#
-            Z.test <- y.test#
-            ee <- eigen(y.test)#
-            Z.test <- y.test - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-            mse0 <- sum((Z.test - apply(m0, 1:2, mean))^2)#
-            mse1 <- sum((Z.test - apply(m1, 1:2, mean))^2)#
-            mse2 <- sum((Z.test - apply(m2, 1:2, mean))^2)#
-            mse3 <- sum((Z.test - apply(m3, 1:2, mean))^2)#
-            MSE[count, ] <- c(mse0, mse1, mse2, mse3)#
-            count <- count + 1#
-            progress.bar$step()#
-        }
-MSE
-apply(MSE, 2, mean)
-k.fold=3
-train.ratio <- 1/k.fold
-train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))
-train_rows
-sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime))
-sample(1:ntime, ntime, prob=rep(1/ntime, ntime))
-require(caret)#
-flds <- createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)#
-names(flds)[1] <- "train"
-install.packages(ddalpha)
-install.packages("ddalpha")
-require(caret)#
-flds <- createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)#
-names(flds)[1] <- "train"
-install.packages("caret")
-require(caret)#
-flds <- createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)#
-names(flds)[1] <- "train"
-install.packages("kernlab")
-require(caret)#
-flds <- createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)#
-names(flds)[1] <- "train"
-y <- 1:20
-require(caret)#
-flds <- createFolds(y, k = 10, list = TRUE, returnTrain = FALSE)#
-names(flds)[1] <- "train"
-flds
-createFolds
-cut(seq(1, 1:ntime, breaks=k.fold, labels=FALSE)
-)
-cut(seq(1, 1:ntime), breaks=k.fold, labels=FALSE)
-seq(1, n.time)
-seq(1, ntime)
-cut(seq(1, ntime), breaks=k.fold, labels=FALSE)
-sample(ntime)
-sort(sample(ntime))
-G
-G=10
-train.ratio <- 1/k.fold#
-        MSE <- matrix(NA, k.fold, break.upper+1)#
-        count <- 1
-k.fold
-for(i in 1:k.fold){#
-            ## train set#
-            train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))#
-            y.train <- Y[,,train_rows]#
-            Time <- dim(y.train)[3]#
-            ## test set#
-            y.test <- Y[,,-train_rows]#
-            Z.test <- y.test#
-            K.test <- dim(y.test)#
-            for(k in 1:K.test[3]){#
-                ee <- eigen(y.test[,,k])#
-                Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-            }#
-            ## list object storage#
-            m.out <- mse <- as.list(rep(NA, break.upper))#
-#
-            ## fit a break specific model#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= 0)#
-            for(m in 1:break.upper){#
-                m.out[[m]] <- NetworkChange(y.train, m = m, R=2,  mcmc = G, burnin = G, verbose= 0, initial.s = sort(rep(1:(m+1), length=Time)))#
-            }#
-            ## compute mse#
-            mse0 <- sum((Z.test - apply(m0, 1:2, mean))^2)#
-            for(m in 1:break.upper){#
-                mse[[m]] <- sum((apply(Z.test, 1:2, mean) - apply(m.out[[m]], 1:2, mean))^2)#
-            }#
-#
-            ## save#
-            MSE[count, ] <- c(mse0, unlist(mse))#
-            count <- count + 1#
-            progress.bar$step()#
-        }
-devtools::document()
-train.ratio <- 1/k.fold#
-        MSE <- matrix(NA, k.fold, break.upper+1)#
-        count <- 1#
-        for(i in 1:k.fold){#
-            ## train set#
-            train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))#
-            y.train <- Y[,,train_rows]#
-            Time <- dim(y.train)[3]#
-            ## test set#
-            y.test <- Y[,,-train_rows]#
-            Z.test <- y.test#
-            K.test <- dim(y.test)#
-            for(k in 1:K.test[3]){#
-                ee <- eigen(y.test[,,k])#
-                Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-            }#
-            ## list object storage#
-            m.out <- mse <- as.list(rep(NA, break.upper))#
-#
-            ## fit a break specific model#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= 0)#
-            for(m in 1:break.upper){#
-                m.out[[m]] <- NetworkChange(y.train, m = m, R=2,  mcmc = G, burnin = G, verbose= 0, initial.s = sort(rep(1:(m+1), length=Time)))#
-            }#
-            ## compute mse#
-            mse0 <- sum((apply(Z.test, 1:2, mean) - apply(m0, 1:2, mean))^2)#
-            for(m in 1:break.upper){#
-                mse[[m]] <- sum((apply(Z.test, 1:2, mean) - apply(m.out[[m]], 1:2, mean))^2)#
-            }#
-#
-            ## save#
-            MSE[count, ] <- c(mse0, unlist(mse))#
-            count <- count + 1#
-            progress.bar$step()#
-        }#
-    }
-MSE
-apply(MSE, 2, mean)
-G
-progress.bar <- create_progress_bar("text")#
-        progress.bar$init(k.fold*break.upper)#
-        train.ratio <- 1/k.fold#
-        MSE <- matrix(NA, k.fold, break.upper+1)#
-        count <- 1#
-        for(i in 1:k.fold){#
-            ## train set#
-            train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))#
-            y.train <- Y[,,train_rows]#
-            Time <- dim(y.train)[3]#
-            ## test set#
-            y.test <- Y[,,-train_rows]#
-            Z.test <- y.test#
-            K.test <- dim(y.test)#
-            for(k in 1:K.test[3]){#
-                ee <- eigen(y.test[,,k])#
-                Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-            }#
-            ## list object storage#
-            m.out <- mse <- as.list(rep(NA, break.upper))#
-#
-            ## fit a break specific model#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= 0)#
-            for(m in 1:break.upper){#
-                m.out[[m]] <- NetworkChange(y.train, m = m, R=2,  mcmc = G, burnin = G, verbose= 0, initial.s = sort(rep(1:(m+1), length=Time)))#
-            }#
-            ## compute mse#
-            mse0 <- sum((apply(Z.test, 1:2, mean) - apply(m0, 1:2, mean))^2)#
-            for(m in 1:break.upper){#
-                mse[[m]] <- sum((apply(Z.test, 1:2, mean) - apply(m.out[[m]], 1:2, mean))^2)#
-            }#
-#
-            ## save#
-            MSE[count, ] <- c(mse0, unlist(mse))#
-            count <- count + 1#
-            progress.bar$step()#
-        }
-progress.bar <- create_progress_bar("text")#
-        progress.bar$init(k.fold)#
-        train.ratio <- 1/k.fold#
-        MSE <- matrix(NA, k.fold, break.upper+1)#
-        count <- 1#
-        for(i in 1:k.fold){#
-            ## train set#
-            train_rows <- sort(sample(1:ntime, train.ratio*ntime, prob=rep(1/ntime, ntime)))#
-            y.train <- Y[,,train_rows]#
-            Time <- dim(y.train)[3]#
-            ## test set#
-            y.test <- Y[,,-train_rows]#
-            Z.test <- y.test#
-            K.test <- dim(y.test)#
-            for(k in 1:K.test[3]){#
-                ee <- eigen(y.test[,,k])#
-                Z.test[,,k] <- y.test[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-            }#
-            ## list object storage#
-            m.out <- mse <- as.list(rep(NA, break.upper))#
-#
-            ## fit a break specific model#
-            m0 <- NetworkStatic(y.train, R=2,  mcmc = G, burnin = G, verbose= 0)#
-            for(m in 1:break.upper){#
-                m.out[[m]] <- NetworkChange(y.train, m = m, R=2,  mcmc = G, burnin = G, verbose= 0, initial.s = sort(rep(1:(m+1), length=Time)))#
-            }#
-            ## compute mse#
-            mse0 <- sum((apply(Z.test, 1:2, mean) - apply(m0, 1:2, mean))^2)#
-            for(m in 1:break.upper){#
-                mse[[m]] <- sum((apply(Z.test, 1:2, mean) - apply(m.out[[m]], 1:2, mean))^2)#
-            }#
-#
-            ## save#
-            MSE[count, ] <- c(mse0, unlist(mse))#
-            count <- count + 1#
-            progress.bar$step()#
-        }
-MSE
-devtools::document()
+X <- array(1, dim=c(K,1))#
+G <- 10#
+right <- NetworkStatic(Y, R=1, UL.Normal=FALSE, mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="eigen")#
+wrong <-  NetworkStatic(Y, R=1, UL.Normal=FALSE, mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="FALSE")
 set.seed(11173)#
-N <- 5#
-Y <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                            base.prob=.2, block.prob=.5,#
-                            shape=1, T=20, type ="split")#
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=FALSE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-set.seed(11173)#
-N <- 10#
-Y <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                            base.prob=.2, block.prob=.5,#
-                            shape=1, T=20, type ="split")#
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=FALSE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-set.seed(11173)#
-N <- 20#
-Y <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                            base.prob=.2, block.prob=.5,#
-                            shape=1, T=20, type ="split")#
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=FALSE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-set.seed(11173)#
-N <- 20#
-Y <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                            base.prob=.2, block.prob=.5,#
-                            shape=1, T=40, type ="split")#
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=FALSE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=TRUE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-}
-}#
-1
-}#
-1#
-ㅂ()
-}#
-1#
-ㅂ()#
-q()
-devto
-set.seed(11173)#
-N <- 5#
-Y <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                            base.prob=.2, block.prob=.5,#
-                            shape=1, T=40, type ="split")#
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=TRUE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-set.seed(1173)#
-N <- 10#
-Y <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                            base.prob=.2, block.prob=.5,#
-                            shape=1, T=20, type ="split-merge")#
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=TRUE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-set.seed(1173)#
-N <- 10#
-Y <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                            base.prob=.2, block.prob=.5,#
-                            shape=1, T=30, type ="split-merge")#
-MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=TRUE, LOO.bound=2, break.upper = 3)#
-apply(MSE, 2, mean)
-apply(MSE, 2, mean)
-rm(list=ls())#
-require(NetworkChange)#
-require(xtable)#
-require(Rmpfr)#
-simulation.result <- list()#
-time.list <- c(40, 60, 80, 100)#
-nodesize = 10; shape = 10#
-count <- 1; mcmc = 10#
-for (time in time.list){#
-    ## for (nodesize in node.list){#
-    ##  for(shape in shape.list){#
-    cat("\n--------------------------------------------------------------------------------------------",'\n')#
-    cat("         count = ", count, " time = ", time, " nodesize = ", nodesize, "shape = ", shape," \n")#
-    cat("--------------------------------------------------------------------------------------------",'\n')#
-    ## data generating#
-    set.seed(11173)#
-    Y <- MakeBlockNetworkChange(n=nodesize, break.point = .5, #
-                                block.number = 3, base.prob=.05, block.prob=.5,#
-                                shape=shape, T=time,#
-                                type ="constant")#
-#
-    MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=FALSE, break.upper = 3)#
-    simulation.result[[count]] <- apply(MSE, 2, mean)#
-    cat("\n mse results = ", simulation.result[[count]], "\n")#
-    ## count update#
-    count <- count + 1#
-    ## rm(list=c("Y", "out0", "out1", "out2", "out3", "out"))#
-    ## save.image("JASA_split_long_gamma.RData")#
-}
-rm(list=ls())#
-require(NetworkChange)#
-require(xtable)#
-require(Rmpfr)#
-simulation.result <- list()#
-time.list <- c(40, 60, 80, 100)#
-nodesize = 10; shape = 10#
-count <- 1; mcmc = 10#
-for (time in time.list){#
-    ## for (nodesize in node.list){#
-    ##  for(shape in shape.list){#
-    cat("\n--------------------------------------------------------------------------------------------",'\n')#
-    cat("         count = ", count, " time = ", time, " nodesize = ", nodesize, "shape = ", shape," \n")#
-    cat("--------------------------------------------------------------------------------------------",'\n')#
-    ## data generating#
-    set.seed(11173)#
     Y <- MakeBlockNetworkChange(n=nodesize, break.point = .5, #
                                 base.prob=.05, block.prob=.5,#
                                 shape=shape, T=time,#
-                                type ="constant")#
-#
-    MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=FALSE, break.upper = 3)#
-    simulation.result[[count]] <- apply(MSE, 2, mean)#
-    cat("\n mse results = ", simulation.result[[count]], "\n")#
-    ## count update#
-    count <- count + 1#
-    ## rm(list=c("Y", "out0", "out1", "out2", "out3", "out"))#
-    ## save.image("JASA_split_long_gamma.RData")#
-}
-rm(list=ls())#
-require(NetworkChange)#
-require(xtable)#
-require(Rmpfr)#
-simulation.result <- list()#
-time.list <- c(40, 60, 80, 100)#
-nodesize = 10; shape = 10#
-count <- 1; G = 10#
-for (time in time.list){#
-    ## for (nodesize in node.list){#
-    ##  for(shape in shape.list){#
-    cat("\n--------------------------------------------------------------------------------------------",'\n')#
-    cat("         count = ", count, " time = ", time, " nodesize = ", nodesize, "shape = ", shape," \n")#
-    cat("--------------------------------------------------------------------------------------------",'\n')#
-    ## data generating#
-    set.seed(11173)#
-    Y <- MakeBlockNetworkChange(n=nodesize, break.point = .5, #
-                                base.prob=.05, block.prob=.5,#
-                                shape=shape, T=time,#
-                                type ="constant")#
-#
-    MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                           LOO=FALSE, break.upper = 3)#
-    simulation.result[[count]] <- apply(MSE, 2, mean)#
-    cat("\n mse results = ", simulation.result[[count]], "\n")#
-    ## count update#
-    count <- count + 1#
-    ## rm(list=c("Y", "out0", "out1", "out2", "out3", "out"))#
-    ## save.image("JASA_split_long_gamma.RData")#
-}
-time.list
-simulation.result
-plot(simulation.result)
-plot(simulation.result[[1]])
-plot(simulation.result[[2]])
-plot(simulation.result[[3]])
-plot(simulation.result[[4]])
-time.list
-lapply(simulation.result, plot)
-par(mfrow=c(1,4))
-lapply(simulation.result, plot)
-par(mfrow=c(1,4)); lapply(simulation.result, plot, type="h")
-rm(list=ls())#
-require(NetworkChange)#
-require(xtable)#
-require(Rmpfr)#
-simulation.result <- list()#
+                                type ="split")
+kfold.result <- LOO.result <- as.list(rep(NA, 4))#
 time.list <- c(20, 40, 60, 80)#
 nodesize = 10; shape = 10#
-count <- 1; G = 100#
-for (time in time.list){#
-    ## for (nodesize in node.list){#
-    ##  for(shape in shape.list){#
-    cat("\n--------------------------------------------------------------------------------------------",'\n')#
+count <- 1; G = 10
+time
+time=10
+kfold.result <- LOO.result <- as.list(rep(NA, 4))#
+time.list <- c(20, 40, 60, 80)#
+nodesize = 10; shape = 10#
+count <- 1; G = 10
+cat("\n--------------------------------------------------------------------------------------------",'\n')#
     cat("         count = ", count, " time = ", time, " nodesize = ", nodesize, "shape = ", shape," \n")#
     cat("--------------------------------------------------------------------------------------------",'\n')#
     ## data generating#
@@ -1782,17 +1747,235 @@ for (time in time.list){#
     Y <- MakeBlockNetworkChange(n=nodesize, break.point = .5, #
                                 base.prob=.05, block.prob=.5,#
                                 shape=shape, T=time,#
-                                type ="constant")#
+                                type ="split")
+out  <- NetworkChange(Y, R=1, m=1, mcmc=G, burnin=G, thin=1, #
+                                verbose=G, Waic=TRUE)
+## function call#
+    ptm <- proc.time()#
+    call <- match.call()#
+    mf <- match.call(expand.dots = FALSE)#
 #
-    MSE <- NetworkChangeCVtest(Y, R=2, k.fold = 2, mcmc=G, burnin=G, verbose=0,#
-                               LOO=FALSE, break.upper = 3)#
-    simulation.result[[count]] <- apply(MSE, 2, mean)#
+    ## for future use#
+    fast = FALSE#
+    sticky = FALSE#
+    sequential = FALSE#
+    local.type = "NULL" ## c("NULL", "linear.trend", "logistic"),#
+    logistic.tune = 0.5#
+    random.perturb = TRUE#
+    totiter <- mcmc + burnin#
+    nstore <- mcmc/thin    #
+    reduce.mcmc <- nstore#
 #
-    cat("\n mse results = ", simulation.result[[count]], "\n")#
-    par(mfrow=c(1,4)); lapply(simulation.result, plot, type="h", )#
-    ## count update#
-    count <- count + 1#
-    ## rm(list=c("Y", "out0", "out1", "out2", "out3", "out"))#
-    ## save.image("JASA_split_long_gamma.RData")#
-}
-MSE
+    if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){#
+        stop("If R=1, please set UL.Normal=FALSE.")#
+    }
+R
+UL.Normal
+UL.Normal=FALSE
+## function call#
+    ptm <- proc.time()#
+    call <- match.call()#
+    mf <- match.call(expand.dots = FALSE)#
+#
+    ## for future use#
+    fast = FALSE#
+    sticky = FALSE#
+    sequential = FALSE#
+    local.type = "NULL" ## c("NULL", "linear.trend", "logistic"),#
+    logistic.tune = 0.5#
+    random.perturb = TRUE#
+    totiter <- mcmc + burnin#
+    nstore <- mcmc/thin    #
+    reduce.mcmc <- nstore#
+#
+    if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){#
+        stop("If R=1, please set UL.Normal=FALSE.")#
+    }
+## changepoint priors and inputs#
+    ns <- m + 1 # number of states#
+    Z <- Y#
+    nss <- 0#
+    K <- dim(Y)  #
+    Time <- K[3]#
+    P  <-  trans.mat.prior(m=m, n=Time, a = 0.9, b= 0.1)#
+    A0  <-  trans.mat.prior(m=m, n=Time, a = a, b = b)
+m=1
+## changepoint priors and inputs#
+    ns <- m + 1 # number of states#
+    Z <- Y#
+    nss <- 0#
+    K <- dim(Y)  #
+    Time <- K[3]#
+    P  <-  trans.mat.prior(m=m, n=Time, a = 0.9, b= 0.1)#
+    A0  <-  trans.mat.prior(m=m, n=Time, a = a, b = b)
+## if (is.null(initial.V)){#
+    out <- startUV(Z, R, K)#
+    initial.U <- out[[1]]#
+    V <- out[[2]]
+out
+if(is.null(u0)){#
+        u0 <- 10#
+    }#
+    if(is.null(u1)){#
+        u1 <- 1 #
+    }#
+    ## sigma.mu <- mean(apply(V, 2, mean))#
+    ## sigma.var <- var(apply(V, 2, mean))#
+    if(is.null(v0)){#
+        v0 <- 10#
+        ## v0 <- 4 + 2 * (sigma.mu^2/sigma.var)#
+    }#
+    if(is.null(v1)){#
+        ## v1 <- 1#
+        v1 <- K[3]#
+    }#
+    nodenames <- dimnames(Y)[[1]]#
+    ## unique values of Y#
+    uy <- sort(unique(c(Y)))#
+    ## degree normalization#
+    if(degree.normal == "eigen"){#
+        ## all the time#
+        for(k in 1:K[3]){#
+            ee <- eigen(Y[,,k])#
+            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
+            diag(Z[,,k]) <-  0#
+        }#
+    }
+constant
+## initialize beta#
+    if(constant){#
+        bhat <- mean(c(Z))#
+        Zb <- Z - bhat#
+    }else{#
+        bhat = 0#
+        Zb <- Z#
+    }#
+    X <- array(1, dim=c(K, 1))#
+    p <- dim(X)[4]#
+    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
+    rm(X)#
+    ## eigen decomposition#
+    ## VM is time specific eigenvalues#
+    if (is.null(initial.s)){#
+        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
+    } else{#
+        s <- initial.s#
+    }
+initial.s=FALSE
+## initialize beta#
+    if(constant){#
+        bhat <- mean(c(Z))#
+        Zb <- Z - bhat#
+    }else{#
+        bhat = 0#
+        Zb <- Z#
+    }#
+    X <- array(1, dim=c(K, 1))#
+    p <- dim(X)[4]#
+    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
+    rm(X)#
+    ## eigen decomposition#
+    ## VM is time specific eigenvalues#
+    if (is.null(initial.s)){#
+        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
+    } else{#
+        s <- initial.s#
+    }
+s
+initial.s="NULL"
+## initialize beta#
+    if(constant){#
+        bhat <- mean(c(Z))#
+        Zb <- Z - bhat#
+    }else{#
+        bhat = 0#
+        Zb <- Z#
+    }#
+    X <- array(1, dim=c(K, 1))#
+    p <- dim(X)[4]#
+    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
+    rm(X)#
+    ## eigen decomposition#
+    ## VM is time specific eigenvalues#
+    if (is.null(initial.s)){#
+        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
+    } else{#
+        s <- initial.s#
+    }
+s
+initial.s=NULL
+## initialize beta#
+    if(constant){#
+        bhat <- mean(c(Z))#
+        Zb <- Z - bhat#
+    }else{#
+        bhat = 0#
+        Zb <- Z#
+    }#
+    X <- array(1, dim=c(K, 1))#
+    p <- dim(X)[4]#
+    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
+    rm(X)#
+    ## eigen decomposition#
+    ## VM is time specific eigenvalues#
+    if (is.null(initial.s)){#
+        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
+    } else{#
+        s <- initial.s#
+    }
+s
+startS(Z, Time, m, initial.U, V, s2=1, R)
+Time
+ns <- m + 1#
+    K <- dim(Z)#
+    U.pilot <- matrix(rnorm(K[1]*R), K[1], R)      #
+    pilot <- UV.lsq(Y = Z, R = R, U=U.pilot, V=V, tol=1e-5)
+UV.lsq
+m <- dim(Y)[1] ; n <- dim(Y)[3]#
+  M0 <- M.U(list(U,U,V))#
+  rdif <- 1
+Y0 <- Y#
+  for(k in 1:n) {#
+      Y0[,,k][!upper.tri(Y0[,,k])]<- 0#
+  }#
+  Y0 <- aperm(Y0,c(3,1,2))
+for(i in sample(m)){#
+          Ui<-U ; Ui[i,]<-0#
+          VU<- aperm(array(apply(Ui,1,"*",t(V)),dim=c(R,n,m)),c(3,2,1))#
+          zi<-Y[i,,]#
+          L<- apply(VU*array(rep(zi,R),dim=c(m,n,R)),3,sum)#
+          Q<- (t(Ui)%*%Ui ) * ( t(V)%*%V )#
+          U[i,]<-solve(Q)%*%L#
+      }
+Q<-((t(U)%*%U)^2-#
+              matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R))/2
+R
+U
+(t(U)%*%U)^2
+matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R)
+U^2
+UV.lsq
+matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R)
+apply(U^2,1,function(x){x%*%t(x)})
+U
+apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum)
+Q<-((t(U)%*%U)^2-#
+                         matrix(sum(apply(U^2,1,function(x){x%*%t(x)})),R,R))/2
+Q
+UU<-aperm(array( apply(U,1,"*",t(U)) ,dim=c(R,m,m) ),c(2,3,1))#
+      ZUU<-array(apply(UU,3,function(x){apply(Y0,1,"*",x)}),#
+                 dim=c(m,m,n,R))#
+      L<-apply(ZUU,c(3,4),sum)#
+      V<-L%*%solve(Q)
+M1<-M.U(list(U,U,V))  #
+      rdif<- mean( (M1-M0)^2 )/mean(M0^2) #
+      M0<-M1#
+      if(iter%%10 == 0){#
+          cat("Initializing using the Alternating Least Squares Method: # of iteration = ", iter, "\n")#
+      }#
+      iter <- iter + 1
+devtools::document()
+out  <- NetworkChange(Y, R=1, m=1, mcmc=G, burnin=G, thin=1, #
+                                verbose=G, Waic=TRUE)
+out  <- NetworkChange(Y, R=1, m=1, mcmc=G, burnin=G, thin=1, #
+                                verbose=G, Waic=TRUE, UL.Normal="FALSE")

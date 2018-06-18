@@ -6,7 +6,7 @@
 \usage{
 NetworkChangeCVtest(Y, R = 2, k.fold = 2, mcmc = 100, burnin = 100,
   thin = 1, verbose = 0, LOO = FALSE, LOO.bound = 2, break.upper = 3,
-  Waic = FALSE)
+  Waic = FALSE, v0 = NULL, v1 = NULL)
 }
 \arguments{
 \item{Y}{Reponse tensor}

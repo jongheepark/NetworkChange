@@ -430,12 +430,14 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         
         ## 
         ## cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
-        cat("    Waic: ", Waic.out[1], "\n")
-        ## cat("lpd: ", Waic.out[3], "\n")
-        ## cat("p_Waic: ", Waic.out[4], "\n")
-        ## cat("elapsed time for m = 0 is ", proc.time() - ptm, "\n")
-        ## cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
-        cat("----------------------------------------------",'\n')
+        if(verbose !=0){
+            cat("    Waic: ", Waic.out[1], "\n")
+            ## cat("lpd: ", Waic.out[3], "\n")
+            ## cat("p_Waic: ", Waic.out[4], "\n")
+            ## cat("elapsed time for m = 0 is ", proc.time() - ptm, "\n")
+            ## cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+            cat("----------------------------------------------",'\n')
+        }
     }
     
     output <- MU.record/nss

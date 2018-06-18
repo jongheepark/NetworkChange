@@ -52,7 +52,7 @@
 #'
 
 NetworkChangeCVtest <- function(Y, R=2, k.fold = 2, mcmc = 100, burnin=100, thin=1, verbose=0,
-                                LOO=FALSE, LOO.bound=2, break.upper = 3, Waic=FALSE){
+                                LOO=FALSE, LOO.bound=2, break.upper = 3, Waic=FALSE, v0 = NULL, v1 = NULL){
 
     K <- dim(Y)
     ntime <- K[3]
@@ -65,6 +65,9 @@ NetworkChangeCVtest <- function(Y, R=2, k.fold = 2, mcmc = 100, burnin=100, thin
         progress.bar$init(test.length)
         MSE <- matrix(NA, test.length, break.upper+1)
         count <- 1
+        if(ntime-bound < 0){
+            stop("LOO.bound is too big! The maximum is time/2 - 1.")
+        }
         for(t in bound:(ntime-bound)){
             y.train <- Y[,,-t]
             y.test <- Y[,,t]
@@ -74,10 +77,10 @@ NetworkChangeCVtest <- function(Y, R=2, k.fold = 2, mcmc = 100, burnin=100, thin
             m.out <- mse <- as.list(rep(NA, break.upper))
 
             ## fit a break specific model
-            m0 <- NetworkStatic(y.train, R=R,  mcmc=mcmc, burnin=burnin, verbose=verbose)
+            m0 <- NetworkStatic(y.train, R=R,  mcmc=mcmc, burnin=burnin, verbose=verbose, v0=v0, v1=v1)
             for(m in 1:break.upper){
                 m.out[[m]] <- NetworkChange(y.train, m = m, R=R,  mcmc=mcmc, burnin=burnin, verbose=verbose,
-                                            initial.s = sort(rep(1:(m+1), length=Time)))
+                                            initial.s = sort(rep(1:(m+1), length=Time)), v0=v0, v1=v1)
             }
 
             ## compute z.test
@@ -122,10 +125,10 @@ NetworkChangeCVtest <- function(Y, R=2, k.fold = 2, mcmc = 100, burnin=100, thin
             m.out <- mse <- as.list(rep(NA, break.upper))
 
             ## fit a break specific model
-            m0 <- NetworkStatic(y.train, R=R, mcmc=mcmc, burnin=burnin, verbose=verbose)
+            m0 <- NetworkStatic(y.train, R=R, mcmc=mcmc, burnin=burnin, verbose=verbose, v0=v0, v1=v1)
             for(m in 1:break.upper){
                 m.out[[m]] <- NetworkChange(y.train, m = m, R=R,  mcmc=mcmc, burnin=burnin, verbose=verbose,
-                                            initial.s = sort(rep(1:(m+1), length=Time)))
+                                            initial.s = sort(rep(1:(m+1), length=Time)), v0=v0, v1=v1)
             }
             ## compute mse
             mse0 <- sum((apply(Z.test, 1:2, mean) - apply(m0, 1:2, mean))^2)

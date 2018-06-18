@@ -736,11 +736,14 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             rm(Z.loglike.mat)
 
             ## cat("--------------------------------------------------------------------------------------------",'\n')
-            cat("    Waic: ", Waic.out[1], "\n")
-            ## cat("lpd: ", Waic.out[3], "\n")
-            ## cat("p_Waic: ", Waic.out[4], "\n")
-            cat("----------------------------------------------",'\n')
+            if(verbose !=0){
+                cat("    Waic: ", Waic.out[1], "\n")
+                ## cat("lpd: ", Waic.out[3], "\n")
+                ## cat("p_Waic: ", Waic.out[4], "\n")
+                cat("----------------------------------------------",'\n')
+            }
         }
+        
     }
     
 
