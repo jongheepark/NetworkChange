@@ -6,7 +6,7 @@ Author: Jong Hee Park [aut,cre], Yunkyu Sohn [aut]
 Maintainer: Jong Hee Park <jongheepark@snu.ac.kr>
 Depends: R (>= 2.10.0),
 Imports: ggplot2, Rmpfr, abind, mvtnorm, grid, LaplacesDemon, MCMCpack,
-        stats, MASS, methods, RColorBrewer, ggvis, plyr
+        stats, MASS, methods, RColorBrewer, ggvis, plyr, abind
 Description: Network changepoint analysis for undirected network data. The package implements a hidden Markov multilinear tensor regression model (Park and Sohn, 2017, <http://jhp.snu.ac.kr/NetworkChange.pdf>). Functions for break number detection using the approximate marginal likelihood and WAIC are also provided.
 License: GPL-3
 NeedsCompilation: no
