@@ -1,16 +1,16 @@
 Package: NetworkChange
 Title: Bayesian Package for Network Changepoint Analysis
-Version: 0.3
-Date: 2017-08-18
+Version: 0.4
+Date: 
 Author: Jong Hee Park [aut,cre], Yunkyu Sohn [aut]
 Maintainer: Jong Hee Park <jongheepark@snu.ac.kr>
-Depends: R (>= 2.10.0),
-Imports: ggplot2, Rmpfr, abind, mvtnorm, grid, LaplacesDemon, MCMCpack,
-        stats, MASS, methods, RColorBrewer, ggvis, plyr, abind
+Depends: R (>= 2.10.0), Rmpfr, abind, mvtnorm, grid, 
+	abind, tidyr, MCMCpack, ggplot2
+Imports: LaplacesDemon, MCMCpack, stats, MASS, methods, RColorBrewer, ggvis, plyr
 Description: Network changepoint analysis for undirected network data. The package implements a hidden Markov multilinear tensor regression model (Park and Sohn, 2017, <http://jhp.snu.ac.kr/NetworkChange.pdf>). Functions for break number detection using the approximate marginal likelihood and WAIC are also provided.
 License: GPL-3
 NeedsCompilation: no
-Packaged: 2017-08-19 15:28:22 UTC; interstellar
+Packaged: 2018-07-23 15:28:22 UTC; interstellar
 RoxygenNote: 6.0.1
 Repository: CRAN
-Date/Publication: 2017-08-19 15:40:28 UTC
+Date/Publication: 2018-07-23 15:40:28 UTC

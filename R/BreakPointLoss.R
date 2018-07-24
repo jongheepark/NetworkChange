@@ -47,6 +47,10 @@ findBreakPoint <- function (mcmcout, start = 1)
         pr.st[pr.st < 0] <- 0
         cp[m] <- which(cumsum(pr.st) > 0.5)[1] - 1
     }
+    if(sum(is.na(cp))>0){
+        cat("\n At break = ", m, " one state is dominated by other states and a break point is not defined for this state. \n")
+    }
+ 
     ## cp.means <- rep(NA, m + 1)
     ## cp.start <- c(1, cp + 1)
     ## cp.end <- c(cp, length(y))

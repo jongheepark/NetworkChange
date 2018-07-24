@@ -13,6 +13,8 @@
 #' @param burnin The number of burn-in iterations for the sampler.
 #'
 #' @param mcmc The number of MCMC iterations after burnin.
+#' @param reduce.mcmc The number of reduced MCMC iterations for marginal likelihood computations.
+#' If \code{reduce.mcmc = NULL}, \code{mcmc/thin} is used.            
 #'
 #' @param thin The thinning interval used in the simulation.  The number of
 #' MCMC iterations must be divisible by this value.
@@ -135,7 +137,7 @@
 
 ##################################################################################
 NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,  
-                          mcmc=100, burnin=100, verbose=0, thin  = 1,                         
+                          mcmc=100, burnin=100, verbose=0, thin  = 1, reduce.mcmc = NULL,                         
                           degree.normal="eigen", 
                           UL.Normal = "Orthonormal",
                           DIC = FALSE, Waic=FALSE, marginal = FALSE, 
@@ -144,7 +146,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
                           u0 = NULL, u1 = NULL, v0 = NULL, v1 = NULL,
                           a = NULL, b = NULL){
 ##################################################################################
-    
+   
     ## function call
     ptm <- proc.time()
     call <- match.call()
@@ -160,10 +162,11 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
     
     totiter <- mcmc + burnin
     nstore <- mcmc/thin    
-    reduce.mcmc <- nstore
-
     if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){
         stop("If R=1, please set UL.Normal=FALSE.")
+    }
+    if(is.null(reduce.mcmc)){
+        reduce.mcmc = mcmc/thin
     }
 
     
@@ -327,11 +330,11 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
     
     if(verbose !=0){
         cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
-        cat("\t NetworkChange Sampler Starts! \n")
+        cat("    NetworkChange Sampler Starts! \n")
         ## cat("\t function called: ")
         ## print(call)
-        cat("\t degree normalization: ", degree.normal, "\n")
-        cat("\t initial states: ", table(s), "\n")
+        cat("    degree normalization: ", degree.normal, "\n")
+        cat("    initial states: ", table(s), "\n")
         cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
     }
     
@@ -1441,7 +1444,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
     ## flip V and U based on the size of mse(V)
     ## so that the first principal axis comes at the first column of V and U
     ## In that way, the interpretation of cp results makes sense.
-    #########################################################################
+#########################################################################
+    
     output <- abind(MU.st) ## lapply(MU.record, function(x){x/nss}) ## MU.record/nss
     names(output) <- "MU"
     attr(output, "title") <- "NetworkChange Posterior Sample"

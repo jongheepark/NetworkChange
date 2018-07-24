@@ -5,11 +5,11 @@
 \title{Changepoint analysis of a degree-corrected multilinear tensor model}
 \usage{
 NetworkChange(Y, R = 2, m = 1, initial.s = NULL, mcmc = 100,
-  burnin = 100, verbose = 0, thin = 1, degree.normal = "eigen",
-  UL.Normal = "Orthonormal", DIC = FALSE, Waic = FALSE,
-  marginal = FALSE, plotUU = FALSE, plotZ = FALSE, constant = FALSE,
-  b0 = 0, B0 = 1, c0 = NULL, d0 = NULL, u0 = NULL, u1 = NULL,
-  v0 = NULL, v1 = NULL, a = NULL, b = NULL)
+  burnin = 100, verbose = 0, thin = 1, reduce.mcmc = NULL,
+  degree.normal = "eigen", UL.Normal = "Orthonormal", DIC = FALSE,
+  Waic = FALSE, marginal = FALSE, plotUU = FALSE, plotZ = FALSE,
+  constant = FALSE, b0 = 0, B0 = 1, c0 = NULL, d0 = NULL, u0 = NULL,
+  u1 = NULL, v0 = NULL, v1 = NULL, a = NULL, b = NULL)
 }
 \arguments{
 \item{Y}{Reponse tensor}
@@ -33,6 +33,9 @@ printed to the screen every \code{verbose}th iteration.}
 
 \item{thin}{The thinning interval used in the simulation.  The number of
 MCMC iterations must be divisible by this value.}
+
+\item{reduce.mcmc}{The number of reduced MCMC iterations for marginal likelihood computations.
+If \code{reduce.mcmc = NULL}, \code{mcmc/thin} is used.}
 
 \item{degree.normal}{A null model for degree correction. Users can choose "NULL", "eigen" or "Lsym."
 "NULL" is no degree correction. "eigen" is a principal eigen-matrix consisting of
