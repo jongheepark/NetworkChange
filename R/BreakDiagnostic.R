@@ -19,10 +19,6 @@
 #' printed to the screen every \code{verbose}th iteration.
 #'
 #' 
-#' @param degree.normal	A null model for degree correction. Users can choose "NULL", "eigen" or "Lsym."
-#' "NULL" is no degree correction. "eigen" is a principal eigen-matrix consisting of
-#' the first eigenvalue and the corresponding eigenvector. "
-#' Lsym" is a modularity matrix. Default is "eigen."
 #'
 #' @param UL.Normal Transformation of sampled U. Users can choose "NULL", "Normal" or "Orthonormal."
 #' "NULL" is no normalization. "Normal" is the standard normalization.
@@ -37,38 +33,41 @@
 #' inverse Gamma prior on variance parameters for V.
 #' If \code{v1 = NULL}, a value is computed from a test run of \code{NetworkStatic}.
 #'
+#' @param a \eqn{a} is the shape1 beta prior for transition probabilities. By default,
+#' the expected duration is computed and corresponding a and b values are assigned. The expected
+#' duration is the sample period divided by the number of states.
+    
+#' @param b \eqn{b} is the shape2 beta prior for transition probabilities. By default,
+#' the expected duration is computed and corresponding a and b values are assigned. The expected
+#' duration is the sample period divided by the number of states.
 #'
+#' @importFrom tidyr gather
+#'
+#' @references   Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+
 #' @export
 #'
 #'
 #' @examples
 #'    \dontrun{
-#'    set.seed(1973)
-#'    ## Generate an array (30 by 30 by 40) with block transitions
-#'    ## One break model (splitting)
-#'    Y <- MakeBlockNetworkChange(n=10, T=40, base.prob=.25, type ="split")
+#'    set.seed(19333)
+#'    ## Generate an array (15 by 15 by 20) with a block merging transition
+#'    Y <- MakeBlockNetworkChange(n=5, T=20, type ="merge")
 #' 
-#'    ## Fit multiple models for break number detection using Bayesian model comparison
-#'    detect <- BreakDiagnostic(Y, R=2)
+#'    ## Fit 3 models (no break, one break, and two break) for break number detection 
+#'    detect <- BreakDiagnostic(Y, R=2, break.upper = 2)
 #'    
 #'    ## Look at the graph
 #'    detect[[1]]; print(detect[[2]])
 #'
-#'    ## merge
-#'    Y <- MakeBlockNetworkChange(n=10, T=40, base.prob=.25, type ="merge")
-#'    detect <- BreakDiagnostic(Y, R=2)
-#'    detect[[1]]; print(detect[[2]])
-#' 
-#'    ## Two break model
-#'    Y <- MakeBlockNetworkChange(n=10, T=40, base.prob=.25, type ="split-merge")
-#'    detect <- BreakDiagnostic(Y, R=2)
-#'    detect[[1]]; print(detect[[2]])
 #' }
 #'
-#' 
+#'
+#'
 
 BreakDiagnostic <- function(Y, R=2, mcmc=100, burnin=100, verbose=100, thin=1, UL.Normal = "Orthonormal",
-                            v0=NULL, v1=NULL, break.upper = 3){
+                            v0=NULL, v1=NULL, break.upper = 3, a=1, b=1){
     ## set.seed(11173)
     K <- dim(Y)
     ## prior estimate
@@ -85,18 +84,18 @@ BreakDiagnostic <- function(Y, R=2, mcmc=100, burnin=100, verbose=100, thin=1, U
     ## model fit
     out <- as.list(rep(NA, break.upper))
     out[[1]] <- NetworkStatic(Y, R=2, mcmc=mcmc, reduce.mcmc = mcmc/2, 
-                              burnin=mcmc, verbose=mcmc, v0=v0, v1=v1,
+                              burnin=burnin, verbose=verbose, v0=v0, v1=v1,
                               Waic=TRUE, marginal=TRUE)
     for(m in 1:break.upper){
         ## to save time and to be more conservative, use randomly generated initial states
         initial.s <- sort(rep(1:(m+1), length=K[[3]]))
         out[[m+1]] <- NetworkChange(Y, R=2, m=m, mcmc=mcmc, initial.s = initial.s, reduce.mcmc = mcmc/2, 
-                                        burnin=mcmc, verbose=mcmc, thin=thin, v0=v0, v1=v1,
-                                        Waic=TRUE, marginal=TRUE)
+                                    burnin=burnin, verbose=verbose, thin=thin, v0=v0, v1=v1, a=a, b=a,
+                                    Waic=TRUE, marginal=TRUE)
     }
     
     ## diagnostic info
-    Waic.holder <- marginal.holder <- loglike.holder <- rep(NA, 4)
+    Waic.holder <- marginal.holder <- loglike.holder <- rep(NA, break.upper+1)
     for(i in 1:(break.upper+1)){
         loglike.holder[i] <- attr(out[[i]], "loglike")
         marginal.holder[i] <- attr(out[[i]], "logmarglike")
@@ -120,11 +119,14 @@ BreakDiagnostic <- function(Y, R=2, mcmc=100, burnin=100, verbose=100, thin=1, U
     test.curve <- rbind(test.curve1, test.curve2, test.curve3, test.curve4)
     test.curve <- data.frame(test.curve)
     colnames(test.curve) <- paste0("break", 0:break.upper)
-    test.curve$Metric <- c("-2*LogMarginal", "-2*Loglike", "WAIC","Average Loss")
-    data_long <- gather(test.curve, model, value, 
-                        paste0("break", 0:break.upper), factor_key=TRUE)
-
-    g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +
+    Metric <- c("-2*LogMarginal", "-2*Loglike", "WAIC", "Average Loss")
+    test.curve$Metric <- Metric
+    data_long <- tidyr::gather(test.curve, model, value, 
+                               paste0("break", 0:break.upper), factor_key=TRUE)
+    model <- value <- NULL
+    g1 <- ggplot(data= transform(data_long,
+                                 Metric=factor(Metric,levels=c("-2*LogMarginal", "-2*Loglike", "WAIC", "Average Loss"))),
+                 mapping = aes(x = model, y = value, group = Metric, color = Metric)) +
         geom_line(size=0.2) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + 
         labs(x = "Model", y = "Value") + theme_bw() +
         theme(legend.position="none",

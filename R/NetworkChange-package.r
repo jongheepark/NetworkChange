@@ -9,7 +9,6 @@
 #' @import mvtnorm
 #' @import RColorBrewer
 #' @import MCMCpack
-#' @importFrom LaplacesDemon dwishartc is.positive.semidefinite
 #' @importFrom Rmpfr mpfr
 #' @importFrom ggvis add_legend
 NULL

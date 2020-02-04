@@ -77,8 +77,8 @@
 #'
 #' @seealso \code{\link{NetworkChange}}
 #'
-#' @references  Jong Hee Park and Yunkyun Sohn. 2017. "Detecting Structural Change
-#' in Network Time Series Data using Bayesian Inference." Working Paper.
+#' @references   Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
 #'
 #' Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
 #' \emph{Computational Statistics \& Data Analysis}. 55: 530-543.
@@ -89,7 +89,7 @@
 
 #' Siddhartha Chib. 1995. ``Marginal Likelihood from the Gibbs Output.''
 #' \emph{Journal of the American Statistical Association}. 90: 1313-1321.
-
+#'
 #' @export
 #' @examples
 #'
@@ -490,15 +490,15 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         }
         density.eU <- log(mean(exp(density.eU.holder)))
         if(abs(density.eU) == Inf){
-            cat("    Precision reinforced! \n")
-            print(density.eU.holder)
+            ## cat("    Precision reinforced! \n")
+            ## print(density.eU.holder)
             density.eU <- as.numeric(log(mean(exp(mpfr(density.eU.holder, precBits=53)))))
         }
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 1 \n")
-        cat("    density.eU: ", as.numeric(density.eU), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 1 \n")
+        ## cat("    density.eU: ", as.numeric(density.eU), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         ##
         ## Marginal Step 2: p(iVU.st|Z, eu.st)
@@ -559,15 +559,15 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         
         density.iVU <- log(mean(exp(density.iVU.holder)))
         if(abs(density.iVU) == Inf){
-            cat("    Precision reinforced! \n")
-            print(density.iVU.holder)
+            ## cat("    Precision reinforced! \n")
+            ## print(density.iVU.holder)
             density.iVU <- as.numeric(log(mean(exp(mpfr(density.iVU.holder, precBits=53)))))
         }
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 2 \n")
-        cat("    density.iVU: ", as.numeric(density.iVU), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 2 \n")
+        ## cat("    density.iVU: ", as.numeric(density.iVU), "\n")
+        ## cat("---------------------------------------------- \n ")
 
 
         ##
@@ -623,15 +623,15 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         
         density.eV <- log(mean(exp(density.eV.holder)))
         if(abs(density.eV) == Inf){
-            cat("    Precision reinforced! \n")
-            print(density.eV.holder)
+            ## cat("    Precision enforced! \n")
+            ## print(density.eV.holder)
             density.eV <- as.numeric(log(mean(exp(mpfr(density.eV.holder, precBits=53)))))
         }
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 3 \n")
-        cat("    density.eV: ", as.numeric(density.eV), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 3 \n")
+        ## cat("    density.eV: ", as.numeric(density.eV), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         ##
         ## Marginal Step 4: p(iVV.st|Z, eU.st, iVU.st, eV.st)
@@ -686,15 +686,15 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         
         density.iVV <- log(mean(exp(density.iVV.holder)))
         if(abs(density.iVV) == Inf){
-            cat("    Precision reinforced! \n")
-            print(density.iVV.holder)
+            ## cat("    Precision enforced! \n")
+            ## print(density.iVV.holder)
             density.iVV <- log(mean(exp(mpfr(density.iVV.holder, precBits=53))))
         }
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 4 \n")
-        cat("    density.iVV: ", as.numeric(density.iVV), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 4 \n")
+        ## cat("    density.iVV: ", as.numeric(density.iVV), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         if(constant){
             ##
@@ -744,14 +744,14 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
             
             density.bhat <- log(mean(exp(density.bhat.holder)))
             if(abs(density.bhat) == Inf){
-                cat("    Precision reinforced! \n")
-                print(density.bhat.holder)
+                ## cat("    Precision reinforced! \n")
+                ## print(density.bhat.holder)
                 density.bhat <- as.numeric(log(mean(exp(mpfr(density.bhat.holder, precBits=53)))))
             }
-            cat("\n---------------------------------------------- \n ")
-            cat("Marignal Likelihood Computation Step 5 \n")
-            cat("    density.bhat: ", as.numeric(density.bhat), "\n")
-            cat("---------------------------------------------- \n ")
+            ## cat("\n---------------------------------------------- \n ")
+            ## cat("Marignal Likelihood Computation Step 5 \n")
+            ## cat("    density.bhat: ", as.numeric(density.bhat), "\n")
+            ## cat("---------------------------------------------- \n ")
         }
 
         ##
@@ -797,16 +797,16 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         
         density.Sigma <- log(mean(exp(density.Sigma.holder)))
         if(abs(density.Sigma) == Inf){
-            cat("    Precision reinforced! \n")
-            print(density.Sigma.holder)
+            ## cat("    Precision reinforced! \n")
+            ## print(density.Sigma.holder)
             density.Sigma <- as.numeric(log(mean(exp(mpfr(density.Sigma.holder, precBits=53)))))
         }
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 6 \n")
-        cat("    density.Sigma: ", as.numeric(density.Sigma), "\n")
-        cat("---------------------------------------------- \n ")
-        
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 6 \n")
+        ## cat("    density.Sigma: ", as.numeric(density.Sigma), "\n")
+        ## cat("---------------------------------------------- \n ")
+        ## 
         
         ## Prior ordinate
         iVV <- iVU <- diag(R) ; eV <- eU <- rep(0,R) 
@@ -841,13 +841,13 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
         ## logmarglike <- (loglike + logprior) - logdenom;
         logmarglike.upper <- (loglike.upper + logprior) - logdenom
         
-        cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+        ## cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
         ## cat("    log marginal likelihood = (loglike + logprior) - (density.parameters) \n")
         ## cat("    log marginal likelihood : ", as.numeric(logmarglike), "\n")
-        cat("    log marginal likelihood : ", as.numeric(logmarglike.upper), "\n")
-        cat("    logprior: ", as.numeric(logprior), "\n")
-        cat("    log posterior density: ", as.numeric(logdenom), "\n")
-        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+        ## cat("    log marginal likelihood : ", as.numeric(logmarglike.upper), "\n")
+        ## cat("    log prior: ", as.numeric(logprior), "\n")
+        ## cat("    log posterior density: ", as.numeric(logdenom), "\n")
+        ## cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
                 
     }
     attr(output, "title") <- "NetworkStatic Posterior Sample"

@@ -1,1981 +1,1151 @@
-ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)
-ZE
-Xtz
-Xm[[j]]
-t(apply(Xm[[j]],4,c))
-dim(Xm[[j]])
-dim(t(apply(Xm[[j]],4,c)))
-dim(t(apply(X0,4,c))%*%c(ZE))
-dim(t(apply(X0,4, c)))
-dim(X0)
-c(ZE)
-야ㅡ(c(ZE))
-dim(c(ZE))
-dim(Z - MUU)
-j
-dim(ZY[[j]] - MU[[j]])
-dim(Xm[[j]])
-ZE <- ZY[[j]] - MU[[j]]
-t(apply(Xm[[j]],4,c))%*%ZE
-ZE
-t(apply(Xm[[j]],4,c))
-## in case state j has only 1 unit, force it to be an array with 1 length#
-            if(is.na(Km[[j]][3])){#
-                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
-            } else{#
-                ZY[[j]] <- Z[,,ej[[j]]==1]#
-                Zm[[j]] <- Zb[,,ej[[j]]==1]#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
-                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
-            }
-ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)
-Xtz
-t(apply(Xm[[j]],4,c))
-## X array making#
-K <- dim(Y)#
-X <- array(dim=c(K,4))#
-lgdp <- log(dat$GDP) ; lgdp <- lgdp-mean(lgdp)#
-for(k in 1:K[3]) #
-{#
-  X[,,k,1] <- lgdp[,k]%*%t(rep(1,K[1])) + #
-            t(lgdp[,k]%*%t(rep(1,K[1])))#
-  X[,,k,2] <- lgdp[,k]%*%t(rep(1,K[1])) *#
-            t(lgdp[,k]%*%t(rep(1,K[1])))#
-  X[,,k,3] <- 1*(  (dat$PTY[,k]%*%t(dat$PTY[,k])) >0 )#
-  X[,,k,4] <-  1*( outer(dat$PTY[,k]>0,dat$PTY[,k]>0 ) )#
-  ## X[,,k,5] <- 1## log(dat$DST) ; diag(X[,,k,5]) <- 0#
+p <- ggplot(mtcars, aes(wt, disp)) + geom_point()#
+p + facet_wrap(ggplot::vars(vs, am))
+p <- ggplot(mtcars, aes(wt, disp)) + geom_point()#
+p + facet_wrap(vars(vs, am))
+p <- ggplot(mtcars, aes(wt, disp)) + geom_point()#
+p + facet_wrap(vars(vs))
+install.packages("ggplot3")
+install.packages("ggplot2")
+require(ggplot2)
+no applicable method for 'as.quoted' applied to an object of class "function"
+p <- ggplot(mtcars, aes(wt, disp)) + geom_point()#
+p + facet_wrap(vars(vs, am))
+diamond_plot <- function (data, group, metric) {#
+        quo_group <- sym(group)#
+        quo_metric <- sym(metric)#
+        summary <- data %>%#
+                group_by(!!quo_group) %>%#
+                summarise(mean=mean(!!quo_metric))#
+                ggplot(summary, aes_string(x = group, y= "mean")) +#
+                geom_bar(stat='identity')#
 }#
-## X <- X[,,,c(1:5)[-c(5)]]   # take out distance#
-p <- dim(X)[4]
-for (j in 1:ns){#
-            ej[[j]] <- as.numeric(s==j)#
-            Km[[j]] <- dim(Zb[,,ej[[j]]==1])#
-            ## in case state j has only 1 unit, force it to be an array with 1 length#
-            if(is.na(Km[[j]][3])){#
-                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
-            } else{#
-                ZY[[j]] <- Z[,,ej[[j]]==1]#
-                Zm[[j]] <- Zb[,,ej[[j]]==1]#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
-                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
-            }#
-            ## return the right dimension info#
-            Km[[j]] <- dim(Zm[[j]])#
+diamond_plot(diamonds, "clarity", "price")
+g1 <- ggplot(data=data_long, mapping = aes(x = model, y = value, group = time, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(test~time, nrow=4, ncol=4, scales = "free_y") + #
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+data_long
+g1 <- ggplot(data=data_long, mapping = aes(x = model, y = value, group = time, color = time)) +#
+    geom_line() + geom_point() + facet_grid(test~time, nrow=4, ncol=4, scales = "free_y") + #
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1 <- ggplot(data=data_long, mapping = aes(x = model, y = value, group = time, color = time)) +#
+    geom_line() + geom_point() + facet_grid(test~time) + ##, nrow=4, ncol=4, scales = "free_y"#
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+ggplot(data=data_long, mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point()
+ggplot(data=data_long, mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_grid(test~time)
+ggplot(data=data_long) +geom_line() + geom_point() + facet_grid(test~time)
+ggplot(data=data_long, mapping = aes(x = model, y = value)) +geom_line() + geom_point() + facet_grid(test~time)
+data_long
+sp <- ggplot(data_long, aes(x=model, y=value)) + geom_point(shape=1)
+sp
+sp + facet_grid(test ~ .)
+sp + facet_grid(test ~ ., scales="free_y")
+sp + facet_grid(test ~ time, scales="free_y")
+sp + facet_grid(test ~ model, scales="free_y")
+sp <- ggplot(data_long, aes(x=time, y=value)) + geom_point(shape=1)#
+sp + facet_grid(test ~ model, scales="free_y")
+data_long
+test.curve
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)
+data_long
+g1 <- ggplot(data=data_long, mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_grid(test~time, scales = "free_y")#
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data=data_long, mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line(scales = "free_y") + geom_point(scales = "free_y") + facet_grid(test~time, scales = "free_y")#
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data=data_long, mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, scales = "free_y")#
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, scales = "free_y")#
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y")#
+    labs(y = "Marginal") +#
+    theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Marginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)
+multiplot(g1, g2, g3, g4, cols=4)
+multiplot(g1, g2, g3, g4, cols=1)
+require(NetworkChange)#
+pdf(file="split.pdf", width=10, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+getwd()
+pdf(file="split.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/merge_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-            ## UTA array: TRUE for upper triangle#
-            UTA[[j]] <- Zm[[j]]*NA#
-            for(k in 1:Km[[j]][3]) {#
-                UTA[[j]][,,k] <-  upper.tri(Zm[[j]][,,1])#
-            } #
-            UTA[[j]] <- (UTA[[j]]==1)#
-        }
-end <- c(which(diff(s) == 1), Time)#
-            start <- c(1, which(diff(s) == 1)+1)#
-            for (j in 1:ns){#
-                ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)#
-                XtX.middle <- apply(Xm[[j]],c(1,2,3), function(x){x%*%t(x) } ) ## 16 66 66  8 array#
-                XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
-                cV <- solve( XtX + diag(1/100,p))#
-                cE <- cV%*%Xtz#
-                ## vectorized regression#
-                bhat[j,] <- rmvnorm(1,cE,cV)#
-            }
-j
-dim(ZY[[j]])
-dim(MU[[j]])
-s
-## Step 0. Update Z#
-        ## update Z#
-        ## pooling#
-        if(pooling.mode == "time.pool"){#
-            EZ <-  X.b(X,bhat) + MUU#
-        }else if(pooling.mode == "time.specific"){#
-            EZ <- X.b.specific(X, bhat) + MUU#
-        }else{#
-            EZ <- X.b.shrink(X, bhat, state=s) + MUU #
-        }#
-        for(y in sample(uy))#
-        { #
-            lb <- suppressWarnings(max(Z[Y<y & UTAall])) #
-            ub <- suppressWarnings(min(Z[Y>y & UTAall]))#
-            z <- qnorm(runif(sum(Y==y), pnorm( lb-EZ[Y==y] ), pnorm(ub-EZ[Y==y])))#
-            Z[Y==y] <-  EZ[Y==y] + z#
-            ## print(y)#
-        }#
-        ## Step 1. update ej, Km, Zm#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 1. update ej, Km, Zm \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        for (j in 1:ns){#
-            ej[[j]] <- as.numeric(s==j)#
-            Km[[j]] <- dim(Zb[,,ej[[j]]==1])#
-            ## in case state j has only 1 unit, force it to be an array with 1 length#
-            if(is.na(Km[[j]][3])){#
-                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
-            } else{#
-                ZY[[j]] <- Z[,,ej[[j]]==1]#
-                Zm[[j]] <- Zb[,,ej[[j]]==1]#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
-                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
-            }#
-            ## return the right dimension info#
-            Km[[j]] <- dim(Zm[[j]])#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-            ## UTA array: TRUE for upper triangle#
-            UTA[[j]] <- Zm[[j]]*NA#
-            for(k in 1:Km[[j]][3]) {#
-                UTA[[j]][,,k] <-  upper.tri(Zm[[j]][,,1])#
-            } #
-            UTA[[j]] <- (UTA[[j]]==1)#
-        }#
-        ## Step 2. update U#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 2. update U \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)#
-        ## Step 3. update V#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 3. update V \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        Vm <- NetworkChange::updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)#
-        V <- Reduce(rbind, Vm)#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+loss.out
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/split_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-        ## update MU#
-        for(j in 1:ns){#
-            ## MU is shorter than MU.state. MU.state is a full length.#
-            MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))#
-            MU.state[[j]] <- M.U(list(U[[j]],U[[j]],V))#
-            ZU[[j]] <- ZY[[j]] - MU[[j]]#
-        }#
-        MUU <- abind(MU)#
-        ## Step 4. update s2#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 4. update s2 \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        s2 <- NetworkChange::updates2m(ns, Zm, MU, c0, d0, Km)#
-        ## update bhat#
-        ## pooling#
-        if(pooling.mode == "time.pool"){#
-            ZE <- Z - MUU#
-            Xtz <- t(apply(X0,4,c))%*%c(ZE)#
-            cV <- solve( XtX + diag(1/100,p))#
-            cE <- cV%*%Xtz#
-            bhat <- rmvnorm(1,cE,cV)#
-            Zb <-  Z- X.b(X, bhat)            #
-        }else if(pooling.mode == "time.specific"){#
-            for (t in 1:Time){#
-                ZE <- Z[,,t] - MUU[,,t]#
-                Xtz <-  t(apply(X0[,,t,],3,c))%*%c(ZE)#
-                cV <- solve(XtX.specific[[t]] + diag(1/B0, p))#
-                cE <- cV%*%Xtz#
-                bhat[t, ] <- rmvnorm(1,cE,cV)#
-            }#
-            Zb <- Z - X.b.specific(X, bhat)            #
-        }else{#
-            end <- c(which(diff(s) == 1), Time)#
-            start <- c(1, which(diff(s) == 1)+1)#
-            for (j in 1:ns){#
-                ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)#
-                XtX.middle <- apply(Xm[[j]],c(1,2,3), function(x){x%*%t(x) } ) ## 16 66 66  8 array#
-                XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
-                cV <- solve( XtX + diag(1/100,p))#
-                cE <- cV%*%Xtz#
-                ## vectorized regression#
-                bhat[j,] <- rmvnorm(1,cE,cV)#
-            } #
-            Zb <- Z - X.b.shrink(X, bhat, state=s)#
-        }
-U
-U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)
-V
-Vm
-Zm
-ej
-Zb
-s
-Zb <- Z - X.b.shrink(X, bhat, state=s)
-Zb
-bhat
-tmp <- as.list(rep(NA, ns))#
-        bhat <- matrix(NA, ns, p)#
-        ## equi-distant state vector for initialization#
-        state <- sort(sample(1:ns, size=K[3], replace=TRUE, prob=(rep(1, ns))))#
-        ## median.s <- ceiling(apply(attr(mcmcout, "Smat"), 2, median))#
-        end <- c(which(diff(state) == 1), Time)#
-        start <- c(1, which(diff(state) == 1)+1)#
-        for (j in 1:ns){#
-            XM <- NULL;#
-            for(h in 1:p){#
-                XM <- cbind(XM, c(X[,,start[j]:end[j],h]))#
-            }#
-            ## vectorized regression#
-            tmp[[j]] <- lm(c(Z[,,start[j]:end[j]])~ -1 + XM )#
-            bhat[j,] <- tmp[[j]]$coef#
-        }
-bhat
-ns
-start
-j = 2
-XM <- NULL;#
-            for(h in 1:p){#
-                XM <- cbind(XM, c(X[,,start[j]:end[j],h]))#
-            }
-dim(XM)
-lm(c(Z[,,start[j]:end[j]])~ -1 + XM )
-XM
-Z[,,start[j]:end[j]]
-Z <-  array(qnorm( rank(Y, ties.method="random")/(length(Y)+1) ), dim=K)#
-    for(k in 1:K[3]) {#
-        Z[,,k] <-  (Z[,,k] + t(Z[,,k]))/sqrt(2)#
-    }
-Z
-Z <-  array(qnorm( rank(Y, ties.method="random")/(length(Y)+1) ), dim=K)#
-    for(k in 1:K[3]) {#
-        Z[,,k] <-  (Z[,,k] + t(Z[,,k]))/sqrt(2)#
-    }
-## function call#
-    ptm <- proc.time()#
-    call <- match.call()#
-    mf <- match.call(expand.dots = FALSE)#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-    ## for future use#
-    fast = FALSE#
-    sticky = FALSE#
-    sequential = FALSE#
-    local.type = "NULL" ## c("NULL", "linear.trend", "logistic"),#
-    logistic.tune = 0.5#
-    random.perturb = TRUE#
-    totiter <- mcmc + burnin#
-    nstore <- mcmc/thin    #
-    reduce.mcmc <- nstore#
-    ## changepoint priors and inputs#
-    ns <- m + 1 # number of states#
-    ## X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    K <- dim(Y)  #
-    Time <- K[3]#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/merge-split_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-    ## Y to Z transformation#
-    Z <-  array(qnorm( rank(Y, ties.method="random")/(length(Y)+1) ), dim=K)#
-    for(k in 1:K[3]) {#
-        Z[,,k] <-  (Z[,,k] + t(Z[,,k]))/sqrt(2)#
-    }#
-    ## tmp <- as.list(rep(NA, K[3]))#
-    ## nodenames <- dimnames(Y)[[1]]#
-    ## X0 is a upper triangle matrix of X#
-    X0 <- X ;#
-    for(k in 1:p) {#
-        tmp <- X0[,,,k] ; tmp[!UTA] <- 0 ; X0[,,,k] <- tmp#
-    }#
-    ## XtX.0 <- apply(X0,c(1,2), function(x){x%*%t(x) } ) #
-    XtX.middle <- apply(X0,c(1,2,3), function(x){x%*%t(x) } ) #
-    XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
-    if(p==1) {#
-        XtX <- matrix(sum(X0^2), p, p)#
-    }#
-    ## time specific XtX generator#
-    XtX.specific <- as.list(rep(NA, Time))#
-    for(t in 1:Time){#
-        XtX.middle.specific <- apply(X0[,,t,], c(1,2), function(x){x%*%t(x) } ) ## 16 66 66 array#
-        XtX.specific[[t]] <- matrix(apply(XtX.middle.specific, 1, sum), p, p)#
-        if(p==1) {#
-            XtX.specific[[t]] <- matrix(sum(X0[,,t,]^2), p, p)#
-        }#
-    }#
-    rm(XtX.middle.specific)#
-    ## unique values of Y#
-    uy <- sort(unique(c(Y)))#
-    ## prior for changepoint#
-    P  <-  NetworkChange:::trans.mat.prior(m=m, n=Time, a = 0.9, b= 0.1)#
-    A0  <-  NetworkChange:::trans.mat.prior(m=m, n=Time, a = a, b = b)#
-    nss <- 0#
-    ## if (is.null(initial.V)){#
-    ## out <- startUV(Z, R, K)#
-    ## initial.U <- out[[1]]#
-    ## V <- out[[2]]#
-    ## MU <- M.U(list(U,U,V))#
-    if(is.null(u0)){#
-        u0 <- 10#
-    }#
-    if(is.null(u1)){#
-        u1 <- 1 #
-    }#
-    ## sigma.mu <- mean(apply(V, 2, mean))#
-    ## sigma.var <- var(apply(V, 2, mean))#
-    if(is.null(v0)){#
-        v0 <- 10#
-        ## v0 <- 4 + 2 * (sigma.mu^2/sigma.var)#
-    }#
-    if(is.null(v1)){#
-        ## v1 <- 1#
-        v1 <- K[3]#
-    }#
-#################################
-    ## beta set up#
-    ## initialize beta#
-#################################
-    ## pooling#
-    if(pooling.mode == "time.pool"){#
-        XM <- NULL;#
-        for(j in 1:p){#
-            XM <- cbind(XM, c(X[,,,j]))#
-        }#
-        ## vectorized regression#
-        tmp <- lm( c(Z)~-1+ XM )#
-        bhat <- tmp$coef#
-        Zb <-  Z- X.b(X, bhat)#
-        bhat.mat <- matrix(NA, nstore, p)#
-    }else if(pooling.mode == "time.specific"){#
-        tmp <- as.list(rep(NA, K[3]))#
-        bhat <- matrix(NA, Time, p)#
-        for (t in 1:Time){#
-            XM <- NULL;#
-            for(j in 1:p){#
-                XM <- cbind(XM, c(X[,,t,j]))#
-            }#
-            ## vectorized regression#
-            tmp[[t]] <- lm(c(Z[,,t])~-1+ XM )#
-            bhat[t,] <- tmp[[t]]$coef#
-        }#
-        Zb <- Z - X.b.specific(X, bhat)#
-        bhat.mat <- matrix(NA, nstore, p*Time)#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-    }else{#
-        ## time.shrink#
-        tmp <- as.list(rep(NA, ns))#
-        bhat <- matrix(NA, ns, p)#
-        ## equi-distant state vector for initialization#
-        state <- sort(sample(1:ns, size=K[3], replace=TRUE, prob=(rep(1, ns))))#
-        ## median.s <- ceiling(apply(attr(mcmcout, "Smat"), 2, median))#
-        end <- c(which(diff(state) == 1), Time)#
-        start <- c(1, which(diff(state) == 1)+1)#
-        for (j in 1:ns){#
-            XM <- NULL;#
-            for(h in 1:p){#
-                XM <- cbind(XM, c(X[,,start[j]:end[j],h]))#
-            }#
-            ## vectorized regression#
-            tmp[[j]] <- lm(c(Z[,,start[j]:end[j]])~ -1 + XM )#
-            bhat[j,] <- tmp[[j]]$coef#
-        } #
-        Zb <- Z - X.b.shrink(X, bhat, state)#
-        bhat.mat <- matrix(NA, nstore, p*ns)#
-    }#
-    if (is.null(initial.s)){#
-        s <- state## startS(Z, Time, m, initial.U, V, s2=1, R)#
-    } else{#
-        s <- initial.s#
-    }#
-    ## holder #
-    ## Zm is a state-specific holder of ZE = Z - bhat#
-    ## Zm[[1]] is a subset of Z pertaining to state 1#
-    ## ZU = Z - ULU#
-    ## ZY is original Z separated by state#
-    UTA <- Km <- Zm <- ZY <- ZU <- ej <- U <- MU <- MU.state <- Xm <- Vm <- as.list(rep(NA, ns))#
-    ps.store <- matrix(0, Time, ns)#
-    ## given the state vector, initialize regime specific U and Vm#
-    for (j in 1:ns){#
-        ej[[j]] <- as.numeric(s==j)#
-        Zm[[j]] <- Zb[,,ej[[j]]==1] #
-        tmp <- eigen(apply(Zm[[j]], c(1,2), mean))#
-        d2m <- abs(tmp$val)#
-        U0 <- tmp$vec[, order(d2m, decreasing=TRUE) ]#
-        U[[j]] <- matrix(U0[, 1:R], nrow=nrow(U0), ncol=R)#
-        Vm[[j]] <- matrix(d2m[1:R], sum(s==j), R, byrow=TRUE)#
-    }#
-    ## V <- Reduce(rbind, Vm)#
-    ## initialize MU and MU.state#
-    ## MU is regime-specific mean matrix, the length of which depends on regime length#
-    ## MU.state is a full-length mean matrix for state sampling#
-    for (j in 1:ns){#
-        MU[[j]] <-  M.U(list(U[[j]],U[[j]], Vm[[j]]))#
-        MU.state[[j]] <-  M.U(list(U[[j]],U[[j]],V))#
-    }#
-    MUU <- abind(MU)#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="merge-split.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/split-merge_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-    ## initialize s2 and d0#
-    if (is.null(c0)){#
-        c0 <- 1#
-    }#
-    if(is.null(d0)) {#
-        d0 <- var(as.vector(Z - MU.state[[1]]))#
-    }#
-    s2 <- 1/rgamma(ns, c0/2, (d0)/2)#
-    Pmat <- matrix(NA, nstore, ns)#
-    ## cat("scale prior for sigma2: ", d0, "\n")#
-    ## MCMC holders#
-    ## outlier <- rep(0, T) ## count the number of times of -Inf#
-    MU.record <- Umat <- s2mat <- iVU <- eU <- eV <- iVV <- eUmat <- iVUmat <- eVmat <- iVVmat <- as.list(rep(NA, ns))#
-    for(j in 1:ns){#
-        s2mat[[j]] <- matrix(NA, nstore)#
-        Umat[[j]] <- matrix(NA, nstore, K[1]*R)#
-        eUmat[[j]] <- matrix(NA, nstore, R)#
-        iVUmat[[j]] <- matrix(NA, nstore, R*R)#
-        eVmat[[j]]  <- matrix(NA, nstore, R)#
-        iVVmat[[j]] <- matrix(NA, nstore, R*R)#
-        MU.record[[j]] <- Y*0#
-        iVU[[j]] <- diag(R)#
-        eU[[j]] <- rep(u0, R)#
-        iVV[[j]] <- diag(R)#
-        eV[[j]] <- rep(v0, R)#
-    }#
-    Vmat <- matrix(NA, nstore, R*K[3])#
-    Smat <- matrix(NA, nstore, K[3])#
-    ## loglike holder#
-    N.upper.tri <- K[1]*(K[1]-1)/2#
-    ## Z.loglike <- matrix(NA, mcmc, K[3])#
-    ## Z.loglike <- as(matrix(NA, mcmc, K[3]), "mpfr")#
-    if(Waic){#
-        Z.loglike.array <- array(NA, dim=c(nstore, N.upper.tri, K[3]))#
-    }#
-    logmarglike <- loglike <- logmarglike.upper <- loglike.upper <- NA#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-    Zt <- matrix(NA,  Time,  N.upper.tri)#
-    UTAsingle <-  upper.tri(Z[,,1])#
-    ## UTA array: TRUE for upper triangle#
-    UTAall <- Z*NA#
-    for(k in 1:K[3]) {#
-        UTAall[,,k] <-  upper.tri(Z[,,1] )#
-    } #
-    UTAall <- (UTAall==1)#
-    Waic.out <- NA#
-    SOS <- 0#
-    if(verbose !=0){#
-        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
-        cat("\t NetworkChangeReg Sampler Starts! \n")#
-        ## cat("\t function called: ")#
-        ## print(call)#
-        cat("\t degree normalization: ", degree.normal, "\n")#
-        cat("\t initial states: ", table(s), "\n")#
-        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
-    }
-## pooling#
-        if(pooling.mode == "time.pool"){#
-            EZ <-  X.b(X,bhat) + MUU#
-        }else if(pooling.mode == "time.specific"){#
-            EZ <- X.b.specific(X, bhat) + MUU#
-        }else{#
-            EZ <- X.b.shrink(X, bhat, state=s) + MUU #
-        }#
-        for(y in sample(uy))#
-        { #
-            lb <- suppressWarnings(max(Z[Y<y & UTAall])) #
-            ub <- suppressWarnings(min(Z[Y>y & UTAall]))#
-            z <- qnorm(runif(sum(Y==y), pnorm( lb-EZ[Y==y] ), pnorm(ub-EZ[Y==y])))#
-            Z[Y==y] <-  EZ[Y==y] + z#
-            ## print(y)#
-        }
-## cat("\n---------------------------------------------- \n ")#
-        for (j in 1:ns){#
-            ej[[j]] <- as.numeric(s==j)#
-            Km[[j]] <- dim(Zb[,,ej[[j]]==1])#
-            ## in case state j has only 1 unit, force it to be an array with 1 length#
-            if(is.na(Km[[j]][3])){#
-                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
-            } else{#
-                ZY[[j]] <- Z[,,ej[[j]]==1]#
-                Zm[[j]] <- Zb[,,ej[[j]]==1]#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
-                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
-            }#
-            ## return the right dimension info#
-            Km[[j]] <- dim(Zm[[j]])#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split-merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-            ## UTA array: TRUE for upper triangle#
-            UTA[[j]] <- Zm[[j]]*NA#
-            for(k in 1:Km[[j]][3]) {#
-                UTA[[j]][,,k] <-  upper.tri(Zm[[j]][,,1])#
-            } #
-            UTA[[j]] <- (UTA[[j]]==1)#
-        }
-## cat("\n---------------------------------------------- \n ")#
-        U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)#
-        ## Step 3. update V#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 3. update V \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        Vm <- NetworkChange::updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)#
-        V <- Reduce(rbind, Vm)
-V
-U
-U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)
-Vm <- NetworkChange::updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)#
-        V <- Reduce(rbind, Vm)#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+colnames(test.curve)[3] <- paste0(colnames(test.curve)[3], " (truth)")#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-        ## update MU#
-        for(j in 1:ns){#
-            ## MU is shorter than MU.state. MU.state is a full length.#
-            MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))#
-            MU.state[[j]] <- M.U(list(U[[j]],U[[j]],V))#
-            ZU[[j]] <- ZY[[j]] - MU[[j]]#
-        }#
-        MUU <- abind(MU)
-s2 <- NetworkChange::updates2m(ns, Zm, MU, c0, d0, Km)#
-        ## update bhat#
-        ## pooling#
-        if(pooling.mode == "time.pool"){#
-            ZE <- Z - MUU#
-            Xtz <- t(apply(X0,4,c))%*%c(ZE)#
-            cV <- solve( XtX + diag(1/100,p))#
-            cE <- cV%*%Xtz#
-            bhat <- rmvnorm(1,cE,cV)#
-            Zb <-  Z- X.b(X, bhat)            #
-        }else if(pooling.mode == "time.specific"){#
-            for (t in 1:Time){#
-                ZE <- Z[,,t] - MUU[,,t]#
-                Xtz <-  t(apply(X0[,,t,],3,c))%*%c(ZE)#
-                cV <- solve(XtX.specific[[t]] + diag(1/B0, p))#
-                cE <- cV%*%Xtz#
-                bhat[t, ] <- rmvnorm(1,cE,cV)#
-            }#
-            Zb <- Z - X.b.specific(X, bhat)            #
-        }else{#
-            end <- c(which(diff(s) == 1), Time)#
-            start <- c(1, which(diff(s) == 1)+1)#
-            for (j in 1:ns){#
-                ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)#
-                XtX.middle <- apply(Xm[[j]],c(1,2,3), function(x){x%*%t(x) } ) ## 16 66 66  8 array#
-                XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
-                cV <- solve( XtX + diag(1/100,p))#
-                cE <- cV%*%Xtz#
-                ## vectorized regression#
-                bhat[j,] <- rmvnorm(1,cE,cV)#
-            } #
-            Zb <- Z - X.b.shrink(X, bhat, state=s)#
-        }
-## hierarchical parameters for U#
-        for(j in 1:ns){#
-            SS <-  t(U[[j]]) %*% U[[j]]## (Km[[j]][1]-1)*cov(U[[j]]) + Km[[j]][1]*msi/(Km[[j]][1]+1)#
-            for(r in 1:R){#
-                iVU[[j]][r,r] <- 1/rgamma(1, (u0 + K[1])/2, (u1+ SS[r,r])/2)#
-            }#
-            eU[[j]] <- c(NetworkChange:::rMVNorm(1,apply(U[[j]],2,sum)/(Km[[j]][1]+1), solve(iVU[[j]])/(Km[[j]][1]+1)))#
-        }#
-        ## hierarchical parameters for V#
-        ## V for state j only#
-        for(j in 1:ns){#
-            Vs <- matrix(Vm[[j]], nrow=sum(ej[[j]]), ncol=R)#
-            SS <-  t(Vs)%*%Vs#
-            for(r in 1:R){#
-                iVV[[j]][r,r] <- 1/rgamma(1, (v0 + Km[[j]][3])/2, (v1 + SS[r,r])/2)#
-            }#
-            eV[[j]] <- c(NetworkChange:::rMVNorm(1,apply(Vs, 2, sum)/(Km[[j]][3]+1),#
-                                                 solve(iVV[[j]])/(Km[[j]][3]+1)))      #
-        }
-state.out <- NetworkChange::updateS(iter, s, V, m, Zb, Zt, Time, MU.state, P, s2,#
-                             N.upper.tri, random.perturb)
-s <- state.out$s#
-        ps <- state.out$ps#
-        ## double check #
-        if(length(table(s)) < ns){#
-            ## print(table(s))#
-            ## cat("Sampled s does not have all states. \n")#
-            s <- sort(sample(1:ns, size=K[3], replace=TRUE, prob=(rep(1, ns))))#
-        }
-s
-d <- sapply(1:K[3], function(t){dnorm(c(Zb[,,t][UTAsingle]),#
-                                                      mean = c(MU.state[[s[t]]][,,t][UTAsingle]),#
-                                                      sd=sqrt(s2[[s[t]]]), log=TRUE)})#
-                Z.loglike.array[(iter-burnin)/thin, ,] <- d
-Z.loglike.array <- array(NA, dim=c(nstore, N.upper.tri, K[3]))
-d <- sapply(1:K[3], function(t){dnorm(c(Zb[,,t][UTAsingle]),#
-                                                      mean = c(MU.state[[s[t]]][,,t][UTAsingle]),#
-                                                      sd=sqrt(s2[[s[t]]]), log=TRUE)})#
-                Z.loglike.array[(iter-burnin)/thin, ,] <- d
-d
-##############################################################
-    ## MCMC loop starts!#
-##############################################################
-    for(iter in 1:totiter) {#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split-merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-        ## Step 0. Update Z#
-        ## update Z#
-        ## pooling#
-        if(pooling.mode == "time.pool"){#
-            EZ <-  X.b(X,bhat) + MUU#
-        }else if(pooling.mode == "time.specific"){#
-            EZ <- X.b.specific(X, bhat) + MUU#
-        }else{#
-            EZ <- X.b.shrink(X, bhat, state=s) + MUU #
-        }#
-        for(y in sample(uy))#
-        { #
-            lb <- suppressWarnings(max(Z[Y<y & UTAall])) #
-            ub <- suppressWarnings(min(Z[Y>y & UTAall]))#
-            z <- qnorm(runif(sum(Y==y), pnorm( lb-EZ[Y==y] ), pnorm(ub-EZ[Y==y])))#
-            Z[Y==y] <-  EZ[Y==y] + z#
-            ## print(y)#
-        }#
-        ## Step 1. update ej, Km, Zm#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 1. update ej, Km, Zm \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        for (j in 1:ns){#
-            ej[[j]] <- as.numeric(s==j)#
-            Km[[j]] <- dim(Zb[,,ej[[j]]==1])#
-            ## in case state j has only 1 unit, force it to be an array with 1 length#
-            if(is.na(Km[[j]][3])){#
-                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
-            } else{#
-                ZY[[j]] <- Z[,,ej[[j]]==1]#
-                Zm[[j]] <- Zb[,,ej[[j]]==1]#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
-                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
-            }#
-            ## return the right dimension info#
-            Km[[j]] <- dim(Zm[[j]])#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)
+data_long
+data_long %>%#
+     mutate(model=replace(model=="break2", "break2 (true)")) %>%#
+     as.data.frame()
+data_long %>%#
+     mutate(model=replace(model==break2, "break2 (true)")) %>%#
+     as.data.frame()
+data_long %>%#
+     mutate(model=replace(model, model==break2, "break2 (true)")) %>%#
+     as.data.frame()
+data_long %>%#
+     mutate(model=replace(model, model=="break2", "break2 (true)")) %>%#
+     as.data.frame()
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "break 2 (truth)", y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "break 2 (truth)", y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "break 2 (truth)", y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(x = "break 2 (truth)", y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split-merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground True = break2", y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground True = break2", y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground True = break2", y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(x = "Ground True = break2", y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split-merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(x = "Ground Truth = break2", y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split-merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/split_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-            ## UTA array: TRUE for upper triangle#
-            UTA[[j]] <- Zm[[j]]*NA#
-            for(k in 1:Km[[j]][3]) {#
-                UTA[[j]][,,k] <-  upper.tri(Zm[[j]][,,1])#
-            } #
-            UTA[[j]] <- (UTA[[j]]==1)#
-        }#
-        ## Step 2. update U#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 2. update U \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)#
-        ## Step 3. update V#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 3. update V \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        Vm <- NetworkChange::updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)#
-        V <- Reduce(rbind, Vm)#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-        ## update MU#
-        for(j in 1:ns){#
-            ## MU is shorter than MU.state. MU.state is a full length.#
-            MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))#
-            MU.state[[j]] <- M.U(list(U[[j]],U[[j]],V))#
-            ZU[[j]] <- ZY[[j]] - MU[[j]]#
-        }#
-        MUU <- abind(MU)#
-        ## Step 4. update s2#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 4. update s2 \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        s2 <- NetworkChange::updates2m(ns, Zm, MU, c0, d0, Km)#
-        ## update bhat#
-        ## pooling#
-        if(pooling.mode == "time.pool"){#
-            ZE <- Z - MUU#
-            Xtz <- t(apply(X0,4,c))%*%c(ZE)#
-            cV <- solve( XtX + diag(1/100,p))#
-            cE <- cV%*%Xtz#
-            bhat <- rmvnorm(1,cE,cV)#
-            Zb <-  Z- X.b(X, bhat)            #
-        }else if(pooling.mode == "time.specific"){#
-            for (t in 1:Time){#
-                ZE <- Z[,,t] - MUU[,,t]#
-                Xtz <-  t(apply(X0[,,t,],3,c))%*%c(ZE)#
-                cV <- solve(XtX.specific[[t]] + diag(1/B0, p))#
-                cE <- cV%*%Xtz#
-                bhat[t, ] <- rmvnorm(1,cE,cV)#
-            }#
-            Zb <- Z - X.b.specific(X, bhat)            #
-        }else{#
-            end <- c(which(diff(s) == 1), Time)#
-            start <- c(1, which(diff(s) == 1)+1)#
-            for (j in 1:ns){#
-                ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)#
-                XtX.middle <- apply(Xm[[j]],c(1,2,3), function(x){x%*%t(x) } ) ## 16 66 66  8 array#
-                XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
-                cV <- solve( XtX + diag(1/100,p))#
-                cE <- cV%*%Xtz#
-                ## vectorized regression#
-                bhat[j,] <- rmvnorm(1,cE,cV)#
-            } #
-            Zb <- Z - X.b.shrink(X, bhat, state=s)#
-        }#
-        ## update hierarchical parameters#
-        ## hierarchical parameters for U#
-        for(j in 1:ns){#
-            SS <-  t(U[[j]]) %*% U[[j]]## (Km[[j]][1]-1)*cov(U[[j]]) + Km[[j]][1]*msi/(Km[[j]][1]+1)#
-            for(r in 1:R){#
-                iVU[[j]][r,r] <- 1/rgamma(1, (u0 + K[1])/2, (u1+ SS[r,r])/2)#
-            }#
-            eU[[j]] <- c(NetworkChange:::rMVNorm(1,apply(U[[j]],2,sum)/(Km[[j]][1]+1), solve(iVU[[j]])/(Km[[j]][1]+1)))#
-        }#
-        ## hierarchical parameters for V#
-        ## V for state j only#
-        for(j in 1:ns){#
-            Vs <- matrix(Vm[[j]], nrow=sum(ej[[j]]), ncol=R)#
-            SS <-  t(Vs)%*%Vs#
-            for(r in 1:R){#
-                iVV[[j]][r,r] <- 1/rgamma(1, (v0 + Km[[j]][3])/2, (v1 + SS[r,r])/2)#
-            }#
-            eV[[j]] <- c(NetworkChange:::rMVNorm(1,apply(Vs, 2, sum)/(Km[[j]][3]+1),#
-                                                 solve(iVV[[j]])/(Km[[j]][3]+1)))      #
-        }#
-        ## Step 5. update s#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 5. update s \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        state.out <- NetworkChange::updateS(iter, s, V, m, Zb, Zt, Time, MU.state, P, s2,#
-                             N.upper.tri, random.perturb)#
-        ## state.out <- updateS(iter, s, V, m, Zb, Zt, Time, fast,#
-        ##                       MU.state, P, s2, local.type, logistic.tune, N.upper.tri, sticky)#
-        s <- state.out$s#
-        ps <- state.out$ps#
-        ## double check #
-        if(length(table(s)) < ns){#
-            ## print(table(s))#
-            ## cat("Sampled s does not have all states. \n")#
-            s <- sort(sample(1:ns, size=K[3], replace=TRUE, prob=(rep(1, ns))))#
-        }#
-        ## Step 6. update P#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 6. update P \n")#
-        ## cat("\n---------------------------------------------- \n ")       #
-        P <- NetworkChange::updateP(s, ns, P, A0)#
-        ## report#
-        if (verbose!= 0 &iter %% verbose == 0){#
-            cat("\n----------------------------------------------",'\n')#
-            cat("    iteration = ", iter, '\n')#
-            ## cat("    SOS = ", SOS, '\n')#
-            cat("    beta = ", bhat,'\n')#
-            if(plotZ == TRUE & plotUU == TRUE){#
-                if(ns < 4){#
-                    par(mfrow=c(1, ns+1))#
-                } else{#
-                    par(mfrow=c(2, ceiling((ns+1)/2)))#
-                }#
-            }#
-            if(plotZ == TRUE){#
-                plot(density(c(Z)), lwd=2, main="Density of Z and MU.state")#
-                for(j in 1:ns){lines(density(c(MU.state[[j]])), col=1+j)}#
-                legend("topright", paste0("Regime", 1:ns), col=2:(ns+1), lty=1, lwd=1)#
-            }#
-            if(plotZ == FALSE & plotUU == TRUE){#
-                par(mfrow=c(1, ns))#
-            }#
-            for(j in 1:ns){#
-                cat("    state ", j, "has :", sum(s==j),'\n')#
-                cat("    sigma2 at state", j, "=", s2[j] ,'\n')#
-                if(plotUU == TRUE){#
-                    plot(U[[j]][,1], U[[j]][, 2], pch=19, cex=1); abline(v=0, col=2); abline(h=0, col=2)#
-                }           #
-            }#
-            cat("----------------------------------------------",'\n')#
-        }#
-        ## save#
-        if (iter > burnin & (iter-burnin)%%thin == 0){#
-            nss <- nss + 1#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(x = "Ground Truth = break2", y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/merge_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-            bhat.mat[iter-burnin, ] <- bhat#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-            for(j in 1:ns){#
-                MU.record[[j]] <- MU.record[[j]] + MU.state[[j]]#
-                s2mat[[j]][(iter-burnin)/thin] <- s2[j]#
-                Umat[[j]][(iter-burnin)/thin, ] <- as.vector(U[[j]])#
-                eUmat[[j]][(iter-burnin)/thin, ] <- as.vector(eU[[j]])#
-                iVUmat[[j]][(iter-burnin)/thin, ] <- as.vector(iVU[[j]])#
-                eVmat[[j]][(iter-burnin)/thin, ] <- as.vector(eV[[j]])#
-                iVVmat[[j]][(iter-burnin)/thin, ] <- as.vector(iVV[[j]])#
-            }#
-            Vmat[(iter-burnin)/thin, ] <- as.vector(V)#
-            Smat[(iter-burnin)/thin, ] <- s#
-            Pmat[(iter-burnin)/thin, ] <- diag(P)#
-            ps.store <- ps.store + ps#
-            if(Waic){#
-                d <- sapply(1:K[3], function(t){dnorm(c(Zb[,,t][UTAsingle]),#
-                                                      mean = c(MU.state[[s[t]]][,,t][UTAsingle]),#
-                                                      sd=sqrt(s2[[s[t]]]), log=TRUE)})#
-                Z.loglike.array[(iter-burnin)/thin, ,] <- d#
-            }#
-        }#
-    }## end of MCMC loop
-V
-U
-bhat
-end <- c(which(diff(s) == 1), Time)#
-            start <- c(1, which(diff(s) == 1)+1)
-j=2
-ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)
-dim(Xtz)
-Xtz
-s
-t(apply(Xm[[j]],4,c))
-c(ZE)
-dim(t(apply(X0[,,t,],3,c)))
-ZE <- Z - MUU#
-            Xtz <- t(apply(X0,4,c))%*%c(ZE)#
-            cV <- solve( XtX + diag(1/100,p))#
-            cE <- cV%*%Xtz#
-            bhat <- rmvnorm(1,cE,cV)
-bhat
-cE
-cV
-t(apply(X0,4,c))
-dim(t(apply(X0,4,c)))
-c(ZE)
-t(apply(X0,4,c))%*%c(ZE)
-dim(X0)
-first <- t(apply(X0,4,c))
-first[1,]
-dim(ZE)
-dim(first)
-sum(first[1,]*c(ZE))
-sum(Y)
-mean(Y)
-Y <- dat$CC
-ptm <- proc.time()#
-    call <- match.call()#
-    mf <- match.call(expand.dots = FALSE)#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(x = "Ground Truth = break2", y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/split-merge_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-    ## for future use#
-    fast = FALSE#
-    sticky = FALSE#
-    sequential = FALSE#
-    local.type = "NULL" ## c("NULL", "linear.trend", "logistic"),#
-    logistic.tune = 0.5#
-    random.perturb = TRUE#
-    totiter <- mcmc + burnin#
-    nstore <- mcmc/thin    #
-    reduce.mcmc <- nstore#
-    ## changepoint priors and inputs#
-    ns <- m + 1 # number of states#
-    ## X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    K <- dim(Y)  #
-    Time <- K[3]#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(x = "Ground Truth = break2", y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="split-merge.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+load("/Users/park/Dropbox/MultilayerNetwork/Journal/BayesianAnalysis/Replication/LossSimulation/merge-split_loss.RData")
+library(tidyr)#
+test.curve1 <- t(sapply(1:4, function(j){simulation.result[[j]][[1]]}))#
+test.curve2 <- t(sapply(1:4, function(j){simulation.result[[j]][[2]]}))#
+test.curve3 <- t(sapply(1:4, function(j){simulation.result[[j]][[3]]}))#
+test.curve4 <- t(sapply(1:4, function(j){simulation.result[[j]][[4]]}))#
 #
-    ## Y to Z transformation#
-    Z <-  array(qnorm( rank(Y, ties.method="random")/(length(Y)+1) ), dim=K)#
-    for(k in 1:K[3]) {#
-        Z[,,k] <-  (Z[,,k] + t(Z[,,k]))/sqrt(2)#
-    }#
-    ## tmp <- as.list(rep(NA, K[3]))#
-    ## nodenames <- dimnames(Y)[[1]]#
-    ## X0 is a upper triangle matrix of X#
-    X0 <- X ;#
-    for(k in 1:p) {#
-        tmp <- X0[,,,k] ; tmp[!UTA] <- 0 ; X0[,,,k] <- tmp#
-    }#
-    ## XtX.0 <- apply(X0,c(1,2), function(x){x%*%t(x) } ) #
-    XtX.middle <- apply(X0,c(1,2,3), function(x){x%*%t(x) } ) #
-    XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
-    if(p==1) {#
-        XtX <- matrix(sum(X0^2), p, p)#
-    }#
-    ## time specific XtX generator#
-    XtX.specific <- as.list(rep(NA, Time))#
-    for(t in 1:Time){#
-        XtX.middle.specific <- apply(X0[,,t,], c(1,2), function(x){x%*%t(x) } ) ## 16 66 66 array#
-        XtX.specific[[t]] <- matrix(apply(XtX.middle.specific, 1, sum), p, p)#
-        if(p==1) {#
-            XtX.specific[[t]] <- matrix(sum(X0[,,t,]^2), p, p)#
-        }#
-    }#
-    rm(XtX.middle.specific)#
-    ## unique values of Y#
-    uy <- sort(unique(c(Y)))#
-    ## prior for changepoint#
-    P  <-  NetworkChange:::trans.mat.prior(m=m, n=Time, a = 0.9, b= 0.1)#
-    A0  <-  NetworkChange:::trans.mat.prior(m=m, n=Time, a = a, b = b)#
-    nss <- 0#
-    ## if (is.null(initial.V)){#
-    ## out <- startUV(Z, R, K)#
-    ## initial.U <- out[[1]]#
-    ## V <- out[[2]]#
-    ## MU <- M.U(list(U,U,V))#
-    if(is.null(u0)){#
-        u0 <- 10#
-    }#
-    if(is.null(u1)){#
-        u1 <- 1 #
-    }#
-    ## sigma.mu <- mean(apply(V, 2, mean))#
-    ## sigma.var <- var(apply(V, 2, mean))#
-    if(is.null(v0)){#
-        v0 <- 10#
-        ## v0 <- 4 + 2 * (sigma.mu^2/sigma.var)#
-    }#
-    if(is.null(v1)){#
-        ## v1 <- 1#
-        v1 <- K[3]#
-    }#
-#################################
-    ## beta set up#
-    ## initialize beta#
-#################################
-    ## pooling#
-    if(pooling.mode == "time.pool"){#
-        XM <- NULL;#
-        for(j in 1:p){#
-            XM <- cbind(XM, c(X[,,,j]))#
-        }#
-        ## vectorized regression#
-        tmp <- lm( c(Z)~-1+ XM )#
-        bhat <- tmp$coef#
-        Zb <-  Z- X.b(X, bhat)#
-        bhat.mat <- matrix(NA, nstore, p)#
-    }else if(pooling.mode == "time.specific"){#
-        tmp <- as.list(rep(NA, K[3]))#
-        bhat <- matrix(NA, Time, p)#
-        for (t in 1:Time){#
-            XM <- NULL;#
-            for(j in 1:p){#
-                XM <- cbind(XM, c(X[,,t,j]))#
-            }#
-            ## vectorized regression#
-            tmp[[t]] <- lm(c(Z[,,t])~-1+ XM )#
-            bhat[t,] <- tmp[[t]]$coef#
-        }#
-        Zb <- Z - X.b.specific(X, bhat)#
-        bhat.mat <- matrix(NA, nstore, p*Time)#
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+test.curve <- data.frame(test.curve)#
+colnames(test.curve) <- paste0("break", 0:3)#
+test.curve$test <- rep(c("LogMarginal", "Loglike", "WAIC","Loss"), each = 4)#
+test.curve$time <- rep(as.factor(time.list), 4)#
+data_long <- gather(test.curve, model, value, #
+                    break0, break1, break2, break3, factor_key=TRUE)#
 #
-    }else{#
-        ## time.shrink#
-        tmp <- as.list(rep(NA, ns))#
-        bhat <- matrix(NA, ns, p)#
-        ## equi-distant state vector for initialization#
-        state <- sort(sample(1:ns, size=K[3], replace=TRUE, prob=(rep(1, ns))))#
-        ## median.s <- ceiling(apply(attr(mcmcout, "Smat"), 2, median))#
-        end <- c(which(diff(state) == 1), Time)#
-        start <- c(1, which(diff(state) == 1)+1)#
-        for (j in 1:ns){#
-            XM <- NULL;#
-            for(h in 1:p){#
-                XM <- cbind(XM, c(X[,,start[j]:end[j],h]))#
-            }#
-            ## vectorized regression#
-            tmp[[j]] <- lm(c(Z[,,start[j]:end[j]])~ -1 + XM )#
-            bhat[j,] <- tmp[[j]]$coef#
-        } #
-        Zb <- Z - X.b.shrink(X, bhat, state)#
-        bhat.mat <- matrix(NA, nstore, p*ns)#
-    }#
-    if (is.null(initial.s)){#
-        s <- state## startS(Z, Time, m, initial.U, V, s2=1, R)#
-    } else{#
-        s <- initial.s#
-    }#
-    ## holder #
-    ## Zm is a state-specific holder of ZE = Z - bhat#
-    ## Zm[[1]] is a subset of Z pertaining to state 1#
-    ## ZU = Z - ULU#
-    ## ZY is original Z separated by state#
-    UTA <- Km <- Zm <- ZY <- ZU <- ej <- U <- MU <- MU.state <- Xm <- Vm <- as.list(rep(NA, ns))#
-    ps.store <- matrix(0, Time, ns)#
-    ## given the state vector, initialize regime specific U and Vm#
-    for (j in 1:ns){#
-        ej[[j]] <- as.numeric(s==j)#
-        Zm[[j]] <- Zb[,,ej[[j]]==1] #
-        tmp <- eigen(apply(Zm[[j]], c(1,2), mean))#
-        d2m <- abs(tmp$val)#
-        U0 <- tmp$vec[, order(d2m, decreasing=TRUE) ]#
-        U[[j]] <- matrix(U0[, 1:R], nrow=nrow(U0), ncol=R)#
-        Vm[[j]] <- matrix(d2m[1:R], sum(s==j), R, byrow=TRUE)#
-    }#
-    V <- Reduce(rbind, Vm)#
-    ## initialize MU and MU.state#
-    ## MU is regime-specific mean matrix, the length of which depends on regime length#
-    ## MU.state is a full-length mean matrix for state sampling#
-    for (j in 1:ns){#
-        MU[[j]] <-  M.U(list(U[[j]],U[[j]], Vm[[j]]))#
-        MU.state[[j]] <-  M.U(list(U[[j]],U[[j]],V))#
-    }#
-    MUU <- abind(MU)#
-#
-    ## initialize s2 and d0#
-    if (is.null(c0)){#
-        c0 <- 1#
-    }#
-    if(is.null(d0)) {#
-        d0 <- var(as.vector(Z - MU.state[[1]]))#
-    }#
-    s2 <- 1/rgamma(ns, c0/2, (d0)/2)#
-    Pmat <- matrix(NA, nstore, ns)#
-    ## cat("scale prior for sigma2: ", d0, "\n")#
-    ## MCMC holders#
-    ## outlier <- rep(0, T) ## count the number of times of -Inf#
-    MU.record <- Umat <- s2mat <- iVU <- eU <- eV <- iVV <- eUmat <- iVUmat <- eVmat <- iVVmat <- as.list(rep(NA, ns))#
-    for(j in 1:ns){#
-        s2mat[[j]] <- matrix(NA, nstore)#
-        Umat[[j]] <- matrix(NA, nstore, K[1]*R)#
-        eUmat[[j]] <- matrix(NA, nstore, R)#
-        iVUmat[[j]] <- matrix(NA, nstore, R*R)#
-        eVmat[[j]]  <- matrix(NA, nstore, R)#
-        iVVmat[[j]] <- matrix(NA, nstore, R*R)#
-        MU.record[[j]] <- Y*0#
-        iVU[[j]] <- diag(R)#
-        eU[[j]] <- rep(u0, R)#
-        iVV[[j]] <- diag(R)#
-        eV[[j]] <- rep(v0, R)#
-    }#
-    Vmat <- matrix(NA, nstore, R*K[3])#
-    Smat <- matrix(NA, nstore, K[3])#
-    ## loglike holder#
-    N.upper.tri <- K[1]*(K[1]-1)/2#
-    ## Z.loglike <- matrix(NA, mcmc, K[3])#
-    ## Z.loglike <- as(matrix(NA, mcmc, K[3]), "mpfr")#
-    if(Waic){#
-        Z.loglike.array <- array(NA, dim=c(nstore, N.upper.tri, K[3]))#
-    }#
-    logmarglike <- loglike <- logmarglike.upper <- loglike.upper <- NA#
-#
-    Zt <- matrix(NA,  Time,  N.upper.tri)#
-    UTAsingle <-  upper.tri(Z[,,1])#
-    ## UTA array: TRUE for upper triangle#
-    UTAall <- Z*NA#
-    for(k in 1:K[3]) {#
-        UTAall[,,k] <-  upper.tri(Z[,,1] )#
-    } #
-    UTAall <- (UTAall==1)#
-    Waic.out <- NA#
-    SOS <- 0#
-    if(verbose !=0){#
-        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
-        cat("\t NetworkChangeReg Sampler Starts! \n")#
-        ## cat("\t function called: ")#
-        ## print(call)#
-        cat("\t degree normalization: ", degree.normal, "\n")#
-        cat("\t initial states: ", table(s), "\n")#
-        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
-    }#
-##############################################################
-    ## MCMC loop starts!#
-##############################################################
-    for(iter in 1:totiter) {#
-#
-        ## Step 0. Update Z#
-        ## update Z#
-        ## pooling#
-        if(pooling.mode == "time.pool"){#
-            EZ <-  X.b(X,bhat) + MUU#
-        }else if(pooling.mode == "time.specific"){#
-            EZ <- X.b.specific(X, bhat) + MUU#
-        }else{#
-            EZ <- X.b.shrink(X, bhat, state=s) + MUU #
-        }#
-        for(y in sample(uy))#
-        { #
-            lb <- suppressWarnings(max(Z[Y<y & UTAall])) #
-            ub <- suppressWarnings(min(Z[Y>y & UTAall]))#
-            z <- qnorm(runif(sum(Y==y), pnorm( lb-EZ[Y==y] ), pnorm(ub-EZ[Y==y])))#
-            Z[Y==y] <-  EZ[Y==y] + z#
-            ## print(y)#
-        }#
-        ## Step 1. update ej, Km, Zm#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 1. update ej, Km, Zm \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        for (j in 1:ns){#
-            ej[[j]] <- as.numeric(s==j)#
-            Km[[j]] <- dim(Zb[,,ej[[j]]==1])#
-            ## in case state j has only 1 unit, force it to be an array with 1 length#
-            if(is.na(Km[[j]][3])){#
-                ZY[[j]] <- array(Z[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Zm[[j]] <- array(Zb[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- array(Z[,,ej[[j]]==1] - MU[[j]], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1)))#
-                 ## Ym[[j]] <- array(Y[,,ej[[j]]==1], dim = c(Km[[j]][1], Km[[j]][2], 1))#
-            } else{#
-                ZY[[j]] <- Z[,,ej[[j]]==1]#
-                Zm[[j]] <- Zb[,,ej[[j]]==1]#
-                Xm[[j]] <- array(X[,,ej[[j]]==1, ], dim = c(Km[[j]][1], Km[[j]][2], sum(ej[[j]]==1), p))#
-                ## ZU[[j]] <- Z[,,ej[[j]]==1] - MU[[j]]#
-                ## Ym[[j]] <- Y[,,ej[[j]]==1]#
-            }#
-            ## return the right dimension info#
-            Km[[j]] <- dim(Zm[[j]])#
-#
-            ## UTA array: TRUE for upper triangle#
-            UTA[[j]] <- Zm[[j]]*NA#
-            for(k in 1:Km[[j]][3]) {#
-                UTA[[j]][,,k] <-  upper.tri(Zm[[j]][,,1])#
-            } #
-            UTA[[j]] <- (UTA[[j]]==1)#
-        }#
-        ## Step 2. update U#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 2. update U \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        U <- NetworkChange::updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)#
-        ## Step 3. update V#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 3. update V \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        Vm <- NetworkChange::updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)#
-        V <- Reduce(rbind, Vm)#
-#
-        ## update MU#
-        for(j in 1:ns){#
-            ## MU is shorter than MU.state. MU.state is a full length.#
-            MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))#
-            MU.state[[j]] <- M.U(list(U[[j]],U[[j]],V))#
-            ZU[[j]] <- ZY[[j]] - MU[[j]]#
-        }#
-        MUU <- abind(MU)#
-        ## Step 4. update s2#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 4. update s2 \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        s2 <- NetworkChange::updates2m(ns, Zm, MU, c0, d0, Km)#
-        ## update bhat#
-        ## pooling#
-        if(pooling.mode == "time.pool"){#
-            ZE <- Z - MUU#
-            Xtz <- t(apply(X0,4,c))%*%c(ZE)#
-            cV <- solve( XtX + diag(1/100,p))#
-            cE <- cV%*%Xtz#
-            bhat <- rmvnorm(1,cE,cV)#
-            Zb <-  Z- X.b(X, bhat)            #
-        }else if(pooling.mode == "time.specific"){#
-            for (t in 1:Time){#
-                ZE <- Z[,,t] - MUU[,,t]#
-                Xtz <-  t(apply(X0[,,t,],3,c))%*%c(ZE)#
-                cV <- solve(XtX.specific[[t]] + diag(1/B0, p))#
-                cE <- cV%*%Xtz#
-                bhat[t, ] <- rmvnorm(1,cE,cV)#
-            }#
-            Zb <- Z - X.b.specific(X, bhat)            #
-        }else{#
-            end <- c(which(diff(s) == 1), Time)#
-            start <- c(1, which(diff(s) == 1)+1)#
-            for (j in 1:ns){#
-                ZE <- ZY[[j]] - MU[[j]]#
-                Xtz <-  t(apply(Xm[[j]],4,c))%*%c(ZE)#
-                XtX.middle <- apply(Xm[[j]],c(1,2,3), function(x){x%*%t(x) } ) ## 16 66 66  8 array#
-                XtX <- matrix(apply(XtX.middle, 1, sum), p, p)#
-                cV <- solve( XtX + diag(1/B0,p))#
-                cE <- cV%*%Xtz#
-                ## vectorized regression#
-                bhat[j,] <- rmvnorm(1,cE,cV)#
-            } #
-            Zb <- Z - X.b.shrink(X, bhat, state=s)#
-        }#
-        ## update hierarchical parameters#
-        ## hierarchical parameters for U#
-        for(j in 1:ns){#
-            SS <-  t(U[[j]]) %*% U[[j]]## (Km[[j]][1]-1)*cov(U[[j]]) + Km[[j]][1]*msi/(Km[[j]][1]+1)#
-            for(r in 1:R){#
-                iVU[[j]][r,r] <- 1/rgamma(1, (u0 + K[1])/2, (u1+ SS[r,r])/2)#
-            }#
-            eU[[j]] <- c(NetworkChange:::rMVNorm(1,apply(U[[j]],2,sum)/(Km[[j]][1]+1), solve(iVU[[j]])/(Km[[j]][1]+1)))#
-        }#
-        ## hierarchical parameters for V#
-        ## V for state j only#
-        for(j in 1:ns){#
-            Vs <- matrix(Vm[[j]], nrow=sum(ej[[j]]), ncol=R)#
-            SS <-  t(Vs)%*%Vs#
-            for(r in 1:R){#
-                iVV[[j]][r,r] <- 1/rgamma(1, (v0 + Km[[j]][3])/2, (v1 + SS[r,r])/2)#
-            }#
-            eV[[j]] <- c(NetworkChange:::rMVNorm(1,apply(Vs, 2, sum)/(Km[[j]][3]+1),#
-                                                 solve(iVV[[j]])/(Km[[j]][3]+1)))      #
-        }#
-        ## Step 5. update s#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 5. update s \n")#
-        ## cat("\n---------------------------------------------- \n ")#
-        state.out <- NetworkChange::updateS(iter, s, V, m, Zb, Zt, Time, MU.state, P, s2,#
-                             N.upper.tri, random.perturb)#
-        ## state.out <- updateS(iter, s, V, m, Zb, Zt, Time, fast,#
-        ##                       MU.state, P, s2, local.type, logistic.tune, N.upper.tri, sticky)#
-        s <- state.out$s#
-        ps <- state.out$ps#
-        ## double check #
-        if(length(table(s)) < ns){#
-            ## print(table(s))#
-            ## cat("Sampled s does not have all states. \n")#
-            s <- sort(sample(1:ns, size=K[3], replace=TRUE, prob=(rep(1, ns))))#
-        }#
-        ## Step 6. update P#
-        ## cat("\n---------------------------------------------- \n ")#
-        ## cat("Step 6. update P \n")#
-        ## cat("\n---------------------------------------------- \n ")       #
-        P <- NetworkChange::updateP(s, ns, P, A0)#
-        ## report#
-        if (verbose!= 0 &iter %% verbose == 0){#
-            cat("\n----------------------------------------------",'\n')#
-            cat("    iteration = ", iter, '\n')#
-            ## cat("    SOS = ", SOS, '\n')#
-            cat("    beta = ", bhat,'\n')#
-            if(plotZ == TRUE & plotUU == TRUE){#
-                if(ns < 4){#
-                    par(mfrow=c(1, ns+1))#
-                } else{#
-                    par(mfrow=c(2, ceiling((ns+1)/2)))#
-                }#
-            }#
-            if(plotZ == TRUE){#
-                plot(density(c(Z)), lwd=2, main="Density of Z and MU.state")#
-                for(j in 1:ns){lines(density(c(MU.state[[j]])), col=1+j)}#
-                legend("topright", paste0("Regime", 1:ns), col=2:(ns+1), lty=1, lwd=1)#
-            }#
-            if(plotZ == FALSE & plotUU == TRUE){#
-                par(mfrow=c(1, ns))#
-            }#
-            for(j in 1:ns){#
-                cat("    state ", j, "has :", sum(s==j),'\n')#
-                cat("    sigma2 at state", j, "=", s2[j] ,'\n')#
-                if(plotUU == TRUE){#
-                    plot(U[[j]][,1], U[[j]][, 2], pch=19, cex=1); abline(v=0, col=2); abline(h=0, col=2)#
-                }           #
-            }#
-            cat("----------------------------------------------",'\n')#
-        }#
-        ## save#
-        if (iter > burnin & (iter-burnin)%%thin == 0){#
-            nss <- nss + 1#
-#
-            bhat.mat[iter-burnin, ] <- bhat#
-#
-            for(j in 1:ns){#
-                MU.record[[j]] <- MU.record[[j]] + MU.state[[j]]#
-                s2mat[[j]][(iter-burnin)/thin] <- s2[j]#
-                Umat[[j]][(iter-burnin)/thin, ] <- as.vector(U[[j]])#
-                eUmat[[j]][(iter-burnin)/thin, ] <- as.vector(eU[[j]])#
-                iVUmat[[j]][(iter-burnin)/thin, ] <- as.vector(iVU[[j]])#
-                eVmat[[j]][(iter-burnin)/thin, ] <- as.vector(eV[[j]])#
-                iVVmat[[j]][(iter-burnin)/thin, ] <- as.vector(iVV[[j]])#
-            }#
-            Vmat[(iter-burnin)/thin, ] <- as.vector(V)#
-            Smat[(iter-burnin)/thin, ] <- s#
-            Pmat[(iter-burnin)/thin, ] <- diag(P)#
-            ps.store <- ps.store + ps#
-            if(Waic){#
-                d <- sapply(1:K[3], function(t){dnorm(c(Zb[,,t][UTAsingle]),#
-                                                      mean = c(MU.state[[s[t]]][,,t][UTAsingle]),#
-                                                      sd=sqrt(s2[[s[t]]]), log=TRUE)})#
-                Z.loglike.array[(iter-burnin)/thin, ,] <- d#
-            }#
-        }#
-    }## end of MCMC loop
-pos = function(x,s) (x-s)*(x&gt;=s)
-pos = function(x,s) (x-s)*(x>=s)
-x <- rnorm(100)
-pos(x, 0.5)
-x
-myocarde=read.table("http://freakonometrics.free.fr/myocarde.csv", head=TRUE ,sep=";")#
-#
-y = myocarde$PRONO#
-X = cbind(1,as.matrix(myocarde[,1:7]))#
-negLogLik = function(beta){#
-    -sum(-y*log(1 + exp(-(X%*%beta))) - (1-y)*log(1 + exp(X%*%beta)))#
-}
-pos = function(x,s) (x-s)*(x>=s)## pos = function(x,s) (x-s)*(x&gt;=s)#
-#
-reg = glm(PRONO~INSYS+pos(INSYS,15)+#
-              pos(INSYS,25), data=myocarde,family=binomial)
-myocarde[1,]
-myocarde$PRONO
-pos(myocarde$INSYS,15)
-pos(INSYS,15)
-pos(myocardeINSYS,15)
-pos(myocarde$INSYS,15)
-pos = function(x,s) (x-s)*(x>=s)## pos = function(x,s) (x-s)*(x&gt;=s)
-pos(myocarde$INSYS,15)
-myocarde$INSYS
-reg = glm(PRONO~INSYS, data=myocarde,family=binomial)
-31800/30
-16300/1060
-38.40/28.41
-19.2/14.77
-24/28/41
-24/28.41
-3125000000000
-3125000000000/1000000000
-120/3125
-120/398.980
-120/1256.018
-devtools::document()
+g1 <- ggplot(data=subset(data_long, test=="LogMarginal"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "LogMarginal") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g2 <- ggplot(data=subset(data_long, test=="Loglike"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "Loglike") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g3 <- ggplot(data=subset(data_long, test=="WAIC"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4,scales = "free_y") + #
+    labs(x = "Ground Truth = break2", y = "WAIC") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+g4 <- ggplot(data=subset(data_long, test=="Loss"), mapping = aes(x = model, y = value, group = test, color = time)) +#
+    geom_line() + geom_point() + facet_wrap(~time, nrow=1, ncol=4) + #
+    labs(x = "Ground Truth = break2", y = "Loss") + theme_bw() +#
+    theme(legend.key = element_blank(),#
+          plot.title = element_text(hjust = 0.5))#
+require(NetworkChange)#
+pdf(file="merge-split.pdf", family="sans", width=12, height=10)#
+multiplot(g1, g2, g3, g4, cols=1)#
+dev.off()
+break.out <- as.list(rep(NA, break.upper))
+break.upper=3
+break.out <- as.list(rep(NA, break.upper))
+break.out
+break0 <- 1
+c(break0, break.out)
 set.seed(11173)#
-N <- 10#
-n.block <- 3#
-Yarr <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                               base.prob=.2, block.prob=.5,#
-                               shape=1, T=20, type ="split")#
-Y1 <- Yarr[,,16]#
-Y2 <- 1-Yarr[,,20]#
-diag(Y2) <- 0#
-Y <- abind(Y1, Y2, along=3)#
-K <- dim(Y)#
-X <- array(1, dim=c(K,1))
-require(abind)
-set.seed(11173)#
-N <- 10#
-n.block <- 3#
-Yarr <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                               base.prob=.2, block.prob=.5,#
-                               shape=1, T=20, type ="split")#
-Y1 <- Yarr[,,16]#
-Y2 <- 1-Yarr[,,20]#
-diag(Y2) <- 0#
-Y <- abind(Y1, Y2, along=3)#
-K <- dim(Y)#
-X <- array(1, dim=c(K,1))
-G <- 10#
-right <- NetworkStatic(Y, R=1,  mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="eigen")
-R=1
-mcmc=burnin=10
-thin=1
-verbose=10
-## function call#
-    ###
-    call <- match.call()#
-    mf <- match.call(expand.dots = FALSE)#
-    ###
-    ## MCMC controllers#
-    ###
-    totiter <- mcmc + burnin#
-    nstore <- mcmc/thin    #
-    reduce.mcmc <- nstore#
-    if(is.na(dim(Y)[3])){#
-        Y <- array(Y, dim=c(dim(Y)[1], dim(Y)[2], 1))#
-    }#
-    K <- dim(Y)#
-    n <- dim(Y)[1] #
-    Z <- Y#
-    MU.record <- Y*0#
-    nss <- 0#
-    ###
-    ## Degree normalization#
-    ###
-    if(degree.normal == "eigen"){#
-        for(k in 1:K[3]){#
-            ee <- eigen(Y[,,k])#
-            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-        }#
-    }#
-    ## if Lsym#
-    if(degree.normal == "Lsym"){#
-        for(k in 1:K[3]){#
-            Yk <-as.matrix(Y[,,k])#
-            V <- colSums(Yk)#
-            L <- diag(V) - Yk#
-            Z[,,k] <- diag(V^(-.5))%*% L %*%diag(V^(-.5))#
-        }#
-    }#
-    ## if Modul#
-    gamma.par = 1#
-    if(degree.normal == "Modul"){#
-        for(k in 1:K[3]){#
-          Yk <- as.matrix(Y[,,k])#
-          yk <- as.vector(apply(Yk, 2, sum))#
-          ym <- sum(yk)#
-          Z[,,k] <- Yk - gamma.par*(yk%o%yk)/ym#
-      }#
-    }#
-    ###
-    ## eigen decomposition for initial values of U, V, MU#
-    ###
-    out <- startUV(Z, R, K)#
-    U <- out[[1]]#
-    V <- out[[2]]#
-    MU <- M.U(list(U,U,V))#
-#
-    ## unique values of Y#
-    uy <- sort(unique(c(Y)))#
-    ## UTA array: TRUE for upper triangle#
-    UTA <- Z*NA#
-    for(k in 1:K[3]) {#
-        UTA[,,k] <-  upper.tri(Z[,,1] )#
-    } #
-    UTA <- (UTA==1)#
-    ###
-    ## MCMC holders#
-    ###
-    Umat <- matrix(NA, nstore, dim(Y)[[1]]*R)#
-    Vmat <- matrix(NA, nstore, R*dim(Y)[[3]])#
-    s2mat <- bmat <- matrix(NA, nstore)#
-    eUmat <- matrix(NA, nstore, R)#
-    eVmat <- matrix(NA, nstore, R)#
-    iVUmat <- matrix(NA, nstore, R*R)#
-    iVVmat <- matrix(NA, nstore, R*R)
-degree.normal="eigen"
-## function call#
-    ###
-    call <- match.call()#
-    mf <- match.call(expand.dots = FALSE)#
-    ###
-    ## MCMC controllers#
-    ###
-    totiter <- mcmc + burnin#
-    nstore <- mcmc/thin    #
-    reduce.mcmc <- nstore#
-    if(is.na(dim(Y)[3])){#
-        Y <- array(Y, dim=c(dim(Y)[1], dim(Y)[2], 1))#
-    }#
-    K <- dim(Y)#
-    n <- dim(Y)[1] #
-    Z <- Y#
-    MU.record <- Y*0#
-    nss <- 0#
-    ###
-    ## Degree normalization#
-    ###
-    if(degree.normal == "eigen"){#
-        for(k in 1:K[3]){#
-            ee <- eigen(Y[,,k])#
-            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-        }#
-    }#
-    ## if Lsym#
-    if(degree.normal == "Lsym"){#
-        for(k in 1:K[3]){#
-            Yk <-as.matrix(Y[,,k])#
-            V <- colSums(Yk)#
-            L <- diag(V) - Yk#
-            Z[,,k] <- diag(V^(-.5))%*% L %*%diag(V^(-.5))#
-        }#
-    }#
-    ## if Modul#
-    gamma.par = 1#
-    if(degree.normal == "Modul"){#
-        for(k in 1:K[3]){#
-          Yk <- as.matrix(Y[,,k])#
-          yk <- as.vector(apply(Yk, 2, sum))#
-          ym <- sum(yk)#
-          Z[,,k] <- Yk - gamma.par*(yk%o%yk)/ym#
-      }#
-    }#
-    ###
-    ## eigen decomposition for initial values of U, V, MU#
-    ###
-    out <- startUV(Z, R, K)#
-    U <- out[[1]]#
-    V <- out[[2]]#
-    MU <- M.U(list(U,U,V))#
-#
-    ## unique values of Y#
-    uy <- sort(unique(c(Y)))#
-    ## UTA array: TRUE for upper triangle#
-    UTA <- Z*NA#
-    for(k in 1:K[3]) {#
-        UTA[,,k] <-  upper.tri(Z[,,1] )#
-    } #
-    UTA <- (UTA==1)#
-    ###
-    ## MCMC holders#
-    ###
-    Umat <- matrix(NA, nstore, dim(Y)[[1]]*R)#
-    Vmat <- matrix(NA, nstore, R*dim(Y)[[3]])#
-    s2mat <- bmat <- matrix(NA, nstore)#
-    eUmat <- matrix(NA, nstore, R)#
-    eVmat <- matrix(NA, nstore, R)#
-    iVUmat <- matrix(NA, nstore, R*R)#
-    iVVmat <- matrix(NA, nstore, R*R)
-###
-    ## prior#
-    ###
-    if(is.null(c0)){#
-        c0 <- 1#
-    }#
-    if(is.null(d0)){#
-        d0 <- var(as.vector(Z - MU))#
-    }#
-    if(is.null(u0)){#
-        u0 <- 10#
-    }#
-    if(is.null(u1)){#
-        u1 <- 1 #
-    }#
-    if(is.null(v0)){#
-        v0 <- 4#
-    }#
-    if(is.null(v1)){#
-        v1 <- 2#
-    }#
-    ## initialize parameters#
-    if(constant){#
-        bhat <- mean(c(Z))#
-        Zb <- Z - bhat#
-    }else{#
-        bhat = 0#
-        Zb <- Z#
-    }#
-    X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    XtX <- prod(K) #
-    rm(X)#
-    s2 <- d0#
-    iVV <- iVU <- diag(R) ; eV <- eU <- rep(0,R) ; #
-    ###
-    ## Model diagnositics#
-    ###
-    Z.loglike <- NA#
-    if(Waic == TRUE){#
-        N.upper.tri <- K[1]*(K[1]-1)/2#
-        Z.loglike <- matrix(NA, nstore, N.upper.tri*K[3])#
-    }#
-    UTAsingle <-  upper.tri(Z[,,1])          #
-#
-    if(verbose !=0){#
-        cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
-        cat("\t NetworkStatic MCMC Sampler Starts! \n")#
-        ## cat("\t function called: ")#
-        ## print(call)#
-        cat("\t degree normalization: ", degree.normal, "\n")#
-        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")#
-    }#
-    ## -------------------------------------
-constant
-constant=FALSE
-## Step 1: update bhat#
-        if(constant){#
-            bhat <- updateb(Z, MU, s2, XtX, b0, B0)#
-            Zb <- Z - bhat#
-        }#
-        ## Step 2: update U#
-        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)#
-        if (UL.Normal == "Normal"){#
-            U <- Unormal(U)#
-        }else if(UL.Normal == "Orthonormal"){#
-            U <- GramSchmidt(U)#
-        }
-call <- match.call()#
-    mf <- match.call(expand.dots = FALSE)#
-    ###
-    ## MCMC controllers#
-    ###
-    totiter <- mcmc + burnin#
-    nstore <- mcmc/thin    #
-    reduce.mcmc <- nstore#
-    if(is.na(dim(Y)[3])){#
-        Y <- array(Y, dim=c(dim(Y)[1], dim(Y)[2], 1))#
-    }#
-    K <- dim(Y)#
-    n <- dim(Y)[1] #
-    Z <- Y#
-    MU.record <- Y*0#
-    nss <- 0
-if(degree.normal == "eigen"){#
-        for(k in 1:K[3]){#
-            ee <- eigen(Y[,,k])#
-            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-        }#
-    }
-###
-    ## eigen decomposition for initial values of U, V, MU#
-    ###
-    out <- startUV(Z, R, K)#
-    U <- out[[1]]#
-    V <- out[[2]]#
-    MU <- M.U(list(U,U,V))#
-#
-    ## unique values of Y#
-    uy <- sort(unique(c(Y)))#
-    ## UTA array: TRUE for upper triangle#
-    UTA <- Z*NA#
-    for(k in 1:K[3]) {#
-        UTA[,,k] <-  upper.tri(Z[,,1] )#
-    } #
-    UTA <- (UTA==1)#
-    ###
-    ## MCMC holders#
-    ###
-    Umat <- matrix(NA, nstore, dim(Y)[[1]]*R)#
-    Vmat <- matrix(NA, nstore, R*dim(Y)[[3]])#
-    s2mat <- bmat <- matrix(NA, nstore)#
-    eUmat <- matrix(NA, nstore, R)#
-    eVmat <- matrix(NA, nstore, R)#
-    iVUmat <- matrix(NA, nstore, R*R)#
-    iVVmat <- matrix(NA, nstore, R*R)
-## initialize parameters#
-    if(constant){#
-        bhat <- mean(c(Z))#
-        Zb <- Z - bhat#
-    }else{#
-        bhat = 0#
-        Zb <- Z#
-    }#
-    X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    XtX <- prod(K) #
-    rm(X)#
-    s2 <- d0#
-    iVV <- iVU <- diag(R) ; eV <- eU <- rep(0,R) ;
-## Step 2: update U#
-        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)#
-        if (UL.Normal == "Normal"){#
-            U <- Unormal(U)#
-        }else if(UL.Normal == "Orthonormal"){#
-            U <- GramSchmidt(U)#
-        }
-r
-R
-K[1]
-i
-i=1
-Ui <- U ; Ui[i,] <- 0#
-        ## aperm(N*M*T, c(3,2,1)) generates a T*M*N array. #
-        VU <-  aperm(array(apply(Ui,1,"*",t(V)), dim=c(R,K[3],K[1])), c(3,2,1))#
-        zi <- Zb[i,,]#
-        ## element-wise multiplication of VU with array(rep(zi,R), dim=c(K[1],K[3],R)#
-        L <-  apply(VU*array(rep(zi,R), dim=c(K[1],K[3],R)), 3, sum) ## L equivalent to X'y#
-        Q <-  (t(Ui)%*%Ui ) * ( t(V)%*%V ) ## Q equivalent to X'X#
-        cV <- solve( Q/s2 + iVU ) #
-        cE <- cV%*%( L/s2 + iVU%*%eU) #
-        U[i,] <- rMVNorm( 1, cE, cV )
-Ui
-U
-R
-U
-U <- updateU(K, U, V, R, Zb, s2, eU, iVU)
-U
-out <- startUV(Z, R, K)#
-    U <- out[[1]]#
-    V <- out[[2]]#
-    MU <- M.U(list(U,U,V))
-U
-V
-MU
-## Step 2: update U#
-        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)#
-        if (UL.Normal == "Normal"){#
-            U <- Unormal(U)#
-        }else if(UL.Normal == "Orthonormal"){#
-            U <- GramSchmidt(U)#
-        }
-U
-V
-R
-Zb
-dim(Zb)
-for(i in sample(K[1])){#
-        Ui <- U ; Ui[i,] <- 0#
-        ## aperm(N*M*T, c(3,2,1)) generates a T*M*N array. #
-        VU <-  aperm(array(apply(Ui,1,"*",t(V)), dim=c(R,K[3],K[1])), c(3,2,1))#
-        zi <- Zb[i,,]#
-        ## element-wise multiplication of VU with array(rep(zi,R), dim=c(K[1],K[3],R)#
-        L <-  apply(VU*array(rep(zi,R), dim=c(K[1],K[3],R)), 3, sum) ## L equivalent to X'y#
-        Q <-  (t(Ui)%*%Ui ) * ( t(V)%*%V ) ## Q equivalent to X'X#
-        cV <- solve( Q/s2 + iVU ) #
-        cE <- cV%*%( L/s2 + iVU%*%eU) #
-        U[i,] <- rMVNorm( 1, cE, cV ) #
-    }
-I
-U
-## Step 2: update U#
-        U <- updateU(K, U, V, R, Zb, s2, eU, iVU)
-U
-U <- GramSchmidt(U)
-GramSchmidt
-R
-dim(U)
-R <- dim(U)[2]#
-    N <- dim(U)[1]#
-    q <- list()#
-    A <- matrix(U[,1], N, 1)
-R
-N
-q
-A
-q[[1]] <- (1/sqrt(sum(A^2)))*A#
-    for(r in 2:R){#
-        B <- U[,r] - (q[[1]]%*%U[,r])%*%q[[1]]#
-        q[[r]] <- (1/sqrt(sum(B^2)))*B #
-    }
-right <- NetworkStatic(Y, R=1, UL.Normal=FALSE,  mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="eigen")
-R
-UL.Normal="Normal"
-if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){#
-        stop("If R=1, please set UL.Normal=FALSE.")#
-    }
-set.seed(11173)#
-N <- 10#
-n.block <- 3#
-Yarr <- MakeBlockNetworkChange(n=N, break.point = .5, #
-                               base.prob=.2, block.prob=.5,#
-                               shape=1, T=20, type ="split")#
-Y1 <- Yarr[,,16]#
-Y2 <- 1-Yarr[,,20]#
-diag(Y2) <- 0#
-Y <- abind(Y1, Y2, along=3)#
-K <- dim(Y)#
-X <- array(1, dim=c(K,1))#
-G <- 10#
-right <- NetworkStatic(Y, R=1, UL.Normal=FALSE, mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="eigen")#
-wrong <-  NetworkStatic(Y, R=1, UL.Normal=FALSE, mcmc = G, burnin = G, constant=FALSE, verbose= G, degree.normal="FALSE")
-set.seed(11173)#
-    Y <- MakeBlockNetworkChange(n=nodesize, break.point = .5, #
+    Y <- MakeBlockNetworkChange(n=nodesize, break.point = .5,#
                                 base.prob=.05, block.prob=.5,#
                                 shape=shape, T=time,#
                                 type ="split")
-kfold.result <- LOO.result <- as.list(rep(NA, 4))#
-time.list <- c(20, 40, 60, 80)#
-nodesize = 10; shape = 10#
-count <- 1; G = 10
-time
-time=10
-kfold.result <- LOO.result <- as.list(rep(NA, 4))#
-time.list <- c(20, 40, 60, 80)#
-nodesize = 10; shape = 10#
-count <- 1; G = 10
-cat("\n--------------------------------------------------------------------------------------------",'\n')#
-    cat("         count = ", count, " time = ", time, " nodesize = ", nodesize, "shape = ", shape," \n")#
-    cat("--------------------------------------------------------------------------------------------",'\n')#
-    ## data generating#
-    set.seed(11173)#
-    Y <- MakeBlockNetworkChange(n=nodesize, break.point = .5, #
-                                base.prob=.05, block.prob=.5,#
-                                shape=shape, T=time,#
-                                type ="split")
-out  <- NetworkChange(Y, R=1, m=1, mcmc=G, burnin=G, thin=1, #
-                                verbose=G, Waic=TRUE)
-## function call#
-    ptm <- proc.time()#
-    call <- match.call()#
-    mf <- match.call(expand.dots = FALSE)#
+dim(Y_)
+dim(Y)
+v0
+v0=NULL
+v1=NULL
+## set.seed(11173)#
+    K <- dim(Y)#
+    ## prior estimate#
+    if(is.null(v0) || is.null(v1)){#
+        test.run <- NetworkStatic(Y=Y, R=R, mcmc=100, burnin=100, verbose=100, UL.Normal = UL.Normal,#
+                                  v0=10, v1=K[[3]]*2)#
+        V <- attr(test.run, "V")#
+        sigma.mu = mean(apply(V, 2, mean))#
+        sigma.var = 10*mean(apply(V, 2, var))#
+        if(is.null(v0)) v0 <- 4 + 2 * (sigma.mu^2/sigma.var)#
+        if(is.null(v1)) v1 <- 2 * sigma.mu * (v0/2 - 1)#
+    }
+R=2
+## set.seed(11173)#
+    K <- dim(Y)#
+    ## prior estimate#
+    if(is.null(v0) || is.null(v1)){#
+        test.run <- NetworkStatic(Y=Y, R=R, mcmc=100, burnin=100, verbose=100, UL.Normal = UL.Normal,#
+                                  v0=10, v1=K[[3]]*2)#
+        V <- attr(test.run, "V")#
+        sigma.mu = mean(apply(V, 2, mean))#
+        sigma.var = 10*mean(apply(V, 2, var))#
+        if(is.null(v0)) v0 <- 4 + 2 * (sigma.mu^2/sigma.var)#
+        if(is.null(v1)) v1 <- 2 * sigma.mu * (v0/2 - 1)#
+    }
+UL.Normal="Orthogonal"
+## set.seed(11173)#
+    K <- dim(Y)#
+    ## prior estimate#
+    if(is.null(v0) || is.null(v1)){#
+        test.run <- NetworkStatic(Y=Y, R=R, mcmc=100, burnin=100, verbose=100, UL.Normal = UL.Normal,#
+                                  v0=10, v1=K[[3]]*2)#
+        V <- attr(test.run, "V")#
+        sigma.mu = mean(apply(V, 2, mean))#
+        sigma.var = 10*mean(apply(V, 2, var))#
+        if(is.null(v0)) v0 <- 4 + 2 * (sigma.mu^2/sigma.var)#
+        if(is.null(v1)) v1 <- 2 * sigma.mu * (v0/2 - 1)#
+    }
+## model fit#
+    break0 <- NetworkStatic(Y, R=2, mcmc=mcmc,#
+                          burnin=mcmc, verbose=mcmc, v0=v0, v1=v1,#
+                          Waic=TRUE, marginal=TRUE)#
 #
-    ## for future use#
-    fast = FALSE#
-    sticky = FALSE#
-    sequential = FALSE#
-    local.type = "NULL" ## c("NULL", "linear.trend", "logistic"),#
-    logistic.tune = 0.5#
-    random.perturb = TRUE#
-    totiter <- mcmc + burnin#
-    nstore <- mcmc/thin    #
-    reduce.mcmc <- nstore#
+    break.out <- as.list(rep(NA, break.upper))#
+    for(m in 1:break.upper){#
+        ## to save time and to be more conservative, use randomly generated initial states#
+        initial.s <- sort(rep(1:(m+1), length=time))#
+        break.out[[m]] <- NetworkChange(Y, R=2, m=m, mcmc=mcmc, initial.s = initial.s,#
+                                        burnin=mcmc, verbose=mcmc, v0=v0, v1=v1,#
+                                        Waic=TRUE, marginal=TRUE)#
+    }#
+    out <- c(break0, break.out)
+## diagnostic info#
+    Waic.holder <- marginal.holder <- loglike.holder <- rep(NA, 4)#
+    for(i in 1:(break.upper+1)){#
+        loglike.holder[i] <- attr(out[[i]], "loglike")#
+        marginal.holder[i] <- attr(out[[i]], "logmarglike")#
+        Waic.holder[i] <- attr(out[[i]], "Waic.out")[1]#
+    }#
+    ## loss#
+    loss.input <- break.out#
+    loss.out <- BreakPointLoss(loss.input, display=FALSE)[[1]]
+getwd()
+## ---------------------------------------------------- ###
+## ---------------------------------------------------- ###
+## The idea is to compute the average loss of sampled states from the expected break points#
+## by JHP "Fri Jul 20 09:57:45 2018"#
+## ---------------------------------------------------- ###
+## ---------------------------------------------------- ###
 #
-    if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){#
-        stop("If R=1, please set UL.Normal=FALSE.")#
-    }
-R
-UL.Normal
-UL.Normal=FALSE
-## function call#
-    ptm <- proc.time()#
-    call <- match.call()#
-    mf <- match.call(expand.dots = FALSE)#
+mse <- function(x, mu){mean((x - mu)^2)}#
 #
-    ## for future use#
-    fast = FALSE#
-    sticky = FALSE#
-    sequential = FALSE#
-    local.type = "NULL" ## c("NULL", "linear.trend", "logistic"),#
-    logistic.tune = 0.5#
-    random.perturb = TRUE#
-    totiter <- mcmc + burnin#
-    nstore <- mcmc/thin    #
-    reduce.mcmc <- nstore#
-#
-    if(R==1 & UL.Normal == "Orthonormal"|| R==1 & UL.Normal == "Normal"){#
-        stop("If R=1, please set UL.Normal=FALSE.")#
-    }
-## changepoint priors and inputs#
-    ns <- m + 1 # number of states#
-    Z <- Y#
-    nss <- 0#
-    K <- dim(Y)  #
-    Time <- K[3]#
-    P  <-  trans.mat.prior(m=m, n=Time, a = 0.9, b= 0.1)#
-    A0  <-  trans.mat.prior(m=m, n=Time, a = a, b = b)
-m=1
-## changepoint priors and inputs#
-    ns <- m + 1 # number of states#
-    Z <- Y#
-    nss <- 0#
-    K <- dim(Y)  #
-    Time <- K[3]#
-    P  <-  trans.mat.prior(m=m, n=Time, a = 0.9, b= 0.1)#
-    A0  <-  trans.mat.prior(m=m, n=Time, a = a, b = b)
-## if (is.null(initial.V)){#
-    out <- startUV(Z, R, K)#
-    initial.U <- out[[1]]#
-    V <- out[[2]]
-out
-if(is.null(u0)){#
-        u0 <- 10#
-    }#
-    if(is.null(u1)){#
-        u1 <- 1 #
-    }#
-    ## sigma.mu <- mean(apply(V, 2, mean))#
-    ## sigma.var <- var(apply(V, 2, mean))#
-    if(is.null(v0)){#
-        v0 <- 10#
-        ## v0 <- 4 + 2 * (sigma.mu^2/sigma.var)#
-    }#
-    if(is.null(v1)){#
-        ## v1 <- 1#
-        v1 <- K[3]#
-    }#
-    nodenames <- dimnames(Y)[[1]]#
-    ## unique values of Y#
-    uy <- sort(unique(c(Y)))#
-    ## degree normalization#
-    if(degree.normal == "eigen"){#
-        ## all the time#
-        for(k in 1:K[3]){#
-            ee <- eigen(Y[,,k])#
-            Z[,,k] <- Y[,,k] - ee$values[1] * outer(ee$vectors[,1], ee$vectors[,1])#
-            diag(Z[,,k]) <-  0#
-        }#
-    }
-constant
-## initialize beta#
-    if(constant){#
-        bhat <- mean(c(Z))#
-        Zb <- Z - bhat#
-    }else{#
-        bhat = 0#
-        Zb <- Z#
-    }#
-    X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
-    rm(X)#
-    ## eigen decomposition#
-    ## VM is time specific eigenvalues#
-    if (is.null(initial.s)){#
-        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
-    } else{#
-        s <- initial.s#
-    }
-initial.s=FALSE
-## initialize beta#
-    if(constant){#
-        bhat <- mean(c(Z))#
-        Zb <- Z - bhat#
-    }else{#
-        bhat = 0#
-        Zb <- Z#
-    }#
-    X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
-    rm(X)#
-    ## eigen decomposition#
-    ## VM is time specific eigenvalues#
-    if (is.null(initial.s)){#
-        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
-    } else{#
-        s <- initial.s#
-    }
-s
-initial.s="NULL"
-## initialize beta#
-    if(constant){#
-        bhat <- mean(c(Z))#
-        Zb <- Z - bhat#
-    }else{#
-        bhat = 0#
-        Zb <- Z#
-    }#
-    X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
-    rm(X)#
-    ## eigen decomposition#
-    ## VM is time specific eigenvalues#
-    if (is.null(initial.s)){#
-        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
-    } else{#
-        s <- initial.s#
-    }
-s
-initial.s=NULL
-## initialize beta#
-    if(constant){#
-        bhat <- mean(c(Z))#
-        Zb <- Z - bhat#
-    }else{#
-        bhat = 0#
-        Zb <- Z#
-    }#
-    X <- array(1, dim=c(K, 1))#
-    p <- dim(X)[4]#
-    XtX <- prod(K) ## matrix(sum(X^2), p, p)#
-    rm(X)#
-    ## eigen decomposition#
-    ## VM is time specific eigenvalues#
-    if (is.null(initial.s)){#
-        s <- startS(Z, Time, m, initial.U, V, s2=1, R)#
-    } else{#
-        s <- initial.s#
-    }
-s
-startS(Z, Time, m, initial.U, V, s2=1, R)
-Time
-ns <- m + 1#
-    K <- dim(Z)#
-    U.pilot <- matrix(rnorm(K[1]*R), K[1], R)      #
-    pilot <- UV.lsq(Y = Z, R = R, U=U.pilot, V=V, tol=1e-5)
-UV.lsq
-m <- dim(Y)[1] ; n <- dim(Y)[3]#
-  M0 <- M.U(list(U,U,V))#
-  rdif <- 1
-Y0 <- Y#
-  for(k in 1:n) {#
-      Y0[,,k][!upper.tri(Y0[,,k])]<- 0#
+trace.break <- function(tau.samp, tau){#
+  m <- length(tau)#
+  ## par(mfrow=c(1, m))#
+  if(m>1){#
+    ## for(i in 1:m){#
+    ##   plot(tau.samp[i,], type="l"); abline(h=tau[i], col="red")#
+    ## }#
+    out <- sapply(1:m, function(i){mse(tau.samp[i,], tau[i])})#
+  }else{#
+    ## plot(tau.samp, type="l"); abline(h=tau, col="red")#
+    out <- mse(tau.samp, tau)#
   }#
-  Y0 <- aperm(Y0,c(3,1,2))
-for(i in sample(m)){#
-          Ui<-U ; Ui[i,]<-0#
-          VU<- aperm(array(apply(Ui,1,"*",t(V)),dim=c(R,n,m)),c(3,2,1))#
-          zi<-Y[i,,]#
-          L<- apply(VU*array(rep(zi,R),dim=c(m,n,R)),3,sum)#
-          Q<- (t(Ui)%*%Ui ) * ( t(V)%*%V )#
-          U[i,]<-solve(Q)%*%L#
-      }
-Q<-((t(U)%*%U)^2-#
-              matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R))/2
-R
-U
-(t(U)%*%U)^2
-matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R)
-U^2
-UV.lsq
-matrix(apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum),R,R)
-apply(U^2,1,function(x){x%*%t(x)})
-U
-apply(apply(U^2,1,function(x){x%*%t(x)}),1,sum)
-Q<-((t(U)%*%U)^2-#
-                         matrix(sum(apply(U^2,1,function(x){x%*%t(x)})),R,R))/2
-Q
-UU<-aperm(array( apply(U,1,"*",t(U)) ,dim=c(R,m,m) ),c(2,3,1))#
-      ZUU<-array(apply(UU,3,function(x){apply(Y0,1,"*",x)}),#
-                 dim=c(m,m,n,R))#
-      L<-apply(ZUU,c(3,4),sum)#
-      V<-L%*%solve(Q)
-M1<-M.U(list(U,U,V))  #
-      rdif<- mean( (M1-M0)^2 )/mean(M0^2) #
-      M0<-M1#
-      if(iter%%10 == 0){#
-          cat("Initializing using the Alternating Least Squares Method: # of iteration = ", iter, "\n")#
-      }#
-      iter <- iter + 1
+  return(out)#
+}#
+findBreakPoint <- function (mcmcout, start = 1) #
+{#
+    out <- attr(mcmcout, "prob.state")#
+    ## y <- attr(mcmcout, "y")#
+    m <- attr(mcmcout, "m")#
+    out[1,] <- c(1, rep(0, m))#
+   ## if (!is.ts(y)) #
+    ##     y <- ts(y, start)#
+    ## time.frame <- as.vector(time(y))#
+    if (m == 1) {#
+        pr.st <- c(0, diff(out[, (m + 1)]))#
+        pr.st[pr.st < 0] <- 0#
+        cp <- which(cumsum(pr.st) > 0.5)[1] - 1#
+    }else {#
+        cp <- rep(NA, m)#
+        for (i in 2:m) {#
+            pr.st <- c(0, diff(out[, i]))#
+            pr.st <- ifelse(pr.st < 0, 0, pr.st)#
+            cp[i - 1] <- which(cumsum(pr.st) > 0.5)[1] - 1#
+        }#
+        pr.st <- c(0, diff(out[, (m + 1)]))#
+        pr.st[pr.st < 0] <- 0#
+        cp[m] <- which(cumsum(pr.st) > 0.5)[1] - 1#
+    }#
+    ## cp.means <- rep(NA, m + 1)#
+    ## cp.start <- c(1, cp + 1)#
+    ## cp.end <- c(cp, length(y))#
+    return(cp + 1)#
+}#
+#' Compute the Average Loss of Hidden State Changes from Expected Break Points#
+#'#
+#'#
+#' @param ... MCMC output objects. These have to be of class#
+#'   \code{mcmc} and have a \code{logmarglike} attribute. In what#
+#'   follows, we let \code{M} denote the total number of models to be#
+#'   compared.#
+#'#
+#' @param marginal If \code{marginal} is TRUE, \code{logmarglike} will be reported.#
+#'#
+#' @param display If \code{display} is TRUE, a plot of \code{ave.loss} will be produced. #
+#' #
+#' \code{BreakPointLoss}. ave.loss, logmarglike, State, Tau, Tau.samp#
+#' @return \code{BreakPointLoss} returns five objects. They are: \code{ave.loss} the expected loss for each model#
+#'   computed by the mean sqaured distance of hidden state changes from the expected break points#
+#' \textrm{Average Loss} = \frac{1}{M}\sum_{m=1}^{M}\left(\frac{1}{G}\sum_{g=1}^{G} (\bar{\tau}_m - \tau_{m}^{(g)})^2 \right);#
+#'   \code{logmarglike} the natural log of the marginal likelihood for each model; \code{State} sampled state vectors;#
+#'   \code{Tau} expected break points for each model; and \code{Tau.samp} sampled break points from hidden state draws.#
+#'#
+#' @export#
+#'#
+#'#
+#' @examples#
+#'    \dontrun{#
+#'    set.seed(1973)#
+#'    ## Generate an array (30 by 30 by 40) with block transitions#
+#'    from 2 blocks to 3 blocks#
+#'    Y <- MakeBlockNetworkChange(n=10, T=40, type ="split")#
+#'    G <- 100 ## Small mcmc scans to save time#
+#' #
+#'    ## Fit multiple models for break number detection using Bayesian model comparison#
+#'    out0 <- NetworkStatic(Y, R=2, mcmc=G, burnin=G, verbose=G, Waic=TRUE)#
+#'    out1 <- NetworkChange(Y, R=2, m=1, mcmc=G, burnin=G, verbose=G, Waic=TRUE)#
+#'    out2 <- NetworkChange(Y, R=2, m=2, mcmc=G, burnin=G, verbose=G, Waic=TRUE)#
+#'    out3 <- NetworkChange(Y, R=2, m=3, mcmc=G, burnin=G, verbose=G, Waic=TRUE)#
+#'#
+#'    ## The most probable model given break number 0 to 3 and data is out1 according to WAIC #
+#'    out <- BreakPointLoss(out0, out1, out2, out3, waic=TRUE)#
+#'#
+#'    print(out[["ave.loss"]])#
+#' }#
+#'#
+#' #
+BreakPointLoss <- function(model.list, waic=FALSE, display=TRUE){#
+#
+    ## model.list <- list(...)#
+    M <- length(model.list)#
+    ## this.call <- match.call()#
+    ## this.call.string <- deparse(this.call)#
+    ## this.call.string <- strsplit(this.call.string, "BreakPointLoss\\(")#
+    ## this.call.string <- this.call.string[[1]][length(this.call.string[[1]])]#
+    ## this.call.string <- strsplit(this.call.string, ",")#
+#
+    break.number <- rep(NA, M)#
+    for (i in 1:M) {#
+        break.number[i] <- attr(model.list[[i]], "m")#
+        ## print(break.number[i])#
+        if(break.number[i] < 1){#
+            stop("no break model must be dropped\n")#
+        }#
+    }#
+#
+    model.names <- paste0("break ", break.number)## c(model.names, this.call.string[[1]][i])#
+#
+    ## If marginal, report marginal likelihood#
+    WAIC <-  NULL#
+    if(waic){#
+        WAIC <- WaicCompare(model.list)#
+    }#
+    State <- Tau <- Tau.samp <- as.list(rep(NA, M))#
+#
+    for (i in 1:M) {#
+        State[[i]] <- attr(model.list[[i]], "Smat")#
+        Tau[[i]] <- findBreakPoint(model.list[[i]])#
+        Tau.samp[[i]] <- sapply(1:nrow(State[[i]]), function(j){which(diff(State[[i]][j,])==1)+1})#
+    }#
+    ## Report Average Loss#
+    ave.loss <- rep(NA, M)#
+    for (i in 1:M) {#
+        ave.loss[i] <- mean(trace.break(Tau.samp[[i]], Tau[[i]]))#
+    }#
+#
+    if(display){#
+        plot(ave.loss, type="o", xlab="Model", ylab="Loss", main="Average Loss", #
+             axes=FALSE)#
+        axis(1, at=break.number, labels=model.names); axis(2)#
+        abline(v = which.min(ave.loss), lty=3, col="red")#
+    }#
+    return(list(ave.loss = ave.loss, WAIC=WAIC, State=State, Tau=Tau, Tau.samp=Tau.samp))#
+}
+## diagnostic info#
+    Waic.holder <- marginal.holder <- loglike.holder <- rep(NA, 4)#
+    for(i in 1:(break.upper+1)){#
+        loglike.holder[i] <- attr(out[[i]], "loglike")#
+        marginal.holder[i] <- attr(out[[i]], "logmarglike")#
+        Waic.holder[i] <- attr(out[[i]], "Waic.out")[1]#
+    }#
+    ## loss#
+    loss.input <- break.out#
+    loss.out <- BreakPointLoss(loss.input, display=FALSE)[[1]]
+attr(out[[i]], "loglike")
+attr(out[[1]], "loglike")
+attr(out[[2]], "loglike")
+attr(break.out, "loglike")
+attr(break0, "loglike")
+attr(break.out[[1]], "loglike")
+out <- as.list(rep(NA, break.upper))
+out[[1]] <- break0
+out[[2]] <- break.out[[1]]
+out[[3]] <- break.out[[2]]
+out[[4]] <- break.out[[3]]
+## diagnostic info#
+    Waic.holder <- marginal.holder <- loglike.holder <- rep(NA, 4)#
+    for(i in 1:(break.upper+1)){#
+        loglike.holder[i] <- attr(out[[i]], "loglike")#
+        marginal.holder[i] <- attr(out[[i]], "logmarglike")#
+        Waic.holder[i] <- attr(out[[i]], "Waic.out")[1]#
+    }
+Waic.holder
+loss.input <- out[[-1]]#
+    loss.out <- BreakPointLoss(loss.input, display=FALSE)[[1]]
+loss.out
+length(loss.input)
+loss.input <- out[[2:(break.upper+1)]]
+loss.input <- out[[-1]]
+rm(loss.input)
+loss.input <- out[[-1]]
+typeof(out)
+loss.input <- out[[-c(1)]]
+loss.input <- out[-1]#
+    loss.out <- BreakPointLoss(loss.input, display=FALSE)[[1]]
+loss.out
+## save model diagnostics#
+    result <- list(marginal.holder, loglike.holder, Waic.holder, loss.out)#
+#
+    test.curve1 <- simulation.result[[1]]#
+    test.curve2 <- simulation.result[[2]]#
+    test.curve3 <- simulation.result[[3]]#
+    test.curve4 <- simulation.result[[4]]
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+    test.curve <- data.frame(test.curve)#
+    colnames(test.curve) <- paste0("break", 0:break.upper)#
+    test.curve$test <- c("LogMarginal", "Loglike", "WAIC","Loss")#
+    data_long <- gather(test.curve, model, value, #
+                        colnames(test.curve), factor_key=TRUE)
+test.curve4
+simulation.result[[4]]
+result
+## save model diagnostics#
+    result <- list(marginal.holder, loglike.holder, Waic.holder, loss.out)#
+#
+    test.curve1 <- result[[1]]#
+    test.curve2 <- result[[2]]#
+    test.curve3 <- result[[3]]#
+    test.curve4 <- result[[4]]#
+#
+    test.curve <- rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))#
+    test.curve <- data.frame(test.curve)#
+    colnames(test.curve) <- paste0("break", 0:break.upper)#
+    test.curve$test <- c("LogMarginal", "Loglike", "WAIC","Loss")#
+    data_long <- gather(test.curve, model, value, #
+                        colnames(test.curve), factor_key=TRUE)
+test.curve
+test.curve1
+rbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))
+cbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))
+test.curve1
+test.curve1 <- matrix(result[[1]])#
+    test.curve2 <- matrix(result[[2]])#
+    test.curve3 <- matrix(result[[3]])#
+    test.curve4 <- matrix(result[[4]])#
+#
+    test.curve <- cbind(test.curve1, test.curve2, test.curve3, cbind(NA, test.curve4))
+test.curve
+test.curve1
+test.curve2
+test.curve3
+test.curve4
+cbind(NA, test.curve4)
+matrix(result[[1]], byrow=TRUE)
+matrix(result[[1]], 1, break.upper +1, byrow=TRUE)
+test.curve1 <- matrix(result[[1]], 1, break.upper +1, byrow=TRUE)#
+    test.curve2 <- matrix(result[[2]], 1, break.upper +1, byrow=TRUE)#
+    test.curve3 <- matrix(result[[3]], 1, break.upper +1, byrow=TRUE)#
+    test.curve4 <- matrix(c(NA, result[[4]]), 1, break.upper +1, byrow=TRUE)#
+#
+    test.curve <- rbind(test.curve1, test.curve2, test.curve3, test.curve4)
+test.curve
+test.curve <- data.frame(test.curve)#
+    colnames(test.curve) <- paste0("break", 0:break.upper)#
+    test.curve$test <- c("LogMarginal", "Loglike", "WAIC","Loss")#
+    data_long <- gather(test.curve, model, value, #
+                        colnames(test.curve), factor_key=TRUE)
+data_long
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, test.curve4)#
+    test.curve <- data.frame(test.curve)#
+    colnames(test.curve) <- paste0("break", 0:break.upper)
+test.curve
+test.curve$test <- c("LogMarginal", "Loglike", "WAIC","Loss")
+test.curve
+gather(test.curve, model, value, #
+                        colnames(test.curve), factor_key=TRUE)
+data_long <- gather(test.curve, model, value, #
+                        paste0("break", 0:break.upper), factor_key=TRUE)
+data_long
+g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = test, color = test)) +#
+        geom_line() + geom_point() + facet_wrap(~test, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+test.curve1 <- -2*matrix(result[[1]], 1, break.upper +1, byrow=TRUE)#
+    test.curve2 <- -2*matrix(result[[2]], 1, break.upper +1, byrow=TRUE)#
+    test.curve3 <- matrix(result[[3]], 1, break.upper +1, byrow=TRUE)#
+    test.curve4 <- matrix(c(NA, result[[4]]), 1, break.upper +1, byrow=TRUE)#
+#
+    test.curve <- rbind(test.curve1, test.curve2, test.curve3, test.curve4)#
+    test.curve <- data.frame(test.curve)#
+    colnames(test.curve) <- paste0("break", 0:break.upper)#
+    test.curve$test <- c("-2*LogMarginal", "-2*Loglike", "WAIC","Loss")#
+    data_long <- gather(test.curve, model, value, #
+                        paste0("break", 0:break.upper), factor_key=TRUE)#
+#
+    g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = test, color = test)) +#
+        geom_line() + geom_point() + facet_wrap(~test, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, test.curve4)#
+    test.curve <- data.frame(test.curve)#
+    colnames(test.curve) <- paste0("break", 0:break.upper)#
+    test.curve$Metric <- c("-2*LogMarginal", "-2*Loglike", "WAIC","Loss")#
+    data_long <- gather(test.curve, model, value, #
+                        paste0("break", 0:break.upper), factor_key=TRUE)#
+#
+    g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = test, color = test)) +#
+        geom_line() + geom_point() + facet_wrap(~test, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line() + geom_point() + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line() + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+test.curve <- rbind(test.curve1, test.curve2, test.curve3, test.curve4)#
+    test.curve <- data.frame(test.curve)#
+    colnames(test.curve) <- paste0("break", 0:break.upper)#
+    test.curve$Metric <- c("-2*LogMarginal", "-2*Loglike", "WAIC","Average Loss")#
+    data_long <- gather(test.curve, model, value, #
+                        paste0("break", 0:break.upper), factor_key=TRUE)#
+#
+    g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line() + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(lwd=0.5) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(size=0.5) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(size=0.01) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(size=0.1) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(size=0.4) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(size=0.3) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(size=0.2) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1 <- ggplot(data= data_long, mapping = aes(x = model, y = value, group = Metric, color = Metric)) +#
+        geom_line(size=0.2) + geom_point(cex=3, alpha=1/2) + facet_wrap(~Metric, nrow=1, ncol=4, scales = "free_y") + #
+        labs(x = "Model", y = "Value") + theme_bw() +#
+        theme(legend.key = element_blank(),#
+              plot.title = element_text(hjust = 0.5))
+g1
+load("/Users/park/GitHub/BridgeChange/small_signal_loss.RData")
+ls()
+simulation.result
+abind
+require(NetworkChange)
+abind
+require(abind)
+abind
+require(NetworkChange)
+ls()
+data(MajorAlly)
+ls()
+apply(Y, 1:2, sum)
+load("/Users/park/GitHub/NetworkChange/data/MajorAlly.rda")
+apply(Y, 1:2, sum)
+setwd("~/GitHub/NetworkChange/")
 devtools::document()
-out  <- NetworkChange(Y, R=1, m=1, mcmc=G, burnin=G, thin=1, #
-                                verbose=G, Waic=TRUE)
-out  <- NetworkChange(Y, R=1, m=1, mcmc=G, burnin=G, thin=1, #
-                                verbose=G, Waic=TRUE, UL.Normal="FALSE")
+Y <- MakeBlockNetworkChange(n=10, T=40, type ="split")
+G <- 100 ## Small mcmc scans to save time
+out1 <- NetworkChange(Y, R=2, m=1, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
+out2 <- NetworkChange(Y, R=2, m=2, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
+model.list <- list(out1, out2)
+waic=TRUE
+display=TRUE
+M <- length(model.list)#
+    ## this.call <- match.call()#
+    ## this.call.string <- deparse(this.call)#
+    ## this.call.string <- strsplit(this.call.string, "BreakPointLoss\\(")#
+    ## this.call.string <- this.call.string[[1]][length(this.call.string[[1]])]#
+    ## this.call.string <- strsplit(this.call.string, ",")#
+#
+    break.number <- rep(NA, M)#
+    for (i in 1:M) {#
+        break.number[i] <- attr(model.list[[i]], "m")#
+        ## print(break.number[i])#
+        if(break.number[i] < 1){#
+            stop("no break model must be dropped\n")#
+        }#
+    }#
+#
+    model.names <- paste0("break ", break.number)## c(model.names, this.call.string[[1]][i])
+## If marginal, report marginal likelihood#
+    WAIC <-  NULL#
+    if(waic){#
+        WAIC <- WaicCompare(model.list)#
+    }#
+    State <- Tau <- Tau.samp <- as.list(rep(NA, M))#
+#
+    for (i in 1:M) {#
+        State[[i]] <- attr(model.list[[i]], "Smat")#
+        Tau[[i]] <- findBreakPoint(model.list[[i]])#
+        Tau.samp[[i]] <- sapply(1:nrow(State[[i]]), function(j){which(diff(State[[i]][j,])==1)+1})#
+    }#
+    ## Report Average Loss#
+    ave.loss <- rep(NA, M)#
+    for (i in 1:M) {#
+        ave.loss[i] <- mean(trace.break(Tau.samp[[i]], Tau[[i]]))#
+    }
+ave.loss
+i=1
+trace.break(Tau.samp[[i]], Tau[[i]])
+i=2
+trace.break(Tau.samp[[i]], Tau[[i]])
+Tau
+Tau.samp[[1]]
+Tau.samp[[2]]
+Tau.samp[[2]]
+Tau.samp[[2]][1,]
+Tau[[2]]
+Tau.samp[[2]][1,] - 19
+sum((Tau.samp[[2]][1,] - 19)^2)
+sum((Tau.samp[[2]][1,] - 19)^2)/100
+sqrt(sum((Tau.samp[[2]][1,] - 19)^2)/100)
+mean(trace.break(Tau.samp[[i]], Tau[[i]]))
+i
+i = 1
+mean(trace.break(Tau.samp[[i]], Tau[[i]]))
+sqrt(0.2)
+2*sqrt(0.2)
+2*sqrt(0.1)
+2*sqrt(2)
+-6796*2
+-6405*2
+-6393*2
+-6369*2
+-6787*2
+-6662*2
+-6446*2
+-6428*2
+-7204*2
+-7229*2
+7155*2
+-7191*2
+-6357*2
+-6403*2
+-6683*2
+-6796*2
+-6349*2
+-6420*2
+-6414*2
+sqrt(0.08)
+sqrt(0.08)*2
+sqrt(0.55)*2
+sqrt(0.49)*2
+sqrt(0.18)*2

@@ -120,7 +120,7 @@ Jong Hee Park and Yunkyun Sohn. 2017. "Detecting Structural Change
 in Network Time Series Data using Bayesian Inference." Working Paper.
 
 Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
-\emph{Computational Statistics \& Data Analysis}. 55: 530-543.
+\emph{Computational Statistics & Data Analysis}. 55: 530-543.
 
 Siddhartha Chib. 1998. "Estimation and comparison of multiple change-point models."
 \emph{Journal of Econometrics}. 86: 221-241.

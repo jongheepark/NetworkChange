@@ -7,23 +7,22 @@
 BreakPointLoss(model.list, waic = FALSE, display = TRUE)
 }
 \arguments{
-\item{display}{If \code{display} is TRUE, a plot of \code{ave.loss} will be produced. 
-
-\code{BreakPointLoss}. ave.loss, logmarglike, State, Tau, Tau.samp}
-
-\item{...}{MCMC output objects. These have to be of class
+\item{model.list}{MCMC output objects. These have to be of class
 \code{mcmc} and have a \code{logmarglike} attribute. In what
 follows, we let \code{M} denote the total number of models to be
 compared.}
 
-\item{marginal}{If \code{marginal} is TRUE, \code{logmarglike} will be reported.}
+\item{waic}{If \code{waic} is TRUE, \code{waic}(Watanabe information criterion) will be reported.}
+
+\item{display}{If \code{display} is TRUE, a plot of \code{ave.loss} will be produced.
+
+\code{BreakPointLoss}. ave.loss, logmarglike, State, Tau, Tau.samp}
 }
 \value{
 \code{BreakPointLoss} returns five objects. They are: \code{ave.loss} the expected loss for each model
-  computed by the mean sqaured distance of hidden state changes from the expected break points
-\textrm{Average Loss} = \frac{1}{M}\sum_{m=1}^{M}\left(\frac{1}{G}\sum_{g=1}^{G} (\bar{\tau}_m - \tau_{m}^{(g)})^2 \right);
-  \code{logmarglike} the natural log of the marginal likelihood for each model; \code{State} sampled state vectors;
-  \code{Tau} expected break points for each model; and \code{Tau.samp} sampled break points from hidden state draws.
+computed by the mean sqaured distance of hidden state changes from the expected break points.
+\code{logmarglike} the natural log of the marginal likelihood for each model; \code{State} sampled state vectors;
+\code{Tau} expected break points for each model; and \code{Tau.samp} sampled break points from hidden state draws.
 }
 \description{
 Compute the Average Loss of Hidden State Changes from Expected Break Points
@@ -49,4 +48,8 @@ Compute the Average Loss of Hidden State Changes from Expected Break Points
 }
 
 
+}
+\references{
+Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
 }

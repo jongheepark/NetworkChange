@@ -6,7 +6,7 @@
 \usage{
 BreakDiagnostic(Y, R = 2, mcmc = 100, burnin = 100, verbose = 100,
   thin = 1, UL.Normal = "Orthonormal", v0 = NULL, v1 = NULL,
-  break.upper = 3)
+  break.upper = 3, a = 1, b = 1)
 }
 \arguments{
 \item{Y}{Reponse tensor}
@@ -40,31 +40,35 @@ If \code{v1 = NULL}, a value is computed from a test run of \code{NetworkStatic}
 \item{break.upper}{Upper threshold for break number detection.
 The default is \code{break.upper = 3}.}
 
-\item{degree.normal}{A null model for degree correction. Users can choose "NULL", "eigen" or "Lsym."
-"NULL" is no degree correction. "eigen" is a principal eigen-matrix consisting of
-the first eigenvalue and the corresponding eigenvector. "
-Lsym" is a modularity matrix. Default is "eigen."}
+\item{a}{\eqn{a} is the shape1 beta prior for transition probabilities. By default,
+the expected duration is computed and corresponding a and b values are assigned. The expected
+duration is the sample period divided by the number of states.}
+
+\item{b}{\eqn{b} is the shape2 beta prior for transition probabilities. By default,
+the expected duration is computed and corresponding a and b values are assigned. The expected
+duration is the sample period divided by the number of states.}
 }
 \description{
 Detect a break number using different metrics
 }
 \examples{
    \dontrun{
-   set.seed(1973)
-   ## Generate an array (30 by 30 by 40) with block transitions
-   ## One break model (splitting)
-   Y <- MakeBlockNetworkChange(n=10, T=40, type ="split")
+   set.seed(19333)
+   ## Generate an array (15 by 15 by 20) with a block merging transition
+   Y <- MakeBlockNetworkChange(n=5, T=20, type ="merge")
 
-   ## Fit multiple models for break number detection using Bayesian model comparison
-   detect <- BreakDiagnostic(Y, R=2)
+   ## Fit 3 models (no break, one break, and two break) for break number detection 
+   detect <- BreakDiagnostic(Y, R=2, break.upper = 2)
    
    ## Look at the graph
    detect[[1]]; print(detect[[2]])
 
-
-   ## Two break model
-   Y <- MakeBlockNetworkChange(n=10, T=40, type ="split-merge")
 }
 
 
+
+}
+\references{
+Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
 }

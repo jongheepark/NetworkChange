@@ -8,8 +8,9 @@ NetworkChange(Y, R = 2, m = 1, initial.s = NULL, mcmc = 100,
   burnin = 100, verbose = 0, thin = 1, reduce.mcmc = NULL,
   degree.normal = "eigen", UL.Normal = "Orthonormal", DIC = FALSE,
   Waic = FALSE, marginal = FALSE, plotUU = FALSE, plotZ = FALSE,
-  constant = FALSE, b0 = 0, B0 = 1, c0 = NULL, d0 = NULL, u0 = NULL,
-  u1 = NULL, v0 = NULL, v1 = NULL, a = NULL, b = NULL)
+  constant = FALSE, b0 = 0, B0 = 1, c0 = NULL, d0 = NULL,
+  u0 = NULL, u1 = NULL, v0 = NULL, v1 = NULL, a = NULL,
+  b = NULL)
 }
 \arguments{
 \item{Y}{Reponse tensor}
@@ -135,20 +136,14 @@ using a degree-corrected multilinear tensor decomposition method
    }
 }
 \references{
-Jong Hee Park and Yunkyun Sohn. 2017. "Detecting Structural Change
-in Network Time Series Data using Bayesian Inference." Working Paper.
+Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
 
 Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
-\emph{Computational Statistics \& Data Analysis}. 55: 530-543.
+\emph{Computational Statistics & Data Analysis}. 55: 530-543.
 
 Siddhartha Chib. 1998. "Estimation and comparison of multiple change-point models."
 \emph{Journal of Econometrics}. 86: 221-241.
-
-Sumio Watanabe. 2010. "Asymptotic equivalence of Bayes cross validation and widely
-applicable information criterion in singular learning theory."
-\emph{Journal of Machine Learning Research}. 11: 3571-3594.
-Siddhartha Chib. 1995. ``Marginal Likelihood from the Gibbs Output.''
-\emph{Journal of the American Statistical Association}. 90: 1313-1321.
 }
 \seealso{
 \code{\link{NetworkStatic}}

@@ -91,8 +91,8 @@
 #'
 #' @seealso \code{\link{NetworkStatic}}
 #'
-#' @references    Jong Hee Park and Yunkyun Sohn. 2017. "Detecting Structural Change
-#' in Network Time Series Data using Bayesian Inference." Working Paper.
+#' @references    Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
 #'
 #' Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
 #' \emph{Computational Statistics \& Data Analysis}. 55: 530-543.
@@ -100,13 +100,9 @@
 #' Siddhartha Chib. 1998. "Estimation and comparison of multiple change-point models."
 #' \emph{Journal of Econometrics}. 86: 221-241.
 #'
-#' Sumio Watanabe. 2010. "Asymptotic equivalence of Bayes cross validation and widely
-#' applicable information criterion in singular learning theory."
-#' \emph{Journal of Machine Learning Research}. 11: 3571-3594.
-
-#' Siddhartha Chib. 1995. ``Marginal Likelihood from the Gibbs Output.''
-#' \emph{Journal of the American Statistical Association}. 90: 1313-1321.
-
+#'
+#' @importFrom abind abind
+#' 
 #' @export
 #'
 #' @examples
@@ -473,7 +469,9 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             cat("\n----------------------------------------------",'\n')
             cat("    iteration = ", iter, '\n')
             ## cat("    SOS = ", SOS, '\n')
-            cat("    beta = ", bhat,'\n')
+            if(constant){
+                cat("    beta = ", bhat,'\n')
+            }
             if(plotZ == TRUE & plotUU == TRUE){
                 if(ns < 4){
                     par(mfrow=c(1, ns+1))
@@ -813,10 +811,10 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 1 \n")
-        cat("    density.eU: ", as.numeric(density.eU), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 1 \n")
+        ## cat("    density.eU: ", as.numeric(density.eU), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         ##
         ## Marginal Step 2: p(iVU.st|Z, eu.st)
@@ -913,7 +911,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         
         density.iVU <- log(mean(exp(density.iVU.holder)))
         if(abs(density.iVU) == Inf){
-            ## cat("    Precision reinforced! \n")
+            ## cat("    Precision enforced! \n")
             ## print(density.iVU.holder)
             density.iVU <- as.numeric(log(mean(exp(mpfr(density.iVU.holder, precBits=53)))))
         }
@@ -921,10 +919,10 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
 
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 2 \n")
-        cat("    density.iVU: ", as.numeric(density.iVU), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 2 \n")
+        ## cat("    density.iVU: ", as.numeric(density.iVU), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         ##
         ## Marginal Step 3: p(eV.st|Z, eu.st, iVU.st)
@@ -1017,10 +1015,10 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         }
 
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 3 \n")
-        cat("    density.eV: ", as.numeric(density.eV), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 3 \n")
+        ## cat("    density.eV: ", as.numeric(density.eV), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         ##
         ## Marginal Step 4: p(iVV.st|Z, eU.st, iVU.st, eV.st)
@@ -1119,10 +1117,10 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         }
 
 
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 4 \n")
-        cat("    density.iVV: ", as.numeric(density.iVV), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 4 \n")
+        ## cat("    density.iVV: ", as.numeric(density.iVV), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         if(constant){
             ##
@@ -1201,10 +1199,10 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             }
             
             
-            cat("\n---------------------------------------------- \n ")
-            cat("Marignal Likelihood Computation Step 5 \n")
-            cat("    density.bhat: ", as.numeric(density.bhat), "\n")
-            cat("---------------------------------------------- \n ")
+            ## cat("\n---------------------------------------------- \n ")
+            ## cat("Marignal Likelihood Computation Step 5 \n")
+            ## cat("    density.bhat: ", as.numeric(density.bhat), "\n")
+            ## cat("---------------------------------------------- \n ")
         }
         
         ##
@@ -1288,10 +1286,10 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
         
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 6 \n")
-        cat("    density.Sigma: ", as.numeric(density.Sigma), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 6 \n")
+        ## cat("    density.Sigma: ", as.numeric(density.Sigma), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         
         ##
@@ -1377,10 +1375,10 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
 
-        cat("\n---------------------------------------------- \n ")
-        cat("Marignal Likelihood Computation Step 7 \n")
-        cat("    density.P: ", as.numeric(density.P), "\n")
-        cat("---------------------------------------------- \n ")
+        ## cat("\n---------------------------------------------- \n ")
+        ## cat("Marignal Likelihood Computation Step 7 \n")
+        ## cat("    density.P: ", as.numeric(density.P), "\n")
+        ## cat("---------------------------------------------- \n ")
 
         ## Prior ordinate
         iVV0 <- iVU0 <- diag(R) ; eV0 <- eU0 <- rep(0,R) ## ; psi0 <- rep(1,R) ; Psi0 <- R+1
@@ -1431,13 +1429,13 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         ## logmarglike <- (loglike + logprior) - logdenom;
         logmarglike.upper <- (loglike.upper + logprior) - logdenom
         
-        cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+        ## cat("\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
         ## cat("    log marginal likelihood = (loglike + logprior) - (density.parameters) \n")
         ## cat("    log marginal likelihood : ", as.numeric(logmarglike), "\n")
-        cat("    log marginal likelihood : ", as.numeric(logmarglike.upper), "\n")
-        cat("    logprior : ", as.numeric(logprior), "\n")
-        cat("    log posterior density : ", as.numeric(logdenom), "\n")
-        cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
+        ## cat("    log marginal likelihood : ", as.numeric(logmarglike.upper), "\n")
+        ## cat("    log prior : ", as.numeric(logprior), "\n")
+        ## cat("    log posterior density : ", as.numeric(logdenom), "\n")
+        ## cat("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n")
                 
     }
     #########################################################################

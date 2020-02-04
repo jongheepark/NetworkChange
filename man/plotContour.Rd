@@ -4,7 +4,8 @@
 \alias{plotContour}
 \title{Contour plot of latent node positions}
 \usage{
-plotContour(OUT, main = "", k = 8, my.cols = brewer.pal(k, "Spectral"))
+plotContour(OUT, main = "", k = 8, my.cols = brewer.pal(k,
+  "Spectral"))
 }
 \arguments{
 \item{OUT}{Output of networkchange objects.}
