@@ -10,7 +10,7 @@ WaicCompare(outlist)
 \item{outlist}{List of NetworkChange objects}
 }
 \value{
-out
+Results of WAIC computation
 
 A matrix of log marginal likelihoods.
 }

@@ -3,9 +3,13 @@
 #' Compare Widely Applicable Information Criterion
 #' 
 #' @param outlist List of NetworkChange objects
-#' @return out
+#'
+#' @return Results of WAIC computation
+#' 
 #' @seealso \code{\link{MarginalCompare}}
-#' @return A matrix of log marginal likelihoods. 
+#' 
+#' @return A matrix of log marginal likelihoods.
+#' 
 #' @references 
 #' Sumio Watanabe. 2010. "Asymptotic equivalence of Bayes cross validation and widely
 #' applicable information criterion in singular learning theory."

@@ -96,21 +96,21 @@
 #'    \dontrun{
 #'    set.seed(1973)
 #'
-#'    ## generate an array with three constant blocks
+#'    \## generate an array with three constant blocks
 #'    Y <- MakeBlockNetworkChange(n=10, shape=10, T=10, type ="constant")
 #'    G <- 100 ## Small mcmc scans to save time
 #'    out0 <- NetworkStatic(Y, R=2, mcmc=G, burnin=G, verbose=G)
 #'
-#'    ## recovered latent blocks
+#'    \## recovered latent blocks
 #'    Kmeans(out0, n.cluster=3, main="Recovered Blocks")
 #' 
-#'    ## contour plot of latent node positions
+#'    \## contour plot of latent node positions
 #'    plotContour(out0)
 #'
-#'    ## plot latent node positions
+#'    \## plot latent node positions
 #'    plotU(out0)
 #'
-#'    ## plot layer-specific network connection rules
+#'    \## plot layer-specific network connection rules
 #'    plotV(out0)
 #'    }
 #'

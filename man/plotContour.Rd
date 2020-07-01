@@ -25,11 +25,11 @@ Draw a contour plot of latent node positions
 \examples{
 
    \dontrun{set.seed(1973)
-   ## generate an array with two constant blocks
+   \\## generate an array with two constant blocks
    Y <- MakeBlockNetworkChange(n=10, shape=10, T=40, type ="constant")
    out0 <- NetworkStatic(Y, R=2, mcmc=10, burnin=10,
    verbose=10, UL.Normal = "Orthonormal")
-   ## contour plot of latent node positions
+   \\## contour plot of latent node positions
    plotContour(out0)
    }
 }
