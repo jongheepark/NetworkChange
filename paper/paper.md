@@ -20,7 +20,7 @@ affiliations:
   name: Faculty of Political Science and Economics, Waseda University
 date: 9 July 2020
 bibliography: paper.bib
-aas-doi: 10.3847/xxxxx <- update this with the DOI from AAS once you know it.
+aas-doi: 10.3847/xxxxx
 aas-journal: Journal of Open Source Software.
 ---
 
@@ -40,7 +40,9 @@ of longitudinal networks.
 
 # Statement of need 
 
-The package is designed for R users who need to analyize longitudinal network data to discover latent node-level characteristics including cases when there are discrete changes of the underlying states governing the node-level characteristics. In addition to functions for the statistical analysis, **NetworkChange** provides visualization functions for summary of the analysis results. The complete guide for using core functions of the package is presented at https://github.com/jongheepark/NetworkChange as its vignette with an empirical data set analysis example. Methodological details of the package were published as an article at *Bayesian Analysis* [@ParkSohn2020].
+The package is designed for R users who need to analyize longitudinal network data to discover latent node-level characteristics including cases when there are discrete changes of the underlying states governing the node-level characteristics. In addition to functions for the statistical analysis, **NetworkChange** provides visualization functions for summary of the analysis results (\autoref{fig:list}). The complete guide for using core functions of the package is presented at https://github.com/jongheepark/NetworkChange as its vignette with an empirical data set analysis example. Methodological details of the package were published as an article at *Bayesian Analysis* [@ParkSohn2020].
+
+![Summary of selected features and functions of the package.\label{fig:list}](list.png)
 
 # Acknowledgements
 
