@@ -4,9 +4,20 @@
 \alias{BreakDiagnostic}
 \title{Detect a break number using different metrics}
 \usage{
-BreakDiagnostic(Y, R = 2, mcmc = 100, burnin = 100, verbose = 100,
-  thin = 1, UL.Normal = "Orthonormal", v0 = NULL, v1 = NULL,
-  break.upper = 3, a = 1, b = 1)
+BreakDiagnostic(
+  Y,
+  R = 2,
+  mcmc = 100,
+  burnin = 100,
+  verbose = 100,
+  thin = 1,
+  UL.Normal = "Orthonormal",
+  v0 = NULL,
+  v1 = NULL,
+  break.upper = 3,
+  a = 1,
+  b = 1
+)
 }
 \arguments{
 \item{Y}{Reponse tensor}
@@ -70,5 +81,5 @@ Detect a break number using different metrics
 }
 \references{
 Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
-in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 }

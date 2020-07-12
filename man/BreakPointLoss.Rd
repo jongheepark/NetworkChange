@@ -50,6 +50,6 @@ Compute the Average Loss of Hidden State Changes from Expected Break Points
 
 }
 \references{
-Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 }

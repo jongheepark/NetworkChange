@@ -77,8 +77,8 @@ findBreakPoint <- function (mcmcout, start = 1)
 #'   \code{Tau} expected break points for each model; and \code{Tau.samp} sampled break points from hidden state draws.
 #'
 #'
-#' @references   Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+#' @references   Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 #'
 #' @export
 #'

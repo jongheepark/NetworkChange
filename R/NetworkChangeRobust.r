@@ -83,8 +83,8 @@
 #'
 #' @seealso \code{\link{NetworkStatic}}
 #'
-#' @references    Jong Hee Park and Yunkyun Sohn. 2017. "Detecting Structural Change
-#' in Network Time Series Data using Bayesian Inference." Working Paper.
+#' @references    Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 #'
 #' Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
 #' \emph{Computational Statistics \& Data Analysis}. 55: 530-543.

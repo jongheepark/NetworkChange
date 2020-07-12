@@ -4,8 +4,15 @@
 \alias{plotnetarray}
 \title{Plot of network array data}
 \usage{
-plotnetarray(Y, n.graph = 4, node.size = 2, node.color = "brown",
-  edge.alpha = 0.5, edge.size = 0.2, edge.color = "grey")
+plotnetarray(
+  Y,
+  n.graph = 4,
+  node.size = 2,
+  node.color = "brown",
+  edge.alpha = 0.5,
+  edge.size = 0.2,
+  edge.color = "grey"
+)
 }
 \arguments{
 \item{Y}{network array data}
@@ -38,6 +45,6 @@ Plot network array data
    }
 }
 \references{
-Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 }

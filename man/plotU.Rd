@@ -2,10 +2,9 @@
 % Please edit documentation in R/plotU.R
 \name{plotU}
 \alias{plotU}
-\title{Plot latent node positions}
+\title{Plot of latent node positions}
 \usage{
-plotU(OUT, Time = NULL, names = NULL, main = NULL,
-  label.prob = 0.9)
+plotU(OUT, Time = NULL, names = NULL, main = NULL, label.prob = 0.9)
 }
 \arguments{
 \item{OUT}{Output of networkchange objects.}
@@ -16,10 +15,10 @@ plotU(OUT, Time = NULL, names = NULL, main = NULL,
 
 \item{main}{The title of plot}
 
-\item{label.prob}{Label print threshold. 0.9 is the default. Top 90\% node names will be printed.}
+\item{label.prob}{Label print threshold. 0.9 is the default.}
 }
 \value{
-A plot of latent node positions
+A plot object
 }
 \description{
 Plot latent node positions
@@ -28,15 +27,11 @@ Plot latent node positions
 
    \dontrun{
    set.seed(1973)
-   \\## generate an array with two constant blocks
+   \## generate an array with two constant blocks
    Y <- MakeBlockNetworkChange(n=10, shape=10, T=40, type ="constant")
    out0 <- NetworkStatic(Y, R=2, mcmc=10, burnin=10,
    verbose=10, UL.Normal = "Orthonormal")
-   \\## latent node positions
+   \## latent node positions
    plotU(out0)
    }
-}
-\references{
-Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
-in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
 }

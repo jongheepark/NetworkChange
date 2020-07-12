@@ -11,8 +11,8 @@
 #' @references Siddhartha Chib. 1995. ``Marginal Likelihood from the Gibbs Output.''
 #' \emph{Journal of the American Statistical Association}. 90: 1313-1321.
 #'
-#' Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+#' Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 #'
 #' Sumio Watanabe. 2010. "Asymptotic equivalence of Bayes cross validation and widely
 #' applicable information criterion in singular learning theory."

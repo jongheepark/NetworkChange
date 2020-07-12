@@ -4,8 +4,20 @@
 \alias{updateS}
 \title{Update latent states}
 \usage{
-updateS(iter, s, V, m, Zb, Zt, Time, MU.state, P, s2, N.upper.tri,
-  random.perturb)
+updateS(
+  iter,
+  s,
+  V,
+  m,
+  Zb,
+  Zt,
+  Time,
+  MU.state,
+  P,
+  s2,
+  N.upper.tri,
+  random.perturb
+)
 }
 \arguments{
 \item{iter}{iteration number}

@@ -4,9 +4,17 @@
 \alias{MakeBlockNetworkChange}
 \title{Build a synthetic block-structured temporal data with breaks}
 \usage{
-MakeBlockNetworkChange(n = 10, break.point = 0.5, base.prob = 0.05,
-  block.prob = 0.5, shape = 1, T = 40, break.point1 = 0.25,
-  break.point2 = 0.75, type = "merge")
+MakeBlockNetworkChange(
+  n = 10,
+  break.point = 0.5,
+  base.prob = 0.05,
+  block.prob = 0.5,
+  shape = 1,
+  T = 40,
+  break.point1 = 0.25,
+  break.point2 = 0.75,
+  type = "merge"
+)
 }
 \arguments{
 \item{n}{The number of nodes within a block. The total number of nodes is n*block.number.}

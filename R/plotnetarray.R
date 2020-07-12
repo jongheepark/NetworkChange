@@ -10,8 +10,8 @@
 #' @param edge.size edge size.  Default is 0.2. 
 #' @param edge.color edge color.  Default is "grey."
 #'
-#' @references   Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+#' @references  Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
  
 #' @return A plot object
 #'

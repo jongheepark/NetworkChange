@@ -4,8 +4,14 @@
 \alias{drawPostAnalysis}
 \title{Plot of latent node cluster}
 \usage{
-drawPostAnalysis(mcmcout, Y, point.cex = 3, text.cex = 3,
-  segment.size = 0.1, n.cluster = NULL)
+drawPostAnalysis(
+  mcmcout,
+  Y,
+  point.cex = 3,
+  text.cex = 3,
+  segment.size = 0.1,
+  n.cluster = NULL
+)
 }
 \arguments{
 \item{mcmcout}{NetworkChange output}
@@ -40,5 +46,5 @@ Plot latent node cluster
 }
 \references{
 Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
-in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 }

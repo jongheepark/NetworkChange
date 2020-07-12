@@ -4,13 +4,35 @@
 \alias{NetworkChange}
 \title{Changepoint analysis of a degree-corrected multilinear tensor model}
 \usage{
-NetworkChange(Y, R = 2, m = 1, initial.s = NULL, mcmc = 100,
-  burnin = 100, verbose = 0, thin = 1, reduce.mcmc = NULL,
-  degree.normal = "eigen", UL.Normal = "Orthonormal", DIC = FALSE,
-  Waic = FALSE, marginal = FALSE, plotUU = FALSE, plotZ = FALSE,
-  constant = FALSE, b0 = 0, B0 = 1, c0 = NULL, d0 = NULL,
-  u0 = NULL, u1 = NULL, v0 = NULL, v1 = NULL, a = NULL,
-  b = NULL)
+NetworkChange(
+  Y,
+  R = 2,
+  m = 1,
+  initial.s = NULL,
+  mcmc = 100,
+  burnin = 100,
+  verbose = 0,
+  thin = 1,
+  reduce.mcmc = NULL,
+  degree.normal = "eigen",
+  UL.Normal = "Orthonormal",
+  DIC = FALSE,
+  Waic = FALSE,
+  marginal = FALSE,
+  plotUU = FALSE,
+  plotZ = FALSE,
+  constant = FALSE,
+  b0 = 0,
+  B0 = 1,
+  c0 = NULL,
+  d0 = NULL,
+  u0 = NULL,
+  u1 = NULL,
+  v0 = NULL,
+  v1 = NULL,
+  a = NULL,
+  b = NULL
+)
 }
 \arguments{
 \item{Y}{Reponse tensor}
@@ -113,19 +135,19 @@ using a degree-corrected multilinear tensor decomposition method
 
    \dontrun{
    set.seed(1973)
-   \\## Generate an array (30 by 30 by 40) with block transitions
+   \## Generate an array (30 by 30 by 40) with block transitions
    from 2 blocks to 3 blocks
    Y <- MakeBlockNetworkChange(n=10, T=40, type ="split")
    G <- 100 ## Small mcmc scans to save time
 
-   \\## Fit multiple models for break number detection using Bayesian model comparison
+   \## Fit multiple models for break number detection using Bayesian model comparison
    out0 <- NetworkStatic(Y, R=2, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    out1 <- NetworkChange(Y, R=2, m=1, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    out2 <- NetworkChange(Y, R=2, m=2, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    out3 <- NetworkChange(Y, R=2, m=3, mcmc=G, burnin=G, verbose=G, Waic=TRUE)
    outlist <- list(out0, out1, out2, out3)
 
-   \\## The most probable model given break number 0 to 3 and data is out1 according to WAIC 
+   \## The most probable model given break number 0 to 3 and data is out1 according to WAIC 
    WaicCompare(outlist)
 
    plotU(out1)
@@ -134,11 +156,11 @@ using a degree-corrected multilinear tensor decomposition method
    }
 }
 \references{
-Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 
 Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
-\emph{Computational Statistics & Data Analysis}. 55: 530-543.
+\emph{Computational Statistics \& Data Analysis}. 55: 530-543.
 
 Siddhartha Chib. 1998. "Estimation and comparison of multiple change-point models."
 \emph{Journal of Econometrics}. 86: 221-241.

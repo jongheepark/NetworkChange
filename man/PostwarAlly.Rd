@@ -4,11 +4,13 @@
 \name{PostwarAlly}
 \alias{PostwarAlly}
 \title{Postwar Alliance Network (1846 - 2012)}
-\format{The dataframe has contains data for postwar alliance network data
+\format{
+The dataframe has contains data for postwar alliance network data
 from 1946 to 2012 with 2 year interval. After removing disconnected components,
 104 countries are included. In this data set, a defense pact (Type I),
 which is the highest level of military commitment, is coded as 1,
-and 0 otherwise.}
+and 0 otherwise.
+}
 \source{
 Correlates of War Project. 2017. "State System Membership List,
 v2016." Online, \url{http://correlatesofwar.org}.

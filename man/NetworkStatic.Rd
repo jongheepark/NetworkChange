@@ -4,12 +4,31 @@
 \alias{NetworkStatic}
 \title{Degree-corrected multilinear tensor model}
 \usage{
-NetworkStatic(Y, R = 2, mcmc = 100, burnin = 100, verbose = 0,
-  thin = 1, reduce.mcmc = NULL, degree.normal = "eigen",
-  UL.Normal = "Orthonormal", plotUU = FALSE, plotZ = FALSE,
-  constant = FALSE, b0 = 0, B0 = 1, c0 = NULL, d0 = NULL,
-  u0 = NULL, u1 = NULL, v0 = NULL, v1 = NULL, marginal = FALSE,
-  DIC = FALSE, Waic = FALSE)
+NetworkStatic(
+  Y,
+  R = 2,
+  mcmc = 100,
+  burnin = 100,
+  verbose = 0,
+  thin = 1,
+  reduce.mcmc = NULL,
+  degree.normal = "eigen",
+  UL.Normal = "Orthonormal",
+  plotUU = FALSE,
+  plotZ = FALSE,
+  constant = FALSE,
+  b0 = 0,
+  B0 = 1,
+  c0 = NULL,
+  d0 = NULL,
+  u0 = NULL,
+  u1 = NULL,
+  v0 = NULL,
+  v1 = NULL,
+  marginal = FALSE,
+  DIC = FALSE,
+  Waic = FALSE
+)
 }
 \arguments{
 \item{Y}{Reponse tensor}
@@ -96,31 +115,31 @@ NetworkStatic implements a degree-corrected Bayesian multilinear tensor decompos
    \dontrun{
    set.seed(1973)
 
-   \\## generate an array with three constant blocks
+   \## generate an array with three constant blocks
    Y <- MakeBlockNetworkChange(n=10, shape=10, T=10, type ="constant")
    G <- 100 ## Small mcmc scans to save time
    out0 <- NetworkStatic(Y, R=2, mcmc=G, burnin=G, verbose=G)
 
-   \\## recovered latent blocks
+   \## recovered latent blocks
    Kmeans(out0, n.cluster=3, main="Recovered Blocks")
 
-   \\## contour plot of latent node positions
+   \## contour plot of latent node positions
    plotContour(out0)
 
-   \\## plot latent node positions
+   \## plot latent node positions
    plotU(out0)
 
-   \\## plot layer-specific network connection rules
+   \## plot layer-specific network connection rules
    plotV(out0)
    }
 
 }
 \references{
-Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 
 Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
-\emph{Computational Statistics & Data Analysis}. 55: 530-543.
+\emph{Computational Statistics \& Data Analysis}. 55: 530-543.
 
 Sumio Watanabe. 2010. "Asymptotic equivalence of Bayes cross validation and widely
 applicable information criterion in singular learning theory."

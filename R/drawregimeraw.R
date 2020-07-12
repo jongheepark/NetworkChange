@@ -5,8 +5,8 @@
 #' @param mcmcout NetworkChange output
 #' @param Y Input raw data
 #'
-#' @references   Jong Hee Park and Yunkyun Sohn. 2019. "Detecting Structural Change
-#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
+#' @references   Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 #'
 #' @importFrom igraph graph.adjacency get.data.frame
 #' @importFrom qgraph qgraph
@@ -84,7 +84,7 @@ drawRegimeRaw <- function(mcmcout, Y){
     for(t in 1:ns){
         g <- graph.adjacency(net[,,t], weighted=TRUE, mode="undirected")
         df <- get.data.frame(g)
-        qgraph(df, gray=TRUE, labels= names[[t]],
+        qgraph(df, labels= names[[t]],
                label.cex = 1, arrows=FALSE, title=title.list[[t]], normalize=FALSE)
     }
        

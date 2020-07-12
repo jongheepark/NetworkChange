@@ -24,6 +24,9 @@ applicable information criterion in singular learning theory."
 
 Andrew Gelman, Jessica Hwang, and Aki Vehtari. 2014. "Understanding predictive information
 criteria for Bayesian models." \emph{Statistics and Computing}. 24(6):997-1016.
+
+Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
+in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 }
 \seealso{
 \code{\link{MarginalCompare}}

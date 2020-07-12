@@ -4,12 +4,14 @@
 \name{MajorAlly}
 \alias{MajorAlly}
 \title{Major Power Alliance Network (1816 - 2012)}
-\format{The dataframe has contains data for major power alliance network data
+\format{
+The dataframe has contains data for major power alliance network data
 from 1816 to 2012. Major power definition is the COW data set, which incldues
 USA, UK, France, Germany (West Germany during 1954-1989), Austria, Italy,
 Russia, China, and Japan. In this data set, a defense pact (Type I),
 which is the highest level of military commitment, is coded as 1,
-and 0 otherwise.}
+and 0 otherwise.
+}
 \source{
 Correlates of War Project. 2017. "State System Membership List,
 v2016." Online, \url{http://correlatesofwar.org}.

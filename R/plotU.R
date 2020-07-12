@@ -1,15 +1,13 @@
+#' Plot of latent node positions
+#'
 #' Plot latent node positions
 #' 
 #' @param OUT Output of networkchange objects.
 #' @param Time Starting of the time period. If NULL, 1.
 #' @param main The title of plot
 #' @param names Node names. If NULL, use natural numbers.
-#' @param label.prob Label print threshold. 0.9 is the default. Top 90\% node names will be printed.
-#'
-#' @references   Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
-#' in Longitudinal Network Data." \emph{Bayesian Analysis}. Forthcoming.
-#' 
-#' @return A plot of latent node positions
+#' @param label.prob Label print threshold. 0.9 is the default. 
+#' @return A plot object
 #' 
 #' @importFrom ggrepel geom_label_repel
 #'
