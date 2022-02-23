@@ -10,7 +10,9 @@ drawPostAnalysis(
   point.cex = 3,
   text.cex = 3,
   segment.size = 0.1,
-  n.cluster = NULL
+  n.cluster = NULL,
+  start = 1,
+  frequency = 1
 )
 }
 \arguments{
@@ -25,6 +27,10 @@ drawPostAnalysis(
 \item{segment.size}{segment size.  Default is 0.1.}
 
 \item{n.cluster}{number of cluster. Default is 3.}
+
+\item{start}{start of ts object}
+
+\item{frequency}{frequency of ts object}
 }
 \value{
 A plot object

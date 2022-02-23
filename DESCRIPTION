@@ -1,7 +1,7 @@
 Package: NetworkChange
 Title: Bayesian Package for Network Changepoint Analysis
-Version: 0.7
-Date: 2020-07-09 14:17:31 UTC
+Version: 0.8
+Date: 2022-02-24 14:17:31 UTC
 Author: Jong Hee Park [aut,cre], Yunkyu Sohn [aut]
 Maintainer: Jong Hee Park <jongheepark@snu.ac.kr>
 Depends: R (>= 2.10.0), MCMCpack, ggplot2
@@ -10,12 +10,12 @@ Imports: grid, Rmpfr, abind, mvtnorm, tidyr, sna, igraph, qgraph, network,
 Description: Network changepoint analysis for undirected network data. The package implements a hidden Markov network change point model (Park and Sohn 2020 <doi:10.1214/19-BA1147>). Functions for break number detection using the approximate marginal likelihood and WAIC are also provided.
 License: GPL-3
 NeedsCompilation: no
-Packaged: 2020-07-09 14:17:31 UTC
-RoxygenNote: 7.1.0
+Packaged: 2022-02-24 14:17:31 UTC
+RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 Repository: CRAN
 Encoding: UTF-8
-Date/Publication: 2020-07-09 14:17:31 UTC
+Date/Publication: 2022-02-24 14:17:31 UTC
 Suggests: 
     knitr,
     rmarkdown

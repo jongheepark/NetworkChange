@@ -7,7 +7,9 @@
 #' @param point.cex node point size.  Default is 3. 
 #' @param text.cex node label size.  Default is 3.
 #' @param segment.size segment size.  Default is 0.1.
-#' @param n.cluster number of cluster. Default is 3. 
+#' @param n.cluster number of cluster. Default is 3.
+#' @param start start of ts object
+#' @param frequency frequency of ts object
 #'
 #' @references   Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
 #' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
@@ -33,7 +35,8 @@
 #'    }
 
 drawPostAnalysis <- function(mcmcout, Y, point.cex=3,  text.cex=3,
-                              segment.size = 0.1, n.cluster = NULL){
+                             segment.size = 0.1, n.cluster = NULL,
+                             start=1, frequency=1){
   m <- attr(mcmcout, "m")
   mcmc <- attr(mcmcout, "mcmc")
   U <- attr(mcmcout, "U")
@@ -47,11 +50,10 @@ drawPostAnalysis <- function(mcmcout, Y, point.cex=3,  text.cex=3,
      dimnames(Y)[[3]]<-c(1:dim(Y)[3])
   }
   median.s <- ceiling(apply(attr(mcmcout, "Smat"), 2, median))
-  Year <- as.numeric(dimnames(Y)[[3]])
-  y <- ts(Year, start=Year[1])
+  y <- ts(1:T, start=start, frequency=frequency)
   ns <- m + 1
   time <- K[[3]]
-  Year <- as.numeric(dimnames(Y)[[3]])
+  Year <- dimnames(Y)[[3]]
 
   if(is.null(n.cluster)){
     n.cluster <- rep(3, ns)
@@ -96,7 +98,7 @@ drawPostAnalysis <- function(mcmcout, Y, point.cex=3,  text.cex=3,
     title.list[[i]] <- paste0("Regime ", i, " (", time.period[[i]], ")")
     p.list[[i]] <- ggplot(.df.list[[i]], aes(x=First, y = Second, label=Names, color=Cluster)) +
       geom_point(aes(colour = Cluster, alpha=1/2), size = point.cex, show.legend=F) +
-      scale_size_continuous(guide = FALSE) +
+      scale_size_continuous(guide = "none") +
       ggtitle(title.list[[i]]) +
       labs(x = paste("v[1] = ", round(D.regime[i, 1], 2))) +
       labs(y = paste("v[2] = ", round(D.regime[i, 2], 2)))  +
