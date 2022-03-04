@@ -14,7 +14,7 @@ and 0 otherwise.
 }
 \source{
 Correlates of War Project. 2017. "State System Membership List,
-v2016." Online, \url{http://correlatesofwar.org}.
+v2016." Online, \url{https://correlatesofwar.org/}.
 Gibler, Douglas M. 2009. \emph{International military alliances, 1648-2008.}
 CQ Press.
 }

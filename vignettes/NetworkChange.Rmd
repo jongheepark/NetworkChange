@@ -74,8 +74,6 @@ bibliography: NetworkChange.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-require(NetworkChange)
-require(sna)
 knitr::opts_chunk$set(
   dpi=300,fig.width=7,
   warning=FALSE,
@@ -114,6 +112,7 @@ In this vignette, we explain how to use `NetworkChange` for network changepoint 
 
 ```{r message=FALSE}
 library(NetworkChange)
+library(sna) ## for ggnet
 ```
 
 
