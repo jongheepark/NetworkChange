@@ -36,7 +36,8 @@ drawPostAnalysis(
 A plot object
 }
 \description{
-Plot latent node cluster
+Plot latent node cluster using ggplot2.
+Uses tidyr for data reshaping and viridis for colorblind-friendly palettes.
 }
 \examples{
 

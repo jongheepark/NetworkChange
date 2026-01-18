@@ -2,7 +2,7 @@
 % Please edit documentation in R/multiplot.R
 \name{multiplot}
 \alias{multiplot}
-\title{Printing multiple ggplots in oone file}
+\title{Printing multiple ggplots in one file (DEPRECATED)}
 \usage{
 multiplot(..., plotlist = NULL, cols = 1, layout = NULL)
 }
@@ -19,8 +19,8 @@ multiplot(..., plotlist = NULL, cols = 1, layout = NULL)
 A plot object
 }
 \description{
-Print multiple ggplots in one file. Slightly modified for packaging from the original version in the web.
-}
-\author{
-\url{http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+
+This function has been deprecated in favor of \code{\link[patchwork:wrap_plots]{patchwork::wrap_plots()}}.
+Please use \code{patchwork::wrap_plots(plotlist, ncol = cols)} instead.
 }

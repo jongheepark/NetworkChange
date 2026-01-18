@@ -1,8 +1,7 @@
 #' Update time-constant latent node positions
 #'
-#' Update time-constant latent node positions
-#'
-#' 
+#' Update time-constant latent node positions using optimized matrix operations.
+#' Pre-computes invariant quantities outside the node loop for better performance.
 #'
 #' @param K The dimensionality of Z
 #' @param U The most recent draw of latent node positions
@@ -19,17 +18,30 @@
 #'
 
 updateU <- function(K, U, V, R, Zb, s2, eU, iVU){
+    ## Pre-compute invariants outside the loop
+    VtV <- crossprod(V)  # t(V) %*% V - computed once
+    iVU_eU <- iVU %*% eU  # Prior contribution - computed once
+    inv_s2 <- 1 / s2      # Avoid repeated division
+
     for(i in sample(K[1])){
-        Ui <- U ; Ui[i,] <- 0
-        ## aperm(N*M*T, c(3,2,1)) generates a T*M*N array. 
-        VU <-  aperm(array(apply(Ui,1,"*",t(V)), dim=c(R,K[3],K[1])), c(3,2,1))
-        zi <- Zb[i,,]
-        ## element-wise multiplication of VU with array(rep(zi,R), dim=c(K[1],K[3],R)
-        L <-  apply(VU*array(rep(zi,R), dim=c(K[1],K[3],R)), 3, sum) ## L equivalent to X'y
-        Q <-  (t(Ui)%*%Ui ) * ( t(V)%*%V ) ## Q equivalent to X'X
-        cV <- solve( Q/s2 + iVU ) 
-        cE <- cV%*%( L/s2 + iVU%*%eU) 
-        U[i,] <- rMVNorm( 1, cE, cV ) 
-    } 
+        Ui <- U
+        Ui[i,] <- 0
+
+        ## Compute U'U incrementally (subtract row i contribution)
+        UtU <- crossprod(Ui)
+
+        ## Q = (U'U) * (V'V) - Hadamard product
+        Q <- UtU * VtV
+
+        ## Compute L using optimized operations
+        ## L[r] = sum over j,t of Ui[j,r] * V[t,r] * Zb[i,j,t]
+        zi <- matrix(Zb[i,,], nrow = K[1], ncol = K[3])  # Ensure matrix form
+        L <- colSums(Ui * (zi %*% V))  # Vectorized computation
+
+        ## Posterior covariance and mean
+        cV <- solve(Q * inv_s2 + iVU)
+        cE <- cV %*% (L * inv_s2 + iVU_eU)
+        U[i,] <- rMVNorm(1, cE, cV)
+    }
     return(U)
 }

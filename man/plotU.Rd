@@ -21,7 +21,8 @@ plotU(OUT, Time = NULL, names = NULL, main = NULL, label.prob = 0.9)
 A plot object
 }
 \description{
-Plot latent node positions
+Plot latent node positions using ggplot2 with patchwork for multi-panel layouts.
+Uses colorblind-friendly palettes and cross-platform compatible fonts.
 }
 \examples{
 

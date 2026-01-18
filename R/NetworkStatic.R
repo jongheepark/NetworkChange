@@ -81,7 +81,7 @@
 #' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 #'
 #' Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
-#' \emph{Computational Statistics \& Data Analysis}. 55: 530-543.
+#' \emph{Computational Statistics & Data Analysis}. 55: 530-543.
 #'
 #' Sumio Watanabe. 2010. "Asymptotic equivalence of Bayes cross validation and widely
 #' applicable information criterion in singular learning theory."

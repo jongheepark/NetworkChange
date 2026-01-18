@@ -1,15 +1,17 @@
 #' Plot of latent node positions
 #'
-#' Plot latent node positions
-#' 
+#' Plot latent node positions using ggplot2 with patchwork for multi-panel layouts.
+#' Uses colorblind-friendly palettes and cross-platform compatible fonts.
+#'
 #' @param OUT Output of networkchange objects.
 #' @param Time Starting of the time period. If NULL, 1.
 #' @param main The title of plot
 #' @param names Node names. If NULL, use natural numbers.
-#' @param label.prob Label print threshold. 0.9 is the default. 
+#' @param label.prob Label print threshold. 0.9 is the default.
 #' @return A plot object
-#' 
+#'
 #' @importFrom ggrepel geom_label_repel
+#' @importFrom patchwork wrap_plots
 #'
 #' @export
 #'
@@ -39,77 +41,72 @@ plotU <- function(OUT, Time=NULL, names=NULL, main=NULL, label.prob=0.9){
     }
     if(is.null(names)){
         names <- 1:K[1]
-    } 
+    }
     ns <- m + 1
     First <- Second <- Size <- Names <- Name <- NA
+
     if(m == 0){
         x <- OUT
-        x.mean <-  apply(x, 1:2, mean)
+        x.mean <- apply(x, 1:2, mean)
         tmp <- eigen(x.mean)
-        U <- tmp$vec[, order(-abs(tmp$val))[seq(1, R, length = R)], 
+        U <- tmp$vec[, order(-abs(tmp$val))[seq(1, R, length = R)],
                      drop = FALSE] * sqrt(K[1])
         df <- data.frame(First = U[,1], Second = U[,2],
                          Size = sqrt((U[,1])^2 + (U[,2])^2),
                          Names = names)
         if(is.null(main)){
-            title <- paste0("Latent Space of No Break Model")
-        }else{
+            title <- "Latent Space of No Break Model"
+        } else {
             title <- main
         }
         df$Name <- ifelse(df$Size > quantile(df$Size, probs=label.prob), df$Names, NA)
-        ggplot(df, aes(x=First, y = Second, label=Name)) +
-            geom_point(size = df$Size+1, colour = alpha("red", 1/5)) +
+        p <- ggplot(df, aes(x=First, y=Second, label=Name)) +
+            geom_point(size = df$Size+1, colour = alpha("red", 0.2)) +
             ggtitle(title) +
             geom_label_repel(aes(label=Name),
                              color="navy",
                              box.padding=0.35, point.padding=0.5, segment.color="grey70",
-                             fontface="bold", size=2, family="AppleGothic") +
-            theme(plot.title = element_text(lineheight=.5, face="bold"))
-    }else{      
-        ## plot
-        U.list <- df.list <- p.list <- title.list <- time.period <- as.list(rep(NA, ns))
+                             fontface="bold", size=2) +
+            theme_networkchange()
+        return(p)
+    } else {
+        ## Multi-regime plots
+        U.list <- df.list <- p.list <- title.list <- time.period <- vector("list", ns)
         median.s <- apply(attr(OUT, "Smat"), 2, median)
-        
+
         for(i in 1:ns){
             time.period[[i]] <- paste0(range(Time[median.s == i])[1], "-", range(Time[median.s == i])[2])
             x <- OUT[,,median.s == i]
-            x.mean <-  apply(x, 1:2, mean)
+            x.mean <- apply(x, 1:2, mean)
             tmp <- eigen(x.mean)
-            U.list[[i]] <- tmp$vec[, order(-abs(tmp$val))[seq(1, R, length = R)], 
+            U.list[[i]] <- tmp$vec[, order(-abs(tmp$val))[seq(1, R, length = R)],
                                    drop = FALSE] * sqrt(K[1])
-            ## U.list[[i]] <- matrix(apply(out[[i]], 2, mean), dim(Y)[1], R)
             df.list[[i]] <- data.frame(First = U.list[[i]][,1], Second = U.list[[i]][,2],
                                        Size = sqrt((U.list[[i]][,1])^2 + (U.list[[i]][,2])^2),
                                        Names = names)
             if(is.null(main)){
                 title.list[[i]] <- paste0("Latent Space of Regime ", i, " (", time.period[[i]], ")")
-            }else{
+            } else {
                 title.list[[i]] <- main
             }
-            
-            ## df.list[[i]]$group <- 1
+
             df.list[[i]]$Name <- ifelse(df.list[[i]]$Size >
                                         quantile(df.list[[i]]$Size, probs=label.prob),
                                         df.list[[i]]$Names, NA)
-            
-            ## title.list[[i]] <- paste0("Latent Space of Break ", i, " (", time.period[[i]], ")")
-            p.list[[i]] <- ggplot(df.list[[i]], aes(x=First, y = Second, label=Name)) +
-                geom_point(size = df.list[[i]]$Size+1, colour = alpha("red", 1/5)) +
+
+            p.list[[i]] <- ggplot(df.list[[i]], aes(x=First, y=Second, label=Name)) +
+                geom_point(size = df.list[[i]]$Size+1, colour = alpha("red", 0.2)) +
                 ggtitle(title.list[[i]]) +
-                ## geom_text(colour = "navy", aes(label = Names)) + 
-                ## geom_text(size = df.list[[i]]$Size, colour = "navy", aes(label = Names)) +
                 geom_label_repel(aes(label=Name),
                                  color="navy",
                                  box.padding=0.35, point.padding=0.5, segment.color="grey70",
-                                 fontface="bold", size=2, family="AppleGothic") +
-                theme(plot.title = element_text(lineheight=.5, face="bold")) 
-                
+                                 fontface="bold", size=2) +
+                theme_networkchange()
         }
-        if(ns < 5){
-             multiplot(plotlist = p.list, cols=ns)
-        }
-        else{
-            multiplot(plotlist = p.list, cols=ceiling(ns/2))
-        }
+
+        ## Use patchwork for layout instead of multiplot
+        ncols <- if(ns < 5) ns else ceiling(ns/2)
+        combined_plot <- patchwork::wrap_plots(p.list, ncol = ncols)
+        return(combined_plot)
     }
 }

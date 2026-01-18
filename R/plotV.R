@@ -1,12 +1,21 @@
+## Avoid R CMD check notes for ggplot2 NSE
+utils::globalVariables(c("Time", "Value", "Dimension"))
+
 #' Plot of layer-specific network generation rules.
 #'
-#' Plot layer-specific network generation rules.
-#' 
+#' Plot layer-specific network generation rules using ggplot2.
+#' Uses colorblind-friendly viridis palette for publication-quality output.
+#'
 #' @param OUT Output of networkchange objects.
 #' @param main The title of plot
-#' @param cex point size
-#' @return A plot object
-#' 
+#' @param point_size Point size (default: 3)
+#' @param line_size Line width (default: 1)
+#' @return A ggplot2 plot object
+#'
+#' @importFrom ggplot2 ggplot aes geom_line geom_point geom_hline labs
+#' @importFrom ggplot2 scale_color_viridis_d
+#' @importFrom tidyr pivot_longer
+#'
 #' @export
 #'
 #' @examples
@@ -22,31 +31,37 @@
 
 
 
-plotV <- function (OUT, main = "", cex = 2) {
-    ##   par(mar = c(5, 4, 2.4, 2.2))
-    
+plotV <- function(OUT, main = "", point_size = 3, line_size = 1) {
     Vmat <- attr(OUT, "Vmat")
     R <- attr(OUT, "R")
     Y <- attr(OUT, "Z")
-    T <- dim(Vmat)[2]/R
-    my.cols = rainbow(R)
+    Time_points <- dim(Vmat)[2] / R
+
+    ## Compute posterior means
     vmean <- apply(Vmat, 2, mean)
-    V <- matrix(vmean, T, R)
-    ## Vmat1 <- Vmat[, 1:T]
-    ## Vmat2 <- Vmat[, (T + 1):(2 * T)]
-    ## V1 <- apply(Vmat1, 2, mean)
-    ## V2 <- apply(Vmat2, 2, mean)
-    
-    plot(1:T, V[,1], type = "n", main = "", ylim=range(V), 
-         ylab = expression(V), xlab = "Time", xaxt = "n", yaxt = "n")
-    axis(1); axis(2); grid( col="grey40")
-    abline(h=0, lty=3)
-    for(i in 1:R){
-        lines(1:T, V[,i], lwd=2, col = addTrans(my.cols[i],100))
-        points(1:T,V[,i], cex = cex, pch=19, col = addTrans(my.cols[i],150))
-    }
-    legend("bottomright", legend=paste0("Dimension ", 1:R), pch = c(19), 
-               lwd=1, lty=c(1), 
-               col = my.cols,
-               inset=c(0,1), xpd=TRUE, horiz=TRUE, bty="n", cex=1)
+    V <- matrix(vmean, Time_points, R)
+
+    ## Create data frame for ggplot
+    df <- data.frame(
+        Time = rep(1:Time_points, R),
+        Value = as.vector(V),
+        Dimension = factor(rep(paste0("Dimension ", 1:R), each = Time_points))
+    )
+
+    ## Create ggplot
+    p <- ggplot(df, aes(x = Time, y = Value, color = Dimension, group = Dimension)) +
+        geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
+        geom_line(linewidth = line_size, alpha = 0.8) +
+        geom_point(size = point_size, alpha = 0.9) +
+        scale_color_viridis_d(option = "D", end = 0.9) +
+        labs(
+            title = if(nchar(main) > 0) main else "Layer-Specific Network Generation Rules",
+            x = "Time",
+            y = expression(V),
+            color = "Latent\nDimension"
+        ) +
+        theme_networkchange() +
+        theme(legend.position = "bottom")
+
+    return(p)
 }

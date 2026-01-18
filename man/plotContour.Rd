@@ -4,7 +4,7 @@
 \alias{plotContour}
 \title{Contour plot of latent node positions}
 \usage{
-plotContour(OUT, main = "", k = 8, my.cols = brewer.pal(k, "Spectral"))
+plotContour(OUT, main = "", k = 8, my.cols = viridis::viridis(k))
 }
 \arguments{
 \item{OUT}{Output of networkchange objects.}
@@ -13,13 +13,14 @@ plotContour(OUT, main = "", k = 8, my.cols = brewer.pal(k, "Spectral"))
 
 \item{k}{The number of levels (nlevels in contour ()).}
 
-\item{my.cols}{Color scale. Use brewer.pal() from RColorBrewer.}
+\item{my.cols}{Color scale. Defaults to viridis palette. Can also use brewer.pal() from RColorBrewer.}
 }
 \value{
 A plot object
 }
 \description{
-Draw a contour plot of latent node positions
+Draw a contour plot of latent node positions.
+Uses colorblind-friendly viridis palette by default.
 }
 \examples{
 

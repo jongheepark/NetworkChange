@@ -31,5 +31,6 @@ updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)
 A matrix of regime-specific layer specific network generation rules
 }
 \description{
-Update layer specific network generation rules from a change-point network process
+Update layer specific network generation rules from a change-point network process.
+Uses optimized matrix operations and eliminates redundant array permutations.
 }

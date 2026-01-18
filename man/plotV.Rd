@@ -4,20 +4,23 @@
 \alias{plotV}
 \title{Plot of layer-specific network generation rules.}
 \usage{
-plotV(OUT, main = "", cex = 2)
+plotV(OUT, main = "", point_size = 3, line_size = 1)
 }
 \arguments{
 \item{OUT}{Output of networkchange objects.}
 
 \item{main}{The title of plot}
 
-\item{cex}{point size}
+\item{point_size}{Point size (default: 3)}
+
+\item{line_size}{Line width (default: 1)}
 }
 \value{
-A plot object
+A ggplot2 plot object
 }
 \description{
-Plot layer-specific network generation rules.
+Plot layer-specific network generation rules using ggplot2.
+Uses colorblind-friendly viridis palette for publication-quality output.
 }
 \examples{
 

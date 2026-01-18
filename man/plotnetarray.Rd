@@ -30,10 +30,10 @@ plotnetarray(
 \item{edge.color}{edge color.  Default is "grey."}
 }
 \value{
-A plot object
+A patchwork plot object
 }
 \description{
-Plot network array data
+Plot network array data using ggplot2 and patchwork for layout.
 }
 \examples{
 

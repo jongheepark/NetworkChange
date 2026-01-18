@@ -141,7 +141,7 @@ Jong Hee Park and Yunkyun Sohn. 2020. "Detecting Structural Change
 in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 
 Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
-\emph{Computational Statistics \& Data Analysis}. 55: 530-543.
+\emph{Computational Statistics & Data Analysis}. 55: 530-543.
 
 Siddhartha Chib. 1998. "Estimation and comparison of multiple change-point models."
 \emph{Journal of Econometrics}. 86: 221-241.

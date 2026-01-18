@@ -27,5 +27,6 @@ updateV(Zb, U, R, K, s2, eV, iVV, UTA)
 A matrix of layer specific network generation rules
 }
 \description{
-Update layer specific network generation rules
+Update layer specific network generation rules using optimized matrix operations.
+Eliminates redundant array permutations for better performance.
 }

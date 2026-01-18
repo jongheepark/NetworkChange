@@ -1,13 +1,15 @@
 #' Contour plot of latent node positions
 #'
-#' Draw a contour plot of latent node positions
+#' Draw a contour plot of latent node positions.
+#' Uses colorblind-friendly viridis palette by default.
 #'
 #' @param OUT Output of networkchange objects.
 #' @param main The title of plot
-
-#' @param k The number of levels (nlevels in contour ()). 	
-#' @param my.cols Color scale. Use brewer.pal() from RColorBrewer.
+#' @param k The number of levels (nlevels in contour ()).
+#' @param my.cols Color scale. Defaults to viridis palette. Can also use brewer.pal() from RColorBrewer.
 #' @return A plot object
+#'
+#' @importFrom viridis viridis
 #'
 #' @export
 #'
@@ -24,7 +26,7 @@
 #'    }
 
 plotContour <- function(OUT, main="", k=8,
-                       my.cols = brewer.pal(k, "Spectral")){
+                       my.cols = viridis::viridis(k)){
   ## k is nlevels of conour()
     Umat <- attr(OUT, "Umat")
     Y <- attr(OUT, "Z")

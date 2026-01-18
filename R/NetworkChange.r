@@ -95,7 +95,7 @@
 #' in Longitudinal Network Data." \emph{Bayesian Analysis}. Vol.15, No.1, pp.133-157.
 #'
 #' Peter D. Hoff 2011. "Hierarchical Multilinear Models for Multiway Data."
-#' \emph{Computational Statistics \& Data Analysis}. 55: 530-543.
+#' \emph{Computational Statistics & Data Analysis}. 55: 530-543.
 #'
 #' Siddhartha Chib. 1998. "Estimation and comparison of multiple change-point models."
 #' \emph{Journal of Econometrics}. 86: 221-241.
@@ -265,7 +265,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         U[[j]] <- matrix(U0[, 1:R], nrow=nrow(U0), ncol=R)
         Vm[[j]] <- matrix(V[ej[[j]] == 1, ], sum(s==j), R)
     }
-    ## V <- Reduce(rbind, Vm)
+    ## V <- combineVm(Vm)
     
     ## initialize MU and MU.state
     ## MU is regime-specific mean matrix, the length of which depends on regime length
@@ -390,7 +390,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         ## cat("Step 3. update V \n")
         ## cat("\n---------------------------------------------- \n ")
         Vm <- updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)
-        V <- Reduce(rbind, Vm)
+        V <- combineVm(Vm)
 
         ## update MU
         for(j in 1:ns){
@@ -577,7 +577,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         MU.state.st[[j]] <- M.U(list(U.st[[j]],U.st[[j]], matrix(apply(Vmat, 2, mean), K[3], R)))
         EE.st[[j]] <- c(array(Zb.st[,,s.st == j], dim=Km.st[[j]]) - MU.st[[j]]) ## M.U(list(U,U,V)) 
     }
-    V.st <- Reduce(rbind, Vm.st)
+    V.st <- combineVm(Vm.st)
     ## apply(V.st, 2, sum)
     ## t(U.st[[1]][,1]) %*% U.st[[1]][,2]
     
@@ -845,7 +845,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         
             ## Step 3. update V
             Vm <- updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)
-            V <- Reduce(rbind, Vm)
+            V <- combineVm(Vm)
 
             for(j in 1:ns){
                 MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))
@@ -953,7 +953,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         
             ## Step 3. update V
             Vm <- updateVm(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA)
-            V <- Reduce(rbind, Vm)
+            V <- combineVm(Vm)
 
             for(j in 1:ns){
                 MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))
@@ -1049,7 +1049,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         
             ## Step 3. update V
             Vm <- updateVm(ns, U, V, Zm, Km, R, s2, eV.st, iVV, UTA)
-            V <- Reduce(rbind, Vm)
+            V <- combineVm(Vm)
 
             for(j in 1:ns){
                 MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))
@@ -1151,7 +1151,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
                 
                 ## Step 3. update V
                 Vm <- updateVm(ns, U, V, Zm, Km, R, s2, eV.st, iVV.st, UTA)
-                V <- Reduce(rbind, Vm)
+                V <- combineVm(Vm)
                 
                 for(j in 1:ns){
                     MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))
@@ -1233,7 +1233,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         
             ## Step 3. update V
             Vm <- updateVm(ns, U, V, Zm, Km, R, s2, eV.st, iVV.st, UTA)
-            V <- Reduce(rbind, Vm)
+            V <- combineVm(Vm)
 
             for(j in 1:ns){
                 MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))
@@ -1321,7 +1321,7 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
         
             ## Step 3. update V
             Vm <- updateVm(ns, U, V, Zm, Km, R, s2.st, eV.st, iVV.st, UTA)
-            V <- Reduce(rbind, Vm)
+            V <- combineVm(Vm)
 
             for(j in 1:ns){
                 MU[[j]] <- M.U(list(U[[j]],U[[j]],Vm[[j]]))

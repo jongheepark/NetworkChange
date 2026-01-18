@@ -2,6 +2,135 @@
 ## functions.R
 #################################################
 
+###########################
+## Unified Theme System for NetworkChange
+###########################
+
+#' NetworkChange ggplot2 Theme
+#'
+#' A consistent theme for all NetworkChange visualizations.
+#' Based on theme_minimal with customizations for publication-quality output.
+#'
+#' @param base_size Base font size (default: 11)
+#' @param base_family Base font family (default: "" for system default)
+#'
+#' @return A ggplot2 theme object
+#'
+#' @importFrom ggplot2 theme_minimal theme element_text element_rect element_line %+replace%
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' library(ggplot2)
+#' ggplot(mtcars, aes(mpg, wt)) + geom_point() + theme_networkchange()
+#' }
+theme_networkchange <- function(base_size = 11, base_family = "") {
+    theme_minimal(base_size = base_size, base_family = base_family) %+replace%
+    theme(
+        plot.title = element_text(face = "bold", hjust = 0.5, size = base_size * 1.2),
+        plot.subtitle = element_text(hjust = 0.5, size = base_size * 0.9),
+        panel.border = element_rect(color = "grey70", fill = NA, linewidth = 0.5),
+        panel.grid.minor = element_line(linewidth = 0.25),
+        panel.grid.major = element_line(linewidth = 0.4),
+        legend.position = "bottom",
+        legend.title = element_text(face = "bold", size = base_size * 0.9),
+        axis.title = element_text(face = "bold", size = base_size),
+        strip.text = element_text(face = "bold", size = base_size)
+    )
+}
+
+#' NetworkChange Discrete Color Scale
+#'
+#' Colorblind-friendly discrete color scale using viridis palette.
+#'
+#' @param ... Additional arguments passed to scale_color_viridis_d
+#' @param option Viridis palette option: "D" (default), "A", "B", "C", "E"
+#'
+#' @return A ggplot2 color scale
+#'
+#' @importFrom ggplot2 scale_color_viridis_d
+#'
+#' @export
+#'
+scale_color_networkchange <- function(..., option = "D") {
+    scale_color_viridis_d(option = option, ...)
+}
+
+#' NetworkChange Discrete Fill Scale
+#'
+#' Colorblind-friendly discrete fill scale using viridis palette.
+#'
+#' @param ... Additional arguments passed to scale_fill_viridis_d
+#' @param option Viridis palette option: "D" (default), "A", "B", "C", "E"
+#'
+#' @return A ggplot2 fill scale
+#'
+#' @importFrom ggplot2 scale_fill_viridis_d
+#'
+#' @export
+#'
+scale_fill_networkchange <- function(..., option = "D") {
+    scale_fill_viridis_d(option = option, ...)
+}
+
+#' NetworkChange Continuous Color Scale
+#'
+#' Colorblind-friendly continuous color scale using viridis palette.
+#'
+#' @param ... Additional arguments passed to scale_color_viridis_c
+#' @param option Viridis palette option: "D" (default), "A", "B", "C", "E"
+#'
+#' @return A ggplot2 color scale
+#'
+#' @importFrom ggplot2 scale_color_viridis_c
+#'
+#' @export
+#'
+scale_color_networkchange_c <- function(..., option = "D") {
+    scale_color_viridis_c(option = option, ...)
+}
+
+###########################
+
+###########################
+## Performance Optimization Helpers
+###########################
+
+#' Combine regime-specific V matrices efficiently
+#'
+#' Replaces Reduce(rbind, Vm) with pre-allocated matrix for better performance.
+#' Used internally in MCMC loops.
+#'
+#' @param Vm List of regime-specific V matrices
+#' @param ej List of regime indicators (optional, for pre-allocation sizing)
+#' @param R Number of latent dimensions
+#'
+#' @return Combined V matrix
+#'
+#' @keywords internal
+#'
+combineVm <- function(Vm, ej = NULL, R = NULL) {
+    ns <- length(Vm)
+    if(is.null(R)) R <- ncol(Vm[[1]])
+
+    ## Calculate total rows
+    total_rows <- sum(sapply(Vm, nrow))
+
+    ## Pre-allocate result matrix
+    V <- matrix(NA_real_, nrow = total_rows, ncol = R)
+
+    ## Fill in rows by regime
+    row_idx <- 1
+    for(j in 1:ns) {
+        n_rows_j <- nrow(Vm[[j]])
+        V[row_idx:(row_idx + n_rows_j - 1), ] <- Vm[[j]]
+        row_idx <- row_idx + n_rows_j
+    }
+    return(V)
+}
+
+###########################
 
 ## Gram-Schmidt orthogonalization
 GramSchmidt <- function(U){
@@ -162,12 +291,8 @@ trans.mat.prior <- function(m, n, a=NULL, b=NULL){
 }
 
 ###########################
-## a bunch of plot functions
+## Plot helper functions
 ###########################
-
-## for arrange_ggplot2.R	 
-vp.layout <- function(x, y) viewport(layout.pos.row=x, layout.pos.col=y)
-
 
 addTrans <- function(color,trans){
     ## thanks to Sacha Epskamp
