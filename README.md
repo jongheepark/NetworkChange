@@ -262,4 +262,4 @@ GPL-3
 ## Authors
 
 - **Jong Hee Park** - Seoul National University
-- **Yunkyun Sohn** - Baruch College, CUNY
+- **Yunkyu Sohn** - Seoul National University
