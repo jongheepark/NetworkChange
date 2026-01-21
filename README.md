@@ -7,6 +7,21 @@
 
 Detect structural changes in longitudinal network data using Bayesian multilinear tensor decomposition with hidden Markov models.
 
+## Overview
+
+Many recorded network data span over a long period of time. Researchers often wish to detect "structural changes," "turning points," or "critical junctures" from these network data to answer substantively important questions. For example, the evolution of military alliance networks in international politics has been known to experience several breaks due to world wars and the end of Cold War. However, statistical methods to uncover network changes have been few and far between.
+
+`NetworkChange` is an R package that detects structural changes in longitudinal network data using the latent space approach. Based on the Bayesian multi-array representation of longitudinal networks (Hoff 2011, 2015), `NetworkChange` performs Bayesian hidden Markov analysis (Chib 1998) to discover changes in structural network features across temporal layers.
+
+**Key capabilities:**
+- Handle various forms of network changes: block-splitting, block-merging, and core-periphery changes
+- Model diagnostics using WAIC, average loss, and log marginal likelihoods
+- Visualization tools for dynamic analysis of longitudinal networks
+
+![Package Overview](man/figures/package-overview.png)
+
+---
+
 ## Installation
 
 ```r
