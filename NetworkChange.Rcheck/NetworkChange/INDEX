@@ -1,0 +1,46 @@
+BreakDiagnostic         Detect a break number using different metrics
+BreakPointLoss          Compute the Average Loss of Hidden State
+                        Changes from Expected Break Points
+MajorAlly               Major Power Alliance Network (1816 - 2012)
+MakeBlockNetworkChange
+                        Build a synthetic block-structured temporal
+                        data with breaks
+MarginalCompare         Compare Log Marginal Likelihood
+NetworkChange           Changepoint analysis of a degree-corrected
+                        multilinear tensor model
+NetworkChangeRobust     Changepoint analysis of a degree-corrected
+                        multilinear tensor model with t-distributed
+                        error
+NetworkStatic           Degree-corrected multilinear tensor model
+PostwarAlly             Postwar Alliance Network (1846 - 2012)
+ULUstateSample          Hidden State Sampler
+ULUstateSample.mpfr     Hidden State Sampler with precision
+WaicCompare             Compare WAIC
+drawPostAnalysis        Plot of latent node cluster
+drawRegimeRaw           Plot of network by hidden regime
+kmeansU                 K-mean clustering of latent node positions
+multiplot               Printing multiple ggplots in one file
+                        (DEPRECATED)
+plotContour             Contour plot of latent node positions
+plotU                   Plot of latent node positions
+plotV                   Plot of layer-specific network generation
+                        rules.
+plotnetarray            Plot of network array data
+scale_color_networkchange
+                        NetworkChange Discrete Color Scale
+scale_color_networkchange_c
+                        NetworkChange Continuous Color Scale
+scale_fill_networkchange
+                        NetworkChange Discrete Fill Scale
+startS                  Sample a starting value of hidden states
+startUV                 Starting values of U and V
+theme_networkchange     NetworkChange ggplot2 Theme
+updateP                 Update transition matrix
+updateS                 Update latent states
+updateU                 Update time-constant latent node positions
+updateUm                Regime-specific latent node positions
+updateV                 Update layer specific network generation rules
+updateVm                Update V from a change-point network process
+updateb                 Update time-constant regression parameters
+updatebm                Update regime-changing regression parameters
+updates2m               Update regime-specific variance

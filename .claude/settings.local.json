@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(R CMD build:*)",
+      "Bash(R CMD check:*)",
+      "Bash(pandoc:*)",
+      "Bash(brew install:*)",
+      "Bash(wc:*)",
+      "Bash(R -e:*)",
+      "Bash(ls:*)",
+      "Bash(git push:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(gh auth:*)"
+    ]
+  }
+}

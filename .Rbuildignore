@@ -2,3 +2,8 @@
 ^Meta$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.claude$
+^bug\.html$
+^paper$
+^readme\.Rmd$
+^readme\.md$
