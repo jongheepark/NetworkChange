@@ -1,6 +1,3 @@
-## Avoid R CMD check notes for ggplot2 NSE
-utils::globalVariables(c("Time", "Value", "Dimension"))
-
 #' Plot of layer-specific network generation rules.
 #'
 #' Plot layer-specific network generation rules using ggplot2.
@@ -15,6 +12,7 @@ utils::globalVariables(c("Time", "Value", "Dimension"))
 #' @importFrom ggplot2 ggplot aes geom_line geom_point geom_hline labs
 #' @importFrom ggplot2 scale_color_viridis_d
 #' @importFrom tidyr pivot_longer
+#' @importFrom rlang .data
 #'
 #' @export
 #'
@@ -49,7 +47,7 @@ plotV <- function(OUT, main = "", point_size = 3, line_size = 1) {
     )
 
     ## Create ggplot
-    p <- ggplot(df, aes(x = Time, y = Value, color = Dimension, group = Dimension)) +
+    p <- ggplot(df, aes(x = .data$Time, y = .data$Value, color = .data$Dimension, group = .data$Dimension)) +
         geom_hline(yintercept = 0, linetype = "dashed", color = "grey50") +
         geom_line(linewidth = line_size, alpha = 0.8) +
         geom_point(size = point_size, alpha = 0.9) +
