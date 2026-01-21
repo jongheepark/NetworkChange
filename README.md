@@ -1,4 +1,4 @@
-# NetworkChange <img src="man/figures/logo.png" align="right" height="139" />
+# NetworkChange
 
 [![CRAN status](https://www.r-pkg.org/badges/version/NetworkChange)](https://CRAN.R-project.org/package=NetworkChange)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
@@ -51,6 +51,8 @@ View snapshots of your network data over time:
 plotnetarray(Y, n.graph = 4)
 ```
 
+![Network Array](man/figures/README-unnamed-chunk-1-1.png)
+
 Shows network structure at different time points to visually identify potential regime changes.
 
 ---
@@ -62,6 +64,8 @@ Visualize how nodes cluster in the latent space across different regimes:
 ```r
 plotU(fit)
 ```
+
+![Latent Node Positions](man/figures/README-unnamed-chunk-4-1.png)
 
 Each panel shows the latent positions for a detected regime. Node labels highlight the most influential actors (based on distance from origin).
 
@@ -79,6 +83,8 @@ Track how network generation rules evolve over time:
 ```r
 plotV(fit)
 ```
+
+![Layer-Specific Network Rules](man/figures/README-unnamed-chunk-5-1.png)
 
 Each dimension captures a different aspect of network structure. Changes in V indicate shifts in how the network is generated.
 
@@ -122,6 +128,8 @@ Visualize the posterior distribution of changepoint locations:
 BreakDiagnostic(fit)
 ```
 
+![Break Diagnostics](man/figures/README-unnamed-chunk-10-1.png)
+
 Shows when structural breaks occurred with uncertainty quantification.
 
 ---
@@ -142,6 +150,8 @@ WaicCompare(list(fit0, fit1, fit2), print = TRUE)
 # Compare via Marginal Likelihood
 MarginalCompare(list(fit0, fit1, fit2), print = TRUE)
 ```
+
+![Model Comparison](man/figures/README-unnamed-chunk-9-1.png)
 
 ---
 
@@ -165,6 +175,10 @@ plotV(fit)
 # Cluster analysis
 drawPostAnalysis(fit, MajorAlly, n.cluster = c(4, 4, 3))
 ```
+
+![Major Power Alliances - Latent Positions](man/figures/README-unnamed-chunk-11-1.png)
+
+![Major Power Alliances - Cluster Analysis](man/figures/README-unnamed-chunk-12-1.png)
 
 ---
 
