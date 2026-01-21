@@ -238,12 +238,12 @@ ggplot(data, aes(x, y, color = group)) +
 
 If you use NetworkChange in your research, please cite:
 
-> Park, Jong Hee and Yunkyun Sohn. 2020. "Detecting Structural Change in Longitudinal Network Data." *Bayesian Analysis*. 15(1): 133-157.
+> Park, Jong Hee and Yunkyu Sohn. 2020. "Detecting Structural Change in Longitudinal Network Data." *Bayesian Analysis*. 15(1): 133-157.
 
 ```bibtex
 @article{park2020detecting,
   title={Detecting Structural Change in Longitudinal Network Data},
-  author={Park, Jong Hee and Sohn, Yunkyun},
+  author={Park, Jong Hee and Sohn, Yunkyu},
   journal={Bayesian Analysis},
   volume={15},
   number={1},
