@@ -32,7 +32,7 @@ normalize_log_weights_safe <- function(log_weights, fallback = NULL){
 #' Hidden State Sampler
 #'
 #' Sample hidden states from hidden Markov multilinear model.
-#' Uses vectorized operations for improved performance.
+#' Uses optimized C++ implementation via Rcpp/RcppArmadillo for high performance.
 #'
 #' @param m The number of break
 #' @param s Latent state vector
@@ -46,6 +46,11 @@ normalize_log_weights_safe <- function(log_weights, fallback = NULL){
 #' @export
 #'
 ULUstateSample <- function(m, s, ZMUt, s2, P, SOS.random){
+    ULUstateSample_cpp(m, as.integer(s), ZMUt, s2, P, SOS.random)
+}
+
+## Original R implementation (kept for reference/fallback)
+ULUstateSample_R <- function(m, s, ZMUt, s2, P, SOS.random){
     T <- dim(ZMUt[[1]])[1]
     N <- dim(ZMUt[[1]])[2]  # Number of upper triangular elements
     ns <- m + 1
@@ -134,7 +139,6 @@ ULUstateSample <- function(m, s, ZMUt, s2, P, SOS.random){
 #'
 #' @export
 #'
-
 ULUstateSample.mpfr <- function(m, s, ZMUt, s2, P, SOS.random){
     T <- dim(ZMUt[[1]])[1]
     N <- dim(ZMUt[[1]])[2]  # Number of upper triangular elements

@@ -33,6 +33,6 @@ updateUm(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)
 A matrix of regime-specific latent node positions
 }
 \description{
-Update regime-specific latent node positions using optimized matrix operations.
-Pre-computes invariant quantities outside the node loop for better performance.
+Update regime-specific latent node positions using optimized C++ implementation.
+Uses Rcpp/RcppArmadillo for high-performance matrix operations.
 }

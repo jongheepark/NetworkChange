@@ -1,7 +1,7 @@
 #' Update V from a change-point network process
 #'
 #' Update layer specific network generation rules from a change-point network process.
-#' Uses optimized matrix operations and eliminates redundant array permutations.
+#' Uses optimized C++ implementation via Rcpp/RcppArmadillo.
 #'
 #' @param ns The number of hidden regimes.
 #' @param U The latent node positions.
@@ -19,6 +19,19 @@
 #' @export
 #'
 updateVm <- function(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA){
+    ## Prepare Zm with zeroed lower triangular
+    Zm_zeroed <- vector("list", ns)
+    for(j in 1:ns){
+        Zm_zeroed[[j]] <- Zm[[j]]
+        Zm_zeroed[[j]][!UTA[[j]]] <- 0
+    }
+
+    ## Call C++ implementation
+    updateVm_cpp(ns, U, V, Zm_zeroed, Km, R, s2, eV, iVV)
+}
+
+## Original R implementation (kept for reference/fallback)
+updateVm_R <- function(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA){
     Vm <- vector("list", ns)
 
     for(j in 1:ns){
@@ -61,7 +74,7 @@ updateVm <- function(ns, U, V, Zm, Km, R, s2, eV, iVV, UTA){
         cV <- solve(Q * inv_s2_j + iVV[[j]])
         prior_contrib <- matrix(rep(as.vector(iVV[[j]] %*% eV[[j]]), T_j), nrow = T_j, byrow = TRUE)
         cE <- (L * inv_s2_j + prior_contrib) %*% cV
-        Vm[[j]] <- rmn(cE, diag(T_j), cV)
+        Vm[[j]] <- rmn_R(cE, diag(T_j), cV)
     }
     return(Vm)
 }

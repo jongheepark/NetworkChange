@@ -1,7 +1,7 @@
 #' Update layer specific network generation rules
 #'
-#' Update layer specific network generation rules using optimized matrix operations.
-#' Eliminates redundant array permutations for better performance.
+#' Update layer specific network generation rules using optimized C++ implementation.
+#' Uses Rcpp/RcppArmadillo for high-performance matrix operations.
 #'
 #' @param Zb Z - beta.
 #' @param U The latent node positions.
@@ -17,6 +17,16 @@
 #' @export
 #'
 updateV <- function(Zb, U, R, K, s2, eV, iVV, UTA){
+    ## Zero out non-upper triangular elements
+    Zb0 <- Zb
+    Zb0[!UTA] <- 0
+
+    ## Call C++ implementation
+    updateV_cpp(Zb0, U, R, as.integer(K), s2, eV, iVV)
+}
+
+## Original R implementation (kept for reference/fallback)
+updateV_R <- function(Zb, U, R, K, s2, eV, iVV, UTA){
     ## Zero out non-upper triangular elements
     Zb0 <- Zb
     Zb0[!UTA] <- 0
@@ -58,6 +68,6 @@ updateV <- function(Zb, U, R, K, s2, eV, iVV, UTA){
     ## Prior mean contribution: each row of cE uses same eV
     prior_contrib <- matrix(rep(as.vector(iVV %*% eV), K[3]), nrow = K[3], byrow = TRUE)
     cE <- (L * inv_s2 + prior_contrib) %*% cV
-    V <- rmn(cE, diag(K[3]), cV)
+    V <- rmn_R(cE, diag(K[3]), cV)
     return(V)
 }

@@ -24,5 +24,5 @@ A list of a state vector, state probabilities, and SOS.random.
 }
 \description{
 Sample hidden states from hidden Markov multilinear model.
-Uses vectorized operations for improved performance.
+Uses optimized C++ implementation via Rcpp/RcppArmadillo for high performance.
 }

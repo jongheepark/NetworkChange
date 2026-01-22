@@ -23,5 +23,6 @@ updates2m(ns, Zm, MU, c0, d0, Km)
 A scalar for a regime-specific variance
 }
 \description{
-Update regime-specific variance parameter
+Update regime-specific variance parameter.
+Uses optimized C++ implementation via Rcpp.
 }

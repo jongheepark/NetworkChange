@@ -149,7 +149,13 @@ stable_log_mean_exp <- function(x) {
 ###########################
 
 ## Gram-Schmidt orthogonalization
+## C++ implementation available via GramSchmidt_cpp
 GramSchmidt <- function(U){
+    GramSchmidt_cpp(U)
+}
+
+## Original R implementation (kept for reference/fallback)
+GramSchmidt_R <- function(U){
     R <- dim(U)[2]
     N <- dim(U)[1]
     q <- list()
@@ -157,7 +163,7 @@ GramSchmidt <- function(U){
     q[[1]] <- (1/sqrt(sum(A^2)))*A
     for(r in 2:R){
         B <- U[,r] - (q[[1]]%*%U[,r])%*%q[[1]]
-        q[[r]] <- (1/sqrt(sum(B^2)))*B 
+        q[[r]] <- (1/sqrt(sum(B^2)))*B
     }
     out <- matrix(unlist(q), N, R)
     return(out)
@@ -190,7 +196,17 @@ normalize <- function(x){
 
 
 ## normalization of U and V
+## C++ implementation available via Unormal_cpp
 Unormal <- function(U1){
+    if(is.list(U1)){
+        ## For lists, apply to each element
+        return(lapply(U1, Unormal_cpp))
+    }
+    Unormal_cpp(U1)
+}
+
+## Original R implementation (kept for reference/fallback)
+Unormal_R <- function(U1){
     if(is.list(U1)){
         R <- dim(U1[[1]])[2]
     }
@@ -393,14 +409,27 @@ rsmn <- function (m, n)
 }
 
 ##### Create array out of factors
+## C++ implementation available via M_U_list_cpp for 3D case
 M.U <- function(U)
+{
+  m <- length(U)
+  if(m == 3) {
+      ## Use optimized C++ version for 3D case (most common in NetworkChange)
+      return(M_U_list_cpp(U))
+  }
+  ## Fall back to R implementation for other dimensions
+  M.U_R(U)
+}
+
+## Original R implementation (kept for reference/fallback)
+M.U_R <- function(U)
 {
   r <- dim(U[[1]])[2]
   m <- length(U)
   n <- sapply(U,length)/r
-  
+
   M <- array(0,dim=n)
-  
+
   for(k in 1:r)
   {
     tmp <- U[[1]][,k]
@@ -413,7 +442,14 @@ M.U <- function(U)
   M
 }
 #####
+## C++ implementation available via rMVNorm_cpp
 rMVNorm <- function(n,mu,Sigma)
+{
+  rMVNorm_cpp(n, mu, Sigma)
+}
+
+## Original R implementation (kept for reference/fallback)
+rMVNorm_R <- function(n,mu,Sigma)
 {
   E <- matrix(rnorm(n*length(mu)),n,length(mu))
   t(  t(E%*%chol(Sigma)) +c(mu))
@@ -421,11 +457,26 @@ rMVNorm <- function(n,mu,Sigma)
 ##
 
 ##
+## C++ implementation available via rsmn_cpp
 rsmn <- function (m, n)
+{
+  rsmn_cpp(m, n)
+}
+
+## Original R implementation (kept for reference/fallback)
+rsmn_R <- function (m, n)
 {
   matrix(rnorm(m * n), m, n)
 }
+
+## C++ implementation available via rmn_cpp
 rmn <- function (M = 0, Srow, Scol)
+{
+  rmn_cpp(M, Srow, Scol)
+}
+
+## Original R implementation (kept for reference/fallback)
+rmn_R <- function (M = 0, Srow, Scol)
 {
   m  <-  dim(Srow)[1]
   n  <-  dim(Scol)[1]
@@ -433,7 +484,7 @@ rmn <- function (M = 0, Srow, Scol)
   Srow.h  <-  tmp$vec %*% diag(sqrt(tmp$val),nrow=m) %*% t(tmp$vec)
   tmp  <-  eigen(Scol)
   Scol.h  <-  tmp$vec %*% diag(sqrt(tmp$val),nrow=n) %*% t(tmp$vec)
-  Z  <-  rsmn(m, n)
+  Z  <-  rsmn_R(m, n)
   Srow.h %*% Z %*% Scol.h + M
 }
 rwish <- function(S0, nu)

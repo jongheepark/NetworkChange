@@ -27,6 +27,6 @@ updateU(K, U, V, R, Zb, s2, eU, iVU)
 A matrix of time-constant latent node positions
 }
 \description{
-Update time-constant latent node positions using optimized matrix operations.
-Pre-computes invariant quantities outside the node loop for better performance.
+Update time-constant latent node positions using optimized C++ implementation.
+Uses Rcpp/RcppArmadillo for high-performance matrix operations.
 }

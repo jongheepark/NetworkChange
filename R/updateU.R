@@ -1,7 +1,7 @@
 #' Update time-constant latent node positions
 #'
-#' Update time-constant latent node positions using optimized matrix operations.
-#' Pre-computes invariant quantities outside the node loop for better performance.
+#' Update time-constant latent node positions using optimized C++ implementation.
+#' Uses Rcpp/RcppArmadillo for high-performance matrix operations.
 #'
 #' @param K The dimensionality of Z
 #' @param U The most recent draw of latent node positions
@@ -16,8 +16,12 @@
 #'
 #' @export
 #'
-
 updateU <- function(K, U, V, R, Zb, s2, eU, iVU){
+    updateU_cpp(as.integer(K), U, V, R, Zb, s2, eU, iVU)
+}
+
+## Original R implementation (kept for reference/fallback)
+updateU_R <- function(K, U, V, R, Zb, s2, eU, iVU){
     ## Pre-compute invariants outside the loop
     VtV <- crossprod(V)  # t(V) %*% V - computed once
     iVU_eU <- iVU %*% eU  # Prior contribution - computed once
@@ -41,7 +45,7 @@ updateU <- function(K, U, V, R, Zb, s2, eU, iVU){
         ## Posterior covariance and mean
         cV <- solve(Q * inv_s2 + iVU)
         cE <- cV %*% (L * inv_s2 + iVU_eU)
-        U[i,] <- rMVNorm(1, cE, cV)
+        U[i,] <- rMVNorm_R(1, cE, cV)
     }
     return(U)
 }

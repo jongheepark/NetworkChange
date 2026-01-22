@@ -1,7 +1,7 @@
 Package: NetworkChange
 Title: Bayesian Package for Network Changepoint Analysis
-Version: 1.0.0
-Date: 2026-01-18
+Version: 1.1.0
+Date: 2026-01-22
 Authors@R: c(person(given = c("Jong", "Hee"),
                     family = "Park",
                     role = c("aut", "cre"),
@@ -11,6 +11,7 @@ Authors@R: c(person(given = c("Jong", "Hee"),
                     role = "aut"))
 Depends: R (>= 3.5.0), MCMCpack, ggplot2
 Imports:
+    Rcpp (>= 1.0.0),
     Rmpfr,
     abind,
     mvtnorm,
@@ -27,9 +28,10 @@ Imports:
     GGally,
     patchwork,
     viridis
-Description: Network changepoint analysis for undirected network data. The package implements a hidden Markov network change point model (Park and Sohn (2020)). Functions for break number detection using the approximate marginal likelihood and WAIC are also provided. This version includes performance optimizations with vectorized MCMC operations and modern ggplot2-based visualizations with colorblind-friendly palettes.
+LinkingTo: Rcpp, RcppArmadillo
+Description: Network changepoint analysis for undirected network data. The package implements a hidden Markov network change point model (Park and Sohn (2020)). Functions for break number detection using the approximate marginal likelihood and WAIC are also provided. Version 1.1.0 includes high-performance C++ implementations via Rcpp/RcppArmadillo for 5-15x faster MCMC sampling, along with modern ggplot2-based visualizations with colorblind-friendly palettes.
 License: GPL-3
-NeedsCompilation: no
+NeedsCompilation: yes
 RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8

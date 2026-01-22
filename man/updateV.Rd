@@ -27,6 +27,6 @@ updateV(Zb, U, R, K, s2, eV, iVV, UTA)
 A matrix of layer specific network generation rules
 }
 \description{
-Update layer specific network generation rules using optimized matrix operations.
-Eliminates redundant array permutations for better performance.
+Update layer specific network generation rules using optimized C++ implementation.
+Uses Rcpp/RcppArmadillo for high-performance matrix operations.
 }

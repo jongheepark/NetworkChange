@@ -32,5 +32,5 @@ A matrix of regime-specific layer specific network generation rules
 }
 \description{
 Update layer specific network generation rules from a change-point network process.
-Uses optimized matrix operations and eliminates redundant array permutations.
+Uses optimized C++ implementation via Rcpp/RcppArmadillo.
 }

@@ -1,7 +1,7 @@
 #' Regime-specific latent node positions
 #'
-#' Update regime-specific latent node positions using optimized matrix operations.
-#' Pre-computes invariant quantities outside the node loop for better performance.
+#' Update regime-specific latent node positions using optimized C++ implementation.
+#' Uses Rcpp/RcppArmadillo for high-performance matrix operations.
 #'
 #' @param ns The number of latent states
 #' @param U THe latent node positions
@@ -20,6 +20,11 @@
 #' @export
 #'
 updateUm <- function(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal){
+    updateUm_cpp(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal)
+}
+
+## Original R implementation (kept for reference/fallback)
+updateUm_R <- function(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal){
     for(j in 1:ns){
         Vj <- matrix(V[ej[[j]] == 1, ], nrow = sum(ej[[j]]), ncol = R)
 
@@ -49,18 +54,18 @@ updateUm <- function(ns, U, V, R, Zm, Km, ej, s2, eU, iVU, UL.Normal){
             ## Posterior covariance and mean
             cV <- solve(Q * inv_s2_j + iVU[[j]])
             cE <- cV %*% (L * inv_s2_j + iVU_eU_j)
-            U[[j]][i,] <- rMVNorm(1, cE, cV)
+            U[[j]][i,] <- rMVNorm_R(1, cE, cV)
         }
     }
 
     ## UL normalization
     if (UL.Normal == "Normal"){
         for(j in 1:ns){
-            U[[j]] <- Unormal(U[[j]])
+            U[[j]] <- Unormal_R(U[[j]])
         }
     } else if(UL.Normal == "Orthonormal"){
         for(j in 1:ns){
-            U[[j]] <- GramSchmidt(U[[j]])
+            U[[j]] <- GramSchmidt_R(U[[j]])
         }
     }
     return(U)

@@ -2,3 +2,8 @@ inst/doc
 doc
 Meta
 .Rproj.user
+
+# Compiled code
+src/*.o
+src/*.so
+src/*.dll

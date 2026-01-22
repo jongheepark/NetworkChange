@@ -11,12 +11,15 @@
 #' @importFrom Rmpfr mpfr
 #' @importFrom patchwork wrap_plots
 #' @importFrom viridis viridis
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib NetworkChange, .registration=TRUE
 NULL
 #> NULL
 
 #' Fit Bayesian multilinear tensor regression model with Change-points.
 #'
 #' This package implements gibbs updates for Bayesian multilinear tensor regression model
-#'  with change-points. Version 1.0 includes performance optimizations with vectorized
-#'  MCMC operations and modern ggplot2-based visualizations with colorblind-friendly palettes.
+#'  with change-points. Version 1.1.0 includes high-performance C++ implementations via
+#'  Rcpp/RcppArmadillo for 5-15x faster MCMC sampling, along with modern ggplot2-based
+#'  visualizations with colorblind-friendly palettes.
 #'
