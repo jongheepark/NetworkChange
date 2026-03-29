@@ -1,3 +1,34 @@
+normalize_weights_safe <- function(weights, fallback = NULL){
+    weights[!is.finite(weights)] <- 0
+    total <- sum(weights)
+
+    if(is.finite(total) && total > 0){
+        return(weights / total)
+    }
+
+    if(!is.null(fallback)){
+        fallback[!is.finite(fallback)] <- 0
+        total <- sum(fallback)
+        if(is.finite(total) && total > 0){
+            return(fallback / total)
+        }
+    }
+
+    rep(1 / length(weights), length(weights))
+}
+
+normalize_log_weights_safe <- function(log_weights, fallback = NULL){
+    finite <- is.finite(log_weights)
+
+    if(!any(finite)){
+        return(normalize_weights_safe(rep(NA_real_, length(log_weights)), fallback))
+    }
+
+    centered <- log_weights - max(log_weights[finite])
+    weights <- exp(centered)
+    normalize_weights_safe(weights, fallback)
+}
+
 #' Hidden State Sampler
 #'
 #' Sample hidden states from hidden Markov multilinear model.
@@ -14,7 +45,6 @@
 #'
 #' @export
 #'
-
 ULUstateSample <- function(m, s, ZMUt, s2, P, SOS.random){
     T <- dim(ZMUt[[1]])[1]
     N <- dim(ZMUt[[1]])[2]  # Number of upper triangular elements
@@ -38,21 +68,28 @@ ULUstateSample <- function(m, s, ZMUt, s2, P, SOS.random){
         if(t == 1) {
             pstyt1 <- pr1
         } else {
-            pstyt1 <- F[t-1, ] %*% P
+            pstyt1 <- as.numeric(F[t-1, ] %*% P)
         }
-        unnorm.pstyt <- pstyt1 * exp(density.log[, t])
-        F[t, ] <- unnorm.pstyt / sum(unnorm.pstyt)  # Pr(st|Yt)
+
+        log_prior <- rep(-Inf, ns)
+        valid_prior <- is.finite(pstyt1) & pstyt1 > 0
+        log_prior[valid_prior] <- log(pstyt1[valid_prior])
+
+        F[t, ] <- normalize_log_weights_safe(log_prior + density.log[, t],
+                                             fallback = pstyt1)  # Pr(st|Yt)
     }
 
     ## Backward sampling
     s <- matrix(1, T, 1)      # holder for state variables
     ps <- matrix(NA, T, ns)   # holder for state probabilities
+    ps[1, ] <- F[1, ]
     ps[T, ] <- F[T, ]         # we know last elements of ps and s
     s[T, 1] <- ns
 
     for(t in (T-1):2){
         st <- s[t+1]
         unnorm.pstyn <- F[t, ] * P[, st]
+        unnorm.pstyn[!is.finite(unnorm.pstyn)] <- 0
         if(sum(unnorm.pstyn) == 0){
             cat("F", F[t, ], " and P", P[, st], " do not match at t = ", t, "\n")
             s[t] <- s[t+1]
@@ -131,12 +168,14 @@ ULUstateSample.mpfr <- function(m, s, ZMUt, s2, P, SOS.random){
     ## Backward sampling
     s <- matrix(1, T, 1)
     ps <- matrix(NA, T, ns)
+    ps[1, ] <- F[1, ]
     ps[T, ] <- F[T, ]
     s[T, 1] <- ns
 
     for(t in (T-1):2){
         st <- s[t+1]
         unnorm.pstyn <- F[t, ] * P[, st]
+        unnorm.pstyn[!is.finite(unnorm.pstyn)] <- 0
         if(sum(unnorm.pstyn) == 0){
             cat("F", F[t, ], " and P", P[, st], " do not match at t = ", t, "\n")
             s[t] <- s[t+1]

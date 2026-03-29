@@ -488,12 +488,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
             density.eU.holder[g] <- dmvnorm(eU.st, matrix(mu, 1, R), sigma, log=TRUE)
             ## }
         }
-        density.eU <- log(mean(exp(density.eU.holder)))
-        if(abs(density.eU) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.eU.holder)
-            density.eU <- as.numeric(log(mean(exp(mpfr(density.eU.holder, precBits=53)))))
-        }
+        density.eU <- stable_log_mean_exp(density.eU.holder)
         
         ## cat("\n---------------------------------------------- \n ")
         ## cat("Marignal Likelihood Computation Step 1 \n")
@@ -557,12 +552,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
             s2 <- rinvgamma(1, (c0 + XtX)/2, (d0+ sum(c(ZE)^2))/2  )        
         }
         
-        density.iVU <- log(mean(exp(density.iVU.holder)))
-        if(abs(density.iVU) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.iVU.holder)
-            density.iVU <- as.numeric(log(mean(exp(mpfr(density.iVU.holder, precBits=53)))))
-        }
+        density.iVU <- stable_log_mean_exp(density.iVU.holder)
         
         ## cat("\n---------------------------------------------- \n ")
         ## cat("Marignal Likelihood Computation Step 2 \n")
@@ -621,12 +611,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
             s2 <- rinvgamma(1, (c0 + XtX)/2, (d0+ sum(c(ZE)^2))/2  )        
         }
         
-        density.eV <- log(mean(exp(density.eV.holder)))
-        if(abs(density.eV) == Inf){
-            ## cat("    Precision enforced! \n")
-            ## print(density.eV.holder)
-            density.eV <- as.numeric(log(mean(exp(mpfr(density.eV.holder, precBits=53)))))
-        }
+        density.eV <- stable_log_mean_exp(density.eV.holder)
         
         ## cat("\n---------------------------------------------- \n ")
         ## cat("Marignal Likelihood Computation Step 3 \n")
@@ -684,12 +669,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
             s2 <- rinvgamma(1, (c0 + XtX)/2, (d0+ sum(c(ZE)^2))/2  )        
         }
         
-        density.iVV <- log(mean(exp(density.iVV.holder)))
-        if(abs(density.iVV) == Inf){
-            ## cat("    Precision enforced! \n")
-            ## print(density.iVV.holder)
-            density.iVV <- log(mean(exp(mpfr(density.iVV.holder, precBits=53))))
-        }
+        density.iVV <- stable_log_mean_exp(density.iVV.holder)
         
         ## cat("\n---------------------------------------------- \n ")
         ## cat("Marignal Likelihood Computation Step 4 \n")
@@ -742,12 +722,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
                 s2 <- rinvgamma(1, (c0 + XtX)/2, (d0+ sum(c(ZE)^2))/2  )        
             }
             
-            density.bhat <- log(mean(exp(density.bhat.holder)))
-            if(abs(density.bhat) == Inf){
-                ## cat("    Precision reinforced! \n")
-                ## print(density.bhat.holder)
-                density.bhat <- as.numeric(log(mean(exp(mpfr(density.bhat.holder, precBits=53)))))
-            }
+            density.bhat <- stable_log_mean_exp(density.bhat.holder)
             ## cat("\n---------------------------------------------- \n ")
             ## cat("Marignal Likelihood Computation Step 5 \n")
             ## cat("    density.bhat: ", as.numeric(density.bhat), "\n")
@@ -795,12 +770,7 @@ NetworkStatic <- function(Y, R=2, mcmc = 100, burnin = 100, verbose = 0,thin = 1
             density.Sigma.holder[g] <- log(dinvgamma(Sigma.st, nu1, nu2))
         }
         
-        density.Sigma <- log(mean(exp(density.Sigma.holder)))
-        if(abs(density.Sigma) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.Sigma.holder)
-            density.Sigma <- as.numeric(log(mean(exp(mpfr(density.Sigma.holder, precBits=53)))))
-        }
+        density.Sigma <- stable_log_mean_exp(density.Sigma.holder)
         
         ## cat("\n---------------------------------------------- \n ")
         ## cat("Marignal Likelihood Computation Step 6 \n")

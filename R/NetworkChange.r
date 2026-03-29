@@ -799,13 +799,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             }
             density.eU.holder[g] <- sum(density.eU.temp.holder)
         }
-        density.eU <- log(mean(exp(density.eU.holder)))
-        if(abs(density.eU) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.eU.holder)
-            density.eU <- as.numeric(log(mean(exp(mpfr(density.eU.holder, precBits=53)))))
-        }
-        if(abs(density.eU) == Inf){
+        density.eU <- stable_log_mean_exp(density.eU.holder)
+        if(!is.finite(density.eU)){
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
         
@@ -907,13 +902,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             P <- updateP(s, ns, P, A0)
         }
         
-        density.iVU <- log(mean(exp(density.iVU.holder)))
-        if(abs(density.iVU) == Inf){
-            ## cat("    Precision enforced! \n")
-            ## print(density.iVU.holder)
-            density.iVU <- as.numeric(log(mean(exp(mpfr(density.iVU.holder, precBits=53)))))
-        }
-        if(abs(density.iVU) == Inf){
+        density.iVU <- stable_log_mean_exp(density.iVU.holder)
+        if(!is.finite(density.iVU)){
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
 
@@ -1002,13 +992,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             P <- updateP(s, ns, P, A0)
         }
         
-        density.eV <- log(mean(exp(density.eV.holder)))
-        if(abs(density.eV) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.eV.holder)
-            density.eV <- as.numeric(log(mean(exp(mpfr(density.eV.holder, precBits=53)))))
-        }
-        if(abs(density.eV) == Inf){
+        density.eV <- stable_log_mean_exp(density.eV.holder)
+        if(!is.finite(density.eV)){
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
 
@@ -1104,13 +1089,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             P <- updateP(s, ns, P, A0)
         }
         
-        density.iVV <- log(mean(exp(density.iVV.holder)))
-        if(abs(density.iVV) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.iVV.holder)
-            density.iVV <- as.numeric(log(mean(exp(mpfr(density.iVV.holder, precBits=53)))))
-        }
-        if(abs(density.iVV) == Inf){
+        density.iVV <- stable_log_mean_exp(density.iVV.holder)
+        if(!is.finite(density.iVV)){
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
 
@@ -1186,13 +1166,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
                 P <- updateP(s, ns, P, A0)
             }
             
-            density.bhat <- log(mean(exp(density.bhat.holder)))
-            if(abs(density.bhat) == Inf){
-                ## cat("    Precision reinforced! \n")
-                ## print(density.bhat.holder)
-                density.bhat <- as.numeric(log(mean(exp(mpfr(density.bhat.holder, precBits=53)))))
-            }
-            if(abs(density.bhat) == Inf){
+            density.bhat <- stable_log_mean_exp(density.bhat.holder)
+            if(!is.finite(density.bhat)){
                 stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
             }
             
@@ -1274,13 +1249,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             P <- updateP(s, ns, P, A0)
         }
         
-        density.Sigma <- log(mean(exp(density.Sigma.holder)))
-        if(abs(density.Sigma) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.Sigma.holder)
-            density.Sigma <- as.numeric(log(mean(exp(mpfr(density.Sigma.holder, precBits=53)))))
-        }
-        if(abs(density.Sigma) == Inf){
+        density.Sigma <- stable_log_mean_exp(density.Sigma.holder)
+        if(!is.finite(density.Sigma)){
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
         
@@ -1363,13 +1333,8 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
             
         }
         
-        density.P <- log(mean(exp(density.P.holder)))
-        if(abs(density.P) == Inf){
-            ## cat("    Precision reinforced! \n")
-            ## print(density.P.holder)
-            density.P <- as.numeric(log(mean(exp(mpfr(density.P.holder, precBits=53)))))
-        }
-         if(abs(density.P) == Inf){
+        density.P <- stable_log_mean_exp(density.P.holder)
+         if(!is.finite(density.P)){
             stop("The density of a posterior ordinate reaches a computational limit and marginal likelihood computation is halted.\n")
         }
 
@@ -1467,4 +1432,3 @@ NetworkChange <- function(Y, R=2, m=1, initial.s = NULL,
     ## cat("elapsed time for m = ", m, " is ", proc.time() - ptm, "\n")
     return(output)
 }
-

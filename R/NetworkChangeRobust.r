@@ -304,6 +304,7 @@ NetworkChangeRobust <- function(Y, R=2, m=1, initial.s = NULL,
         n2[[j]] <- m0
         lambda[[j]] <- rgamma(Km[[j]][3], n1/2, n2[[j]]/2)
     }
+    united.lambda <- unlist(lambda)
 
     
     if(verbose !=0){
@@ -523,7 +524,7 @@ NetworkChangeRobust <- function(Y, R=2, m=1, initial.s = NULL,
         }
         ## state.out <- ULUstateSample(m=m, s=s, ZMUt=ZMUt, s2=s2, P=P, random.perturb)
         united.lambda <- unlist(lambda)
-        density.log <- as(matrix(unlist(sapply(1:T, function(t){
+        density.log <- as(matrix(unlist(sapply(1:Time, function(t){
             lapply(ZMUt, function(x){sum(dnorm(x[t,], 0,
                                                sd = sqrt(s2[s[t]]/united.lambda[t]), log=TRUE))})})), ns, Time), "mpfr")
         Fmat   <-  as(matrix(NA, Time, m+1), "mpfr")     # storage for the Filtered probabilities
@@ -543,6 +544,7 @@ NetworkChangeRobust <- function(Y, R=2, m=1, initial.s = NULL,
         Fmat <- matrix(as.numeric(Fmat), nrow=Time, m+1)
         s      <-  matrix(1, Time, 1)   ## holder for state variables
         ps     <-  matrix(NA, Time, m+1) ## holder for state probabilities
+        ps[1,] <-  Fmat[1,]
         ps[Time,] <-  Fmat[Time,]              ## we know last elements of ps and s
         s[Time,1] <-  m+1
         ## t      <-  T-1
@@ -550,6 +552,7 @@ NetworkChangeRobust <- function(Y, R=2, m=1, initial.s = NULL,
             ## while (t>=1){
             st     <-  s[t+1]
             unnorm.pstyn   <-  Fmat[t,]*P[,st]
+            unnorm.pstyn[!is.finite(unnorm.pstyn)] <- 0
             ## cat("\nunnorm.pstyn at t = ", t, " is ", unnorm.pstyn, "\n")
             if(sum(unnorm.pstyn) == 0){
                 ## if unnorm.pstyn is all zero, what to do?
@@ -571,10 +574,10 @@ NetworkChangeRobust <- function(Y, R=2, m=1, initial.s = NULL,
         }
         new.SOS <- FALSE
         if(SOS.random & sum(table(s) == 1)){
-            s <- sort(sample(1:ns, T, replace=TRUE, prob=rep(1/ns, ns))) ## 
+            s <- sort(sample(1:ns, Time, replace=TRUE, prob=rep(1/ns, ns))) ## 
             ## cat("\n A single observation state is sampled and the latent state sampled randomly.\n")
             if(length(unique(s)) != ns){
-                s <- sort(rep(1:ns, length=T))
+                s <- sort(rep(1:ns, length=Time))
             }
             new.SOS <- TRUE
         }
@@ -691,4 +694,3 @@ NetworkChangeRobust <- function(Y, R=2, m=1, initial.s = NULL,
     ## cat("elapsed time for m = ", m, " is ", proc.time() - ptm, "\n")
     return(output)
 }
-

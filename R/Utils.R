@@ -130,6 +130,22 @@ combineVm <- function(Vm, ej = NULL, R = NULL) {
     return(V)
 }
 
+stable_log_mean_exp <- function(x) {
+  x <- as.numeric(x)
+  x <- x[!is.na(x)]
+
+  if (!length(x)) {
+    return(NA_real_)
+  }
+
+  max_x <- max(x)
+  if (!is.finite(max_x)) {
+    return(max_x)
+  }
+
+  max_x + log(mean(exp(x - max_x)))
+}
+
 ###########################
 
 ## Gram-Schmidt orthogonalization
@@ -543,4 +559,3 @@ plotU.separate <- function(OUT, Year=NULL, names=NULL, main=""){
     }
     return(p.list)
 }
-
