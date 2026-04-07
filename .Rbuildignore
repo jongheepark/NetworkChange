@@ -7,3 +7,6 @@
 ^paper$
 ^readme\.Rmd$
 ^readme\.md$
+^\.DS_Store$
+^.*\.tar\.gz$
+\.Rhistory$
